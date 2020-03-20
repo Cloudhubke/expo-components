@@ -48,7 +48,7 @@
     "material-bread": "^0.2.4",
     "material-ui-colors": "^1.0.0",
     "moment": "^2.24.0",
-    "native-base": "^2.12.1",
+    "native-base": "2.12.1",
     "numeral": "^2.0.6",
     "ramda": "^0.26.1",
     "react-final-form": "^6.3.0",
