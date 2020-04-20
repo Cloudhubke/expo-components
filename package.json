@@ -62,10 +62,11 @@
     "react-native-modal-dropdown": "^0.6.2",
     "react-native-ratings": "^6.4.0",
     "react-native-size-matters": "^0.2.1",
-    "react-native-svg": "~9.4.0",
+    "react-native-svg": "^9.4.0",
     "rn-country-picker-modal": "^1.0.1",
     "expo-contacts": "~5.0.2",
-    "expo-intent-launcher": "~5.0.1"
+    "expo-intent-launcher": "~5.0.1",
+    "expo": "^37.0.0"
   },
   "devDependencies": {
     "@expo/samples": "2.1.1",
