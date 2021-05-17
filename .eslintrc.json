@@ -1,0 +1,70 @@
+{
+  "parser": "babel-eslint",
+  "extends": ["airbnb"],
+  "plugins": ["react", "import", "baseui"],
+  "rules": {
+    "react/jsx-filename-extension": [
+      1,
+      {
+        "extensions": [".js", ".jsx"]
+      }
+    ],
+    "baseui/deprecated-theme-api": "warn",
+    "baseui/deprecated-component-api": "warn",
+    "baseui/no-deep-imports": "warn",
+    "jsx-a11y/label-has-for": 0,
+    "jsx-a11y/anchor-is-valid": 0,
+    "jsx-a11y/click-events-have-key-events": 0,
+    "jsx-a11y/media-has-caption": 0,
+    "jsx-a11y/label-has-associated-control": 0,
+    "function-paren-newline": "off",
+    "no-underscore-dangle": "off",
+    "no-case-declarations": "off",
+    "no-use-before-define": "off",
+    "no-restricted-globals": "off",
+    "no-empty": "off",
+    "comma-dangle": 0,
+    "no-shadow": 0,
+    "max-len": 0,
+    "indent": 0,
+    "space-before-function-paren": "off",
+    "import/no-extraneous-dependencies": "off",
+    "import/no-named-as-default": "off",
+    "react/forbid-prop-types": 0,
+    "react/no-unused-prop-types": 0,
+    "react/prop-types": 0,
+    "react/jsx-indent-props": 0,
+    "react/jsx-indent": 0,
+    "react/no-did-update-set-state": 0,
+    "react/destructuring-assignment": 0,
+    "react/jsx-one-expression-per-line": 0,
+    "import/no-cycle": "error",
+    "import/no-self-import": "error",
+    "import/no-unresolved": "off",
+    "arrow-parens": 0,
+    "object-curly-newline": 0,
+    "implicit-arrow-linebreak": 0,
+    "operator-linebreak": 0,
+    "no-confusing-arrow": 0
+  },
+  "parserOptions": {
+    "ecmaVersion": 8,
+    "sourceType": "module",
+    "ecmaFeatures": {
+      "jsx": true,
+      "modules": true,
+      "experimentalObjectRestSpread": true
+    }
+  },
+  "env": {
+    "es6": true,
+    "browser": true,
+    "node": true
+  },
+  "settings": {
+    "react": {
+      "pragma": "React",
+      "version": "16.4.1"
+    }
+  }
+}
