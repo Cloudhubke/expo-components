@@ -1,7 +1,7 @@
 {
   "name": "expo-components",
   "version": "0.0.0-development",
-  "description": "Various components for use with react-native projects (expo)",
+  "description": "Components for use with react-native projects and expo",
   "main": "lib/index.js",
   "module": "lib/index.js",
   "files": [
