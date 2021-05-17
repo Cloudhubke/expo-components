@@ -87,13 +87,13 @@
     "expo": "^39.0.0",
     "jest-expo": "^39.0.0",
     "react": "16.13.1",
-    "semantic-release": "^17.2.3"
+    "semantic-release": "^17.2.3",
+    "react-native": ">=0.56"
   },
   "peerDependencies": {
     "@expo/samples": "^2.1.1",
     "@expo/vector-icons": "10.0.3",
-    "react": "^16.8.3",
-    "react-native": "^0.56.0"
+    "react": "^16.8.3"
   },
   "config": {
     "commitizen": {
