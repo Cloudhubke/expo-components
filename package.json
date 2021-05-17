@@ -80,7 +80,7 @@
     "expo": "^39.0.0",
     "jest-expo": "^39.0.0",
     "react": "16.13.1",
-    "semantic-release": "^15.13.30"
+    "semantic-release": ">=17.2.3"
   },
   "peerDependencies": {
     "@expo/samples": "^2.1.1",
