@@ -1,6 +1,6 @@
 {
   "name": "@expocraft/core",
-  "version": "0.10.30",
+  "version": "0.10.32",
   "description": "Components for use with react-native projects and expo",
   "main": "index.js",
   "module": "index.js",
@@ -36,6 +36,7 @@
     "awesome-phonenumber": "^2.13.0",
     "axios": "^0.21.1",
     "babel-eslint": "^10.1.0",
+    "color": "^4.2.1",
     "create-react-class": "^15.7.0",
     "expo-app-loading": "~1.2.1",
     "expo-asset": "~8.4.3",
