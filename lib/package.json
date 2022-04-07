@@ -1,6 +1,6 @@
 {
   "name": "@expocraft/core",
-  "version": "0.10.32",
+  "version": "0.10.35",
   "description": "Components for use with react-native projects and expo",
   "main": "index.js",
   "module": "index.js",
