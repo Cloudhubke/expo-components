@@ -1,6 +1,6 @@
 {
   "name": "@expocraft/core",
-  "version": "0.10.71",
+  "version": "0.10.73",
   "description": "Components for use with react-native projects and expo",
   "main": "lib/index.js",
   "module": "lib/index.js",
@@ -24,8 +24,7 @@
     "android": "expo start --android",
     "ios": "expo start --ios",
     "eject": "expo eject",
-    "test": "exit 0",
-    "prepublishOnly": "npm version patch --no-git-tag-version"
+    "test": "exit 0"
   },
   "jest": {
     "preset": "jest-expo"
@@ -80,7 +79,8 @@
     "react-native-ratings": "^6.4.0",
     "react-native-size-matters": "^0.2.1",
     "reanimated-bottom-sheet": "^1.0.0-alpha.22",
-    "rn-country-picker-modal": "^1.0.1"
+    "rn-country-picker-modal": "^1.0.1",
+    "uniqid": "^5.4.0"
   },
   "devDependencies": {
     "@expo/samples": "2.1.1",
