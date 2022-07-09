@@ -1,6 +1,6 @@
 {
   "name": "@expocraft/core",
-  "version": "0.10.81",
+  "version": "0.10.82",
   "description": "Components for use with react-native projects and expo",
   "main": "lib/index.js",
   "module": "lib/index.js",
@@ -41,7 +41,6 @@
     "expo-asset": "~8.4.6",
     "expo-av": "~10.2.0",
     "expo-barcode-scanner": "~11.2.0",
-    "expo-blur": "^11.1.0",
     "expo-camera": "~12.1.2",
     "expo-contacts": "~10.1.0",
     "expo-image-manipulator": "~10.2.0",
