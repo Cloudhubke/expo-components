@@ -1,6 +1,6 @@
 {
   "name": "@expocraft/core",
-  "version": "0.10.80",
+  "version": "0.10.81",
   "description": "Components for use with react-native projects and expo",
   "main": "lib/index.js",
   "module": "lib/index.js",
@@ -73,6 +73,7 @@
     "react-native-dropdown-picker": "^5.1.23",
     "react-native-easy-grid": "^0.2.2",
     "react-native-expo-image-cache": "^4.1.0",
+    "react-native-fast-image": "^8.5.11",
     "react-native-is-iphonex": "^1.0.1",
     "react-native-material-menu": "^1.0.0",
     "react-native-modal": "^11.4.0",
