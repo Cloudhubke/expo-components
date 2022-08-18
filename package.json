@@ -1,6 +1,6 @@
 {
   "name": "@expocraft/core",
-  "version": "0.10.84",
+  "version": "0.10.86",
   "description": "Components for use with react-native projects and expo",
   "main": "lib/index.js",
   "module": "lib/index.js",
@@ -80,7 +80,9 @@
     "react-native-ratings": "^6.4.0",
     "react-native-size-matters": "^0.2.1",
     "reanimated-bottom-sheet": "^1.0.0-alpha.22",
-    "rn-country-picker-modal": "^1.0.1"
+    "rn-country-picker-modal": "^1.0.1",
+    "ffmpeg-kit-react-native": "^4.5.2",
+    "react-native-fs": "^2.20.0"
   },
   "devDependencies": {
     "@expo/samples": "2.1.1",
