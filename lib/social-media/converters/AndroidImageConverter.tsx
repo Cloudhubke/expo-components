@@ -6,28 +6,24 @@ interface ConverterEngine {
   convert(arg0: string): Promise<string>;
 }
 
-class AndroidVideoConverter implements ConverterEngine {
-  async convert(videoUri: string, index = 0, width = 720): Promise<string> {
-    let fileUri = videoUri;
+class AndroidImageConverter implements ConverterEngine {
+  async convert(ImageUri: string, index = 0, width = 720): Promise<string> {
+    let fileUri = ImageUri;
 
-    if (videoUri.startsWith('content://')) {
+    if (ImageUri.startsWith('content://')) {
       try {
-        fileUri = await this.createFileUriFromContentUri(videoUri);
+        fileUri = await this.createFileUriFromContentUri(ImageUri);
       } catch (e) {
         throw new Error('Failed to create file uri from content uri');
       }
     }
 
-    const outputVideoName = `output${index}.mp4`;
-    const outputVideoUri = `file://${TemporaryDirectoryPath}/${outputVideoName}`;
-
-    console.log('====================================');
-    console.log('COnvert Video', videoUri);
-    console.log('====================================');
+    const outputImageName = `output${index}.png`;
+    const outputImageUri = `file://${TemporaryDirectoryPath}/${outputImageName}`;
 
     try {
       const session = await FFmpegKit.execute(
-        `-y -i ${fileUri} -vcodec mpeg4 -vf scale=-2:${width} -b:v 1.5M -format mp4 ${outputVideoUri}`
+        `-y -i ${fileUri} -vf scale=-2:${width} -format png ${outputImageUri}`
       );
 
       const returnCode = await session.getReturnCode();
@@ -36,7 +32,7 @@ class AndroidVideoConverter implements ConverterEngine {
         return '';
       }
 
-      return outputVideoUri;
+      return outputImageUri;
     } catch (e) {
       throw new Error('Failed to convert the video');
     }
@@ -56,4 +52,4 @@ class AndroidVideoConverter implements ConverterEngine {
   }
 }
 
-export default AndroidVideoConverter;
+export default AndroidImageConverter;

@@ -1,19 +1,23 @@
 import React from 'react';
 import appStore from './appStore';
 import AppContext from './AppContext';
-import useAppStore from './useAppStore';
+import { useStore } from './useAppStore';
+import shallow from 'zustand/shallow';
 
 const AppContextProvider = ({ children, INITIAL_STATE = {} }) => {
-  const state = useAppStore((state) => state);
+  const dispatch = useStore((state) => state.dispatch, shallow);
   const [updated, setUpdated] = React.useState(false);
 
-  React.useEffect(() => {
-    state.dispatch({
+  const resetState = () => {
+    dispatch({
       payload: {
         ...(INITIAL_STATE || {}),
       },
     });
+  };
 
+  React.useEffect(() => {
+    resetState();
     setUpdated(true);
   }, []);
 
@@ -24,8 +28,9 @@ const AppContextProvider = ({ children, INITIAL_STATE = {} }) => {
   return (
     <AppContext.Provider
       value={{
-        ...state,
+        dispatch,
         getState: appStore.getState,
+        resetState,
       }}
     >
       {children}
