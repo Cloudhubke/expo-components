@@ -3,11 +3,96 @@ import React from 'react';
 import { StyleSheet, Platform } from 'react-native';
 import { Text } from 'react-native-ui-lib';
 import { moderateScale } from 'react-native-size-matters';
-import ThemeContext from './theme/ThemeContext';
+import ThemeContext from '@expocraft/core/lib/theme/ThemeContext';
 
 const android = Platform.OS === 'android';
 
-const Typography = ({
+const Typography: React.FC<{
+  [x: string]: any;
+  h1?: boolean;
+  h2?: boolean;
+  h3?: boolean;
+  h4?: boolean;
+  h5?: boolean;
+  h6?: boolean;
+  title?: boolean;
+  subTitle?: boolean;
+  header?: boolean;
+  subHeader?: boolean;
+  body?: boolean;
+  caption?: boolean;
+  small?: boolean;
+  size?: number;
+  transform?: boolean;
+  button?: boolean;
+  lines?: boolean;
+  allowFontScaling?: boolean;
+  // ?: boolean;styling
+  regular?: boolean;
+  bold?: boolean;
+  normal?: boolean;
+  semibold?: boolean;
+  medium?: boolean;
+  weight?: any;
+  light?: boolean;
+  center?: boolean;
+  right?: boolean;
+  spacing?: string; // letter-spacing
+  lineHeight?: number; // line-height
+  noWrap?: boolean;
+  fullWidth?: boolean;
+  // ?: boolean;colors
+  color?: boolean;
+  accent?: boolean;
+  primary?: boolean;
+  secondary?: boolean;
+  tertiary?: boolean;
+  black?: boolean;
+  white?: boolean;
+  gray?: boolean;
+  gray2?: boolean;
+  dark?: boolean;
+  mistyWhite?: boolean;
+  milkyWhite?: boolean;
+  error?: boolean;
+  clear?: boolean;
+  facebook?: boolean;
+  transparent?: boolean;
+  silver?: boolean;
+  steel?: boolean;
+  ricePaper?: boolean;
+  frost?: boolean;
+  cloud?: boolean;
+  windowTint?: boolean;
+  panther?: boolean;
+  charcoal?: boolean;
+  coal?: boolean;
+  bloodOrange?: boolean;
+  snow?: boolean;
+  ember?: boolean;
+  fire?: boolean;
+  drawer?: boolean;
+  eggplant?: boolean;
+  twitterColor?: boolean;
+  facebookColor?: boolean;
+  googleColor?: boolean;
+  linkedinColor?: boolean;
+  pinterestColor?: boolean;
+  youtubeColor?: boolean;
+  tumblrColor?: boolean;
+  behanceColor?: boolean;
+  dribbbleColor?: boolean;
+  redditColor?: boolean;
+  instagramColor?: boolean;
+  success?: boolean;
+  info?: boolean;
+  rose?: boolean;
+  warning?: boolean;
+  danger?: boolean;
+  style?: any;
+  cropped?: boolean;
+  children?: any;
+}> = ({
   h1,
   h2,
   h3,
@@ -93,7 +178,7 @@ const Typography = ({
   children,
   ...props
 }) => {
-  const { colors, fonts } = React.useContext(ThemeContext);
+  const { colors, fonts }: any = React.useContext(ThemeContext);
 
   const styles = StyleSheet.create({
     // default style
@@ -300,10 +385,6 @@ const Typography = ({
       {children}
     </Text>
   );
-};
-
-Typography.defaultProps = {
-  allowFontScaling: false,
 };
 
 export default Typography;

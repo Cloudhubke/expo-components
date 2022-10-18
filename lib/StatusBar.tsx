@@ -2,7 +2,17 @@ import React from 'react';
 import Constants from 'expo-constants';
 import { Platform, StatusBar as RNStatusBar, View } from 'react-native';
 
-const StatusBar = ({ light, dark, color, hasHeight, style, ...props }) => {
+
+
+
+const StatusBar = ({ light, dark, color, hasHeight, style, ...props }: {
+  [x: string]: any;
+  light?: any;
+  dark?: any;
+  color?: any;
+  hasHeight?: any;
+  style?: any;
+}) => {
   const statusBarProps = {
     ...{ barStyle: 'default' },
     ...(light && { barStyle: 'light-content' }),

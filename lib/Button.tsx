@@ -5,7 +5,22 @@ import ThemeContext from './theme/ThemeContext';
 
 let height = 48;
 
-const Button = ({
+const Button: React.FC<{
+  [x: string]: any;
+  children?: any;
+  flat?: boolean;
+  outlined?: boolean;
+  contained?: boolean;
+  small?: boolean;
+  medium?: boolean;
+  large?: boolean;
+  rounded?: boolean;
+  padding?: number | number[];
+  margin?: number | number[];
+  color?: any;
+  textColor?: any;
+  style?: any;
+}> = ({
   children,
   flat,
   outlined,

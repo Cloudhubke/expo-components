@@ -4,7 +4,15 @@ import * as NavigationBar from 'expo-navigation-bar';
 import ThemeContext from './theme/ThemeContext';
 import StatusBar from './StatusBar';
 
-const SafeAreaView = ({
+const SafeAreaView: React.FC<{
+  [key: string]: any;
+  children?: any;
+  topColor?: any;
+  top?: boolean;
+  bottom?: boolean;
+  light?: boolean;
+  bottomColor?: any;
+}> = ({
   children,
   topColor,
   top = false,

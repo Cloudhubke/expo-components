@@ -1,11 +1,11 @@
 import React from 'react';
 import appStore from './appStore';
 import AppContext from './AppContext';
-import { useStore } from './useAppStore';
+import { useStore } from './useAppContext';
 import shallow from 'zustand/shallow';
 
 const AppContextProvider = ({ children, INITIAL_STATE = {} }) => {
-  const dispatch = useStore((state) => state.dispatch, shallow);
+  const dispatch = useStore((state) => (state as any).dispatch, shallow);
   const [updated, setUpdated] = React.useState(false);
 
   const resetState = () => {
@@ -21,7 +21,7 @@ const AppContextProvider = ({ children, INITIAL_STATE = {} }) => {
     setUpdated(true);
   }, []);
 
-  if (!updated) {
+  if (!updated && globalThis.window) {
     return null;
   }
 

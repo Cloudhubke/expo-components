@@ -9,14 +9,42 @@ import {
 // import { LinearGradient } from 'expo-linear-gradient';
 import { View, Card } from 'react-native-ui-lib';
 import * as Animatable from 'react-native-animatable';
-import Ripple from './bread/Components/Ripple';
-import ThemeContext from './theme/ThemeContext';
+import Ripple from '@expocraft/core/lib/bread/Components/Ripple';
+import ThemeContext from '@expocraft/core/lib/theme/ThemeContext';
 
 // platform
 const android = Platform.OS === 'android';
 
-const Block = (props) => {
-  const { sizes, colors } = React.useContext(ThemeContext);
+const Block: React.FC<{
+    [key: string]: any,
+    flex?: boolean,
+    row?: boolean,
+    wrap?: boolean,
+    center?: boolean,
+    middle?: boolean,
+    left?: boolean,
+    right?: boolean,
+    top?: boolean,
+    bottom?: boolean,
+    margin?: number | number[],
+    padding?: number | number[],
+    absolute?: boolean,
+    card?: boolean,
+    shadow?: boolean,
+    shadowTop?: boolean,
+    elevation?: number,
+    color?: any,
+    space?: any,
+    style?: any,
+    animated?: boolean,
+    animatable?: boolean,
+    scrollView?: boolean,
+    linearGradient?: boolean,
+    ripple?: boolean,
+    children?: any,
+    keyboardAvoiding?: boolean,
+}> = (props): any => {
+  const { sizes, colors }: any = React.useContext(ThemeContext);
 
   const styles = React.useMemo(
     () =>
@@ -285,6 +313,8 @@ const Block = (props) => {
     style, // rewrite predefined styles
   ];
 
+  
+
   if (animated) {
     return (
       <Animated.View style={blockStyles} {...otherprops}>
@@ -354,6 +384,8 @@ const Block = (props) => {
   //     </LinearGradient>
   //   );
   // }
+
+
 
   return (
     <View style={blockStyles} {...otherprops}>
