@@ -1,6 +1,6 @@
 {
   "name": "@expocraft/core",
-  "version": "0.10.90",
+  "version": "0.10.91",
   "description": "Components for use with react-native projects and expo",
   "main": "lib/index.ts",
   "module": "lib/index.ts",
@@ -52,7 +52,6 @@
     "expo-permissions": "^13.2.0",
     "expo-splash-screen": "^0.16.2",
     "expo-status-bar": "^1.4.0",
-    "expo-task-manager": "^10.3.0",
     "expo-updates": "^0.14.6",
     "final-form": "4.20.0",
     "final-form-arrays": "3.0.2",
