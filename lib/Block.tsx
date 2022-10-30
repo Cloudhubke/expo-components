@@ -16,33 +16,33 @@ import ThemeContext from '@expocraft/core/lib/theme/ThemeContext';
 const android = Platform.OS === 'android';
 
 const Block: React.FC<{
-    [key: string]: any,
-    flex?: boolean,
-    row?: boolean,
-    wrap?: boolean,
-    center?: boolean,
-    middle?: boolean,
-    left?: boolean,
-    right?: boolean,
-    top?: boolean,
-    bottom?: boolean,
-    margin?: number | number[],
-    padding?: number | number[],
-    absolute?: boolean,
-    card?: boolean,
-    shadow?: boolean,
-    shadowTop?: boolean,
-    elevation?: number,
-    color?: any,
-    space?: any,
-    style?: any,
-    animated?: boolean,
-    animatable?: boolean,
-    scrollView?: boolean,
-    linearGradient?: boolean,
-    ripple?: boolean,
-    children?: any,
-    keyboardAvoiding?: boolean,
+  [key: string]: any;
+  flex?: boolean;
+  row?: boolean;
+  wrap?: boolean;
+  center?: boolean;
+  middle?: boolean;
+  left?: boolean;
+  right?: boolean;
+  top?: boolean;
+  bottom?: boolean;
+  margin?: number | number[];
+  padding?: number | number[] | boolean;
+  absolute?: boolean;
+  card?: boolean;
+  shadow?: boolean;
+  shadowTop?: boolean;
+  elevation?: number;
+  color?: any;
+  space?: any;
+  style?: any;
+  animated?: boolean;
+  animatable?: boolean;
+  scrollView?: boolean;
+  linearGradient?: boolean;
+  ripple?: boolean;
+  children?: any;
+  keyboardAvoiding?: boolean;
 }> = (props): any => {
   const { sizes, colors }: any = React.useContext(ThemeContext);
 
@@ -313,8 +313,6 @@ const Block: React.FC<{
     style, // rewrite predefined styles
   ];
 
-  
-
   if (animated) {
     return (
       <Animated.View style={blockStyles} {...otherprops}>
@@ -384,8 +382,6 @@ const Block: React.FC<{
   //     </LinearGradient>
   //   );
   // }
-
-
 
   return (
     <View style={blockStyles} {...otherprops}>

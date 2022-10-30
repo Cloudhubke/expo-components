@@ -8,7 +8,16 @@ import Text from './Text';
 import ThemeContext from './theme/ThemeContext';
 import IconButton from './IconButton';
 
-const PopupDialogForm = ({
+const PopupDialogForm: React.FC<{
+  [x: string]: any;
+  title?: string;
+  header?: any;
+  showClose?: boolean;
+  children?: any;
+  marginTop?: any;
+  style?: any;
+  titleStyle?: any;
+}> = ({
   title = '',
   header,
   showClose = true,
