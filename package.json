@@ -1,6 +1,6 @@
 {
   "name": "@expocraft/core",
-  "version": "0.10.94",
+  "version": "0.10.95",
   "description": "Components for use with react-native projects and expo",
   "main": "lib/index.ts",
   "module": "lib/index.ts",
@@ -43,7 +43,6 @@
     "expo-barcode-scanner": "^11.4.0",
     "expo-camera": "^12.3.0",
     "expo-contacts": "^10.3.0",
-    "expo-image-manipulator": "^10.4.0",
     "expo-intent-launcher": "^10.3.0",
     "expo-keep-awake": "~10.0.1",
     "expo-media-library": "~14.0.0",
@@ -96,7 +95,8 @@
     "semantic-release": "^17.2.3",
     "expo-task-manager": "^10.3.0",
     "expo-notifications": "^0.16.1",
-    "expo-updates": "^0.14.6"
+    "expo-updates": "^0.14.6",
+    "expo-image-manipulator": "^10.4.0"
   },
   "peerDependencies": {
     "ffmpeg-kit-react-native": "^4.5.2",
