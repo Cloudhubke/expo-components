@@ -7,21 +7,21 @@ import Block from './Block';
 import StatusBar from './StatusBar';
 
 const Header: React.FC<{
-  onBack: () => any,
-  onClose: () => any,
-  leftComponent: React.ReactNode,
-  middleComponent: React.ReactNode,
-  rightComponent: React.ReactNode,
-  titlecenter: any,
-  color: any,
-  style: any,
-  children: any,
-  height: number,
-  shadow: boolean,
-  hasHeight: boolean,
-  dark: boolean,
-  light: boolean,
-  borderBottom: boolean,
+  onBack?: () => any;
+  onClose?: () => any;
+  leftComponent?: React.ReactNode;
+  middleComponent?: React.ReactNode;
+  rightComponent?: React.ReactNode;
+  titlecenter?: any;
+  color?: any;
+  style?: any;
+  children?: any;
+  height?: number;
+  shadow?: boolean;
+  hasHeight?: boolean;
+  dark?: boolean;
+  light?: boolean;
+  borderBottom?: boolean;
 }> = ({
   onBack = () => null,
   onClose = () => null,
@@ -35,7 +35,7 @@ const Header: React.FC<{
   height,
   shadow,
   hasHeight = false,
-  dark,
+  dark = true,
   light,
   borderBottom,
   ...props

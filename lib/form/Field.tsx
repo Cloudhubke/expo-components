@@ -1,3 +1,4 @@
+/* eslint-disable react/require-default-props */
 import React from 'react';
 import { Field as FinalFormField } from 'react-final-form';
 import isEmpty from 'lodash/isEmpty';
@@ -97,11 +98,30 @@ const Field = ({
   type,
   flex = false,
   containerStyle,
-
   props,
   ...rest
+}: {
+  [x: string]: any;
+  required?: boolean;
+  notEmpty?: boolean;
+  number?: boolean;
+  email?: boolean;
+  min?: number;
+  max?: number;
+  minValue?: number;
+  maxValue?: number;
+  minLength?: number;
+  maxLength?: number;
+  label?: any;
+  showLabel?: boolean;
+  row?: boolean;
+  component?: any;
+  type?: any;
+  flex?: boolean;
+  containerStyle?: React.CSSProperties;
+  props?: any;
 }) => {
-  let validators = [];
+  let validators: any[] = [];
 
   if (notEmpty) {
     validators = [...validators, notEmptyField];

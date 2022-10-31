@@ -1,9 +1,18 @@
+/* eslint-disable react/require-default-props */
 import React from 'react';
 import Block from './Block';
 import Text from './Text';
 import ThemeContext from './theme/ThemeContext';
 
-const FieldBlock = ({ flex = false, label, ...props }) => {
+const FieldBlock = ({
+  flex = false,
+  label,
+  ...props
+}: {
+  [x: string]: any;
+  flex?: boolean;
+  label?: any;
+}) => {
   const { sizes } = React.useContext(ThemeContext);
 
   return (

@@ -42,7 +42,7 @@ const Typography: React.FC<{
   noWrap?: boolean;
   fullWidth?: boolean;
   // ?: boolean;colors
-  color?: boolean;
+  color?: any;
   accent?: boolean;
   primary?: boolean;
   secondary?: boolean;
