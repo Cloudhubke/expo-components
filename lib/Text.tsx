@@ -25,7 +25,7 @@ const Typography: React.FC<{
   size?: number;
   transform?: boolean;
   button?: boolean;
-  lines?: boolean;
+  lines?: number;
   allowFontScaling?: boolean;
   // ?: boolean;styling
   regular?: boolean;
