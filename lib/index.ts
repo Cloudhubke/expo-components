@@ -66,5 +66,4 @@ export { default as toastr } from './Toastr';
 
 // Async Storage
 export { default as AsyncStorage } from './storage/AsyncStorage';
-export { default as SecureStore } from './storage/SecureStore';
 // export { default as EncryptedStorage } from './storage/EncryptedStorage';
