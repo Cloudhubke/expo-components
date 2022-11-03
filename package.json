@@ -1,6 +1,6 @@
 {
   "name": "@expocraft/core",
-  "version": "44.0.3",
+  "version": "44.0.4",
   "description": "Components for use with react-native projects and expo",
   "main": "lib/index.ts",
   "module": "lib/index.ts",
@@ -50,6 +50,7 @@
     "expo-navigation-bar": "~1.1.2",
     "expo-notifications": "~0.14.0",
     "expo-permissions": "~13.1.0",
+    "expo-secure-store": "^11.3.0",
     "expo-splash-screen": "~0.14.1",
     "expo-status-bar": "~1.2.0",
     "expo-task-manager": "~10.1.0",
@@ -83,6 +84,8 @@
   },
   "devDependencies": {
     "@expo/samples": "2.1.1",
+    "@types/react": "17.0.1",
+    "@types/react-native": "^0.67.3",
     "@typescript-eslint/eslint-plugin": "^5.17.0",
     "@typescript-eslint/parser": "^5.17.0",
     "babel-preset-expo": "9.0.2",
@@ -93,8 +96,6 @@
     "eslint-plugin-jsx-a11y": "^6.2.3",
     "eslint-plugin-react": "7.13.0",
     "eslint-plugin-react-hooks": "^4.6.0",
-    "@types/react": "17.0.1",
-    "@types/react-native": "^0.67.3",
     "expo": "^44.0.0",
     "jest-expo": "^44.0.0",
     "react": "17.0.1",
