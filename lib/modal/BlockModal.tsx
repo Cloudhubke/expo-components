@@ -27,6 +27,7 @@ const BlockModal = ({
 }) => {
   const { colors } = React.useContext(ThemeContext);
   const [visible, setVisible] = React.useState(isVisible);
+  const [modalVisible, setModalVisible] = React.useState(false);
 
   React.useEffect(() => {
     setVisible(isVisible);
@@ -77,6 +78,7 @@ const BlockModal = ({
       onBackdropPress={onCloseModal}
       onSwipeComplete={onCloseModal}
       onModalHide={onCloseModal}
+      onModalShow={() => setModalVisible(true)}
       {...props}
     >
       <SafeAreaView top>
@@ -89,7 +91,8 @@ const BlockModal = ({
               />
             </Block>
           )}
-          <Block>{children}</Block>
+          {modalVisible && <Block>{children}</Block>}
+
           {bottom && (
             <Block flex={false} style={{ height: verticalScale(40) }} />
           )}
