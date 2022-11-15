@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { CSSProperties } from 'react';
 
 let FastImage = require('react-native').Image;
 
@@ -9,7 +9,16 @@ try {
   }
 } catch (e) {}
 
-export default ({ size = 48, src, style, ...props }) => {
+export default ({
+  size = 48,
+  src,
+  style,
+  ...props
+}: {
+  size?: number;
+  src?: any;
+  style?: CSSProperties;
+}) => {
   const localStyles = !style ? { height: size, width: size } : {};
   return (
     <FastImage

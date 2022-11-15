@@ -60,6 +60,10 @@ export { default as Field } from './form/Field';
 export { default as FormField } from './FormField';
 export { default as formCalculate } from './form/formCalculate';
 
+//Animations
+
+export { default as AnimatableManager } from './AnimatableManager';
+
 // Toastr
 export { default as Toastr } from './Toastr';
 export { default as toastr } from './Toastr';

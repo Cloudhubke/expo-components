@@ -10,7 +10,7 @@ import IconButton from './IconButton';
 
 const PopupDialogForm: React.FC<{
   [x: string]: any;
-  title?: string;
+  title?: any;
   header?: any;
   showClose?: boolean;
   children?: any;
