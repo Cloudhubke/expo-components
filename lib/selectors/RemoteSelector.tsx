@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component, CSSProperties } from 'react';
 
 import axios from 'axios';
 
@@ -32,12 +32,41 @@ import Modal from '../modal/Modal';
 
 import KeyboardView from '../KeyboardView';
 
-class RemoteSelector extends Component {
+class RemoteSelector extends Component<
+  {
+    params: any;
+    axiosinstance?: any;
+    Graphqlmodel?: any;
+    valueExtractor?: (item: any) => any;
+    labelExtractor?: (item: any) => any;
+    options?: any[];
+    onChange?: (value: any) => any;
+    value?: any;
+
+    onSelectChange?: (value: any) => any;
+    input?: {
+      onChange: (value: any) => any;
+      value: any;
+      onBlur: () => any;
+    };
+    displayField: string;
+    returnkeys: string[];
+    url: string;
+    placeholder: string;
+    inputStyle: CSSProperties;
+    textStyle: CSSProperties;
+    iconStyle: CSSProperties;
+    iconSize: number;
+    showIcon: boolean;
+    meta: any;
+  },
+  any
+> {
   static defaultProps = {
     params: {},
     axiosinstance: () => axios.create({}),
-    valueExtractor: (val) => val.id,
-    labelExtractor: () => {},
+    valueExtractor: (val: any) => val.id,
+    labelExtractor: (val: any) => val.id || '',
     options: [],
     onChange: () => {},
     value: null,
@@ -127,57 +156,60 @@ class RemoteSelector extends Component {
     this.setState({ modalVisible: visible });
   }
 
-  handleInputChange = (text, reload) => {
-    const { axiosinstance, url, params } = this.props;
+  getData = async ({ searchText = '' }) => {
+    const { axiosinstance, Graphqlmodel, url, params } = this.props;
 
+    this.setState({ isFetching: true, searchText: text });
+
+    let data: any = {};
+
+    if (typeof Graphqlmodel === 'function') {
+      data = await Graphqlmodel()
+        .find({ ...params, filter: searchText, limit: 20 })
+        .toJson();
+    } else {
+      const response = axiosinstance().get(url, {
+        params: { ...params, filter: searchText },
+      });
+
+      if (response.data) {
+        data = response.data;
+      }
+    }
+    if (data && data.items) {
+      this.setState({
+        isFetching: false,
+        ...(this.state.firstoptions.length === 0
+          ? { firstoptions: data.items || data }
+          : {}),
+      });
+      this.loadOptions(data.items || data);
+    }
+  };
+
+  handleInputChange = async (text, reload) => {
     if (text === '' && this.state.firstoptions.length === 0) {
-      this.setState({ isFetching: true, searchText: text });
-      return axiosinstance()
-        .get(url, { params: { ...params, filter: text } })
-        .then(({ data }) => {
-          this.setState({
-            isFetching: false,
-            firstoptions: data.items || data,
-          });
-          this.loadOptions(data.items || data);
-        })
-        .catch((e) => {
-          console.log('Error: ', e);
-        });
+      this.getData({
+        searchText: text,
+      });
     }
     if (text !== '') {
       if (this.state.searchText !== text) {
-        this.setState({ isFetching: true, searchText: text });
-        return axiosinstance()
-          .get(url, { params: { ...params, filter: text } })
-          .then(({ data }) => {
-            this.setState({ isFetching: false });
-            this.loadOptions(data.items || data);
-          })
-          .catch((e) => {
-            console.log('Error: ', e);
-          });
+        this.getData({
+          searchText: text,
+        });
       }
     }
 
     if (reload) {
-      this.setState({ isFetching: true, searchText: '' });
-      return axiosinstance()
-        .get(url, { params: { ...params, filter: '' } })
-        .then(({ data }) => {
-          this.setState({ isFetching: false });
-          this.loadOptions(data.items || data);
-        })
-        .catch((e) => {
-          console.log('Error: ', e);
-        });
+      this.getData({
+        searchText: '',
+      });
     }
 
     if (!text && this.state.firstoptions.length > 0) {
       this.loadOptions(this.state.firstoptions);
     }
-
-    this.setState({ isFetching: false });
   };
 
   loadOptions = (opts) => {
@@ -322,12 +354,16 @@ class RemoteSelector extends Component {
               borderRadius: sizes.borderRadius || 5,
               borderWidth: 1,
               borderColor:
-                meta.touched && meta.error ? colors.error : colors.gray,
+                meta.touched && meta.error
+                  ? colors.error
+                  : colors.inputBorderColor,
               minHeight: sizes.inputHeight,
+              backgroundColor: colors.inputBackgroundColor,
               padding: 7,
+              margin: 1,
               alignItems: 'center',
               marginBottom: 7,
-              ...inputStyle,
+              // ...inputStyle,
             }),
             listItem: {
               minHeight: 55,
@@ -344,7 +380,11 @@ class RemoteSelector extends Component {
           };
 
           return (
-            <View>
+            <View
+              style={{
+                flex: 0,
+              }}
+            >
               <TouchableOpacity
                 onPress={() => {
                   this.setModalVisible(true);
@@ -375,7 +415,7 @@ class RemoteSelector extends Component {
                     </Block>
                   </Block>
                 ) : (
-                  <Text style={{ flex: 1, ...textStyle, color: '#BBB' }}>
+                  <Text style={{ flex: 1, ...textStyle, color: '#AAA' }}>
                     {placeholder}
                   </Text>
                 )}

@@ -19,6 +19,7 @@ import {
   grey,
   blueGrey,
 } from 'material-ui-colors';
+import { Colors } from 'react-native-ui-lib';
 
 const colors = {
   primary: '#37b38b', // '#0976b4',
@@ -165,6 +166,10 @@ const appColors = {
   info: colors.infoColors.main,
   warning: colors.warningColors.main,
   danger: colors.dangerColors.main,
+
+  // constants
+  inputBorderColor: Colors.grey50,
+  inputBackgroundColor: colors.mistyWhite,
 };
 
 export default appColors;

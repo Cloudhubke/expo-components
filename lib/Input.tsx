@@ -1,28 +1,54 @@
-import React from 'react';
+import React, { CSSProperties } from 'react';
 import { TextField, Colors, Spacings } from 'react-native-ui-lib';
 
 import Text from './Text';
 import Block from './Block';
 import ThemeContext from './theme/ThemeContext';
 
-const Input = React.forwardRef(
+export default React.forwardRef<
+  {},
+  {
+    showErrors: boolean;
+    meta: any;
+    allowFontScaling: boolean;
+    style: CSSProperties;
+    input: any;
+    placeholder: string;
+    disabled: boolean;
+    secureTextEntry: boolean;
+    uppercase: boolean;
+    lowercase: boolean;
+    value: string;
+    leadingIcon: any;
+    trailingIcon: any;
+    autoFocus: boolean;
+    mode: 'outlined' | 'contained';
+    label: string;
+    props: any;
+    [key: string]: any;
+  }
+>(
   (
     {
+      showErrors = true,
+      meta = {},
+      allowFontScaling = false,
+      style = {},
+      input = {
+        value: '',
+        onChange: () => null,
+        onBlur: () => null,
+      },
       placeholder,
       disabled,
       secureTextEntry,
       uppercase,
       lowercase,
       value,
-      input,
-      allowFontScaling,
       leadingIcon,
       trailingIcon,
-      meta,
       autoFocus,
-      style,
       mode = 'outlined',
-      showErrors,
       label,
       props = {},
       ...otherprops
@@ -32,7 +58,7 @@ const Input = React.forwardRef(
     const { sizes, colors, fonts } = React.useContext(ThemeContext);
     const error = meta.touched && meta.error;
     const val = input.value || value;
-    const inputRef = React.useRef();
+    const inputRef = React.useRef<any>();
 
     const inputStyles = {
       flex: 1,
@@ -44,6 +70,7 @@ const Input = React.forwardRef(
       ...(!props.height ? { height: sizes.inputHeight } : {}),
       ...style,
     };
+
     const getKeyboardType = () => {
       switch (props.type) {
         case 'number':
@@ -53,8 +80,6 @@ const Input = React.forwardRef(
       }
     };
     const keyboard = getKeyboardType();
-
-    const { borderWidth, height } = style;
 
     React.useImperativeHandle(ref, () => ({
       focus: () => {
@@ -74,9 +99,8 @@ const Input = React.forwardRef(
             style={{
               marginHorizontal: sizes.base / 2,
               borderWidth: 1,
-              borderColor: error ? colors.danger : Colors.grey50,
+              borderColor: error ? colors.danger : Colors.grey10,
               borderRadius: sizes.borderRadius || 5,
-              backgroundColor: Colors.grey60,
               padding: sizes.padding,
               paddingTop: sizes.padding,
               paddingBottom: sizes.padding,
@@ -93,7 +117,6 @@ const Input = React.forwardRef(
             value={`${val || ''}`} // here
             allowFontScaling={allowFontScaling}
             keyboardType={keyboard}
-            ref={inputRef}
             textAlign="center"
             {...(mode !== 'outlined' ? { title: label } : {})}
             {...otherprops}
@@ -106,7 +129,14 @@ const Input = React.forwardRef(
         </Block>
 
         {showErrors && (
-          <Block flex={false} style={styles.error}>
+          <Block
+            flex={false}
+            style={{
+              marginTop: 2.5,
+              height: 14,
+              marginBottom: 2.5,
+            }}
+          >
             <Text small error>
               {error && meta.error}
             </Text>
@@ -116,25 +146,3 @@ const Input = React.forwardRef(
     );
   }
 );
-
-Input.defaultProps = {
-  showErrors: true,
-  meta: {},
-  allowFontScaling: false,
-  style: {},
-  input: {
-    value: '',
-    onChange: () => null,
-    onBlur: () => null,
-  },
-};
-
-const styles = {
-  error: {
-    marginTop: 2.5,
-    height: 14,
-    marginBottom: 2.5,
-  },
-};
-
-export default Input;

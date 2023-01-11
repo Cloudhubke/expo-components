@@ -1,6 +1,6 @@
 {
   "name": "@expocraft/core",
-  "version": "44.0.12",
+  "version": "44.0.13",
   "description": "Components for use with react-native projects and expo",
   "main": "lib/index.ts",
   "module": "lib/index.ts",
@@ -100,7 +100,7 @@
     "react": "17.0.1",
     "react-native": "^0.70.5",
     "react-native-encrypted-storage": "^4.0.2",
-    "react-native-ui-lib": "^6.23.1",
+    "react-native-ui-lib": "^6.28.0",
     "semantic-release": "^17.2.3",
     "typescript": "^4.4.4",
     "zustand": "^4.1.3"

@@ -29,9 +29,9 @@ const Input = ({
 
   const inputStyles = {
     height: sizes.inputHeight,
-    backgroundColor: colors.milkyWhite,
+    backgroundColor: colors.inputBackgroundColor,
     borderWidth: 0.5,
-    borderColor: error ? colors.error : colors.gray,
+    borderColor: error ? colors.error : colors.inputBorderColor,
     borderRadius: sizes.borderRadius || 5,
     flex: 1,
     ...fonts.default,

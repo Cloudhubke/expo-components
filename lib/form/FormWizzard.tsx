@@ -17,8 +17,8 @@ const FormWizzard = ({
   steps: Array<{
     label: string;
   }>;
-  initialValues: any;
-  children: any;
+  initialValues?: any;
+  children?: any;
 }) => {
   const [activeIndex, setActiveIndex] = React.useState(0);
 
