@@ -32,7 +32,7 @@ const Input = ({
     backgroundColor: colors.milkyWhite,
     borderWidth: 0.5,
     borderColor: error ? colors.error : colors.gray,
-    borderRadius: 5,
+    borderRadius: sizes.borderRadius || 5,
     flex: 1,
     ...fonts.default,
     ...style,
@@ -59,7 +59,7 @@ const Input = ({
           height: height || sizes.inputHeight,
           minWidth: '100%',
           // borderWidth: borderWidth === 0 ? borderWidth : borderWidth || 1,
-          borderRadius: 5,
+          borderRadius: sizes.borderRadius || 5,
         }}
       >
         <Block>

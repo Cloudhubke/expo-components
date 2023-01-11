@@ -233,7 +233,7 @@ class RemoteSelector extends Component {
             textField: {
               flex: 1,
               flexDirection: 'row',
-              borderRadius: 5,
+              borderRadius: sizes.borderRadius || 5,
               borderWidth: 0.5,
               borderColor: '#CCC',
               height: sizes.inputHeight,

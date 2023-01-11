@@ -74,14 +74,14 @@ const StaticListSelector: React.FC<{
   const [options, setOptions] = React.useState(incomingoptions);
   const [filtered, setFiltered] = React.useState(options);
 
-  const keys = options.map((o) => o.key);
+  const keys = options.map((o) => keyExtractor(o)).join(',');
 
   const [modalVisible, setModalVisible] = React.useState(false);
   const [selectedValue, setSelectedValue] = React.useState(null);
 
   React.useEffect(() => {
     setOptions(incomingoptions);
-  }, [JSON.stringify(keys)]);
+  }, [keys]);
 
   React.useEffect(() => {
     if (val) {
@@ -186,7 +186,7 @@ const StaticListSelector: React.FC<{
 
   const inputStyle = {
     flexDirection: 'row',
-    borderRadius: 5,
+    borderRadius: sizes.borderRadius || 5,
     borderWidth: 1,
     backgroundColor: colors.milkyWhite,
     borderColor: meta.touched && meta.error ? colors.error : colors.gray,
@@ -260,7 +260,13 @@ const StaticListSelector: React.FC<{
       >
         <SafeAreaView>
           {options.length > 10 && (
-            <Header onBack={() => setModalVisible(false)} hasHeight>
+            <Header
+              onBack={() => setModalVisible(false)}
+              hasHeight
+              style={{
+                margin: 10,
+              }}
+            >
               <SearchComponent onChange={handleFilterChange} />
             </Header>
           )}
@@ -270,6 +276,7 @@ const StaticListSelector: React.FC<{
               data={filtered}
               keyExtractor={(item, index) => `${item}-${index}`}
               renderItem={renderItem}
+              keyboardShouldPersistTaps="always"
             />
           </View>
         </SafeAreaView>

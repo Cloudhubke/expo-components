@@ -5,15 +5,17 @@ import Text from './Text';
 
 import defaultcolors from './theme/Colors';
 import defaultsizes from './theme/Sizes';
+import ThemeContext from './theme/ThemeContext';
 
 const InputButton = ({ onPress, children, meta }) => {
+  const { sizes, colors } = React.useContext(ThemeContext);
   const error = meta.touched && meta.error;
 
   const styles = {
     textField: (meta) => ({
       flex: 1,
       flexDirection: 'row',
-      borderRadius: 5,
+      borderRadius: sizes.borderRadius || 5,
       borderWidth: 1,
       borderColor:
         meta.touched && meta.error ? defaultcolors.error : defaultcolors.gray,
@@ -33,7 +35,7 @@ const InputButton = ({ onPress, children, meta }) => {
       <TouchableOpacity onPress={onPress} style={styles.textField(meta)}>
         {children}
       </TouchableOpacity>
-      <Block flex={false} style={styles.error}>
+      <Block flex={false} style={{}}>
         <Text small error>
           {error && meta.error}
         </Text>

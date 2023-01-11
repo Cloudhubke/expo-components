@@ -75,7 +75,7 @@ const Input = React.forwardRef(
               marginHorizontal: sizes.base / 2,
               borderWidth: 1,
               borderColor: error ? colors.danger : Colors.grey50,
-              borderRadius: 8,
+              borderRadius: sizes.borderRadius || 5,
               backgroundColor: Colors.grey60,
               padding: sizes.padding,
               paddingTop: sizes.padding,

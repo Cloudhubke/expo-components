@@ -55,10 +55,8 @@ export { default as RowCell } from './table/RowCell';
 
 // Forms
 
-export { default as Form } from './form/Form';
-export { default as Field } from './form/Field';
 export { default as FormField } from './FormField';
-export { default as formCalculate } from './form/formCalculate';
+export * from './form';
 
 //Animations
 
@@ -67,6 +65,7 @@ export { default as AnimatableManager } from './AnimatableManager';
 // Toastr
 export { default as Toastr } from './Toastr';
 export { default as toastr } from './Toastr';
+import { default as Alert } from './Alert';
 
 // Async Storage
 export { default as AsyncStorage } from './storage/AsyncStorage';

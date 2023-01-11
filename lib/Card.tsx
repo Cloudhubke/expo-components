@@ -22,10 +22,11 @@ const Card = ({
   rounded?: Boolean;
 }) => {
   const { colors, sizes } = React.useContext(ThemeContext);
+
   const cardStyles = [
     styles.card,
     style,
-    rounded && { borderRadius: sizes.border },
+    rounded && { borderRadius: sizes.borderRadius || 0 },
   ];
 
   return (

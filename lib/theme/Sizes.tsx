@@ -5,7 +5,7 @@ const sizes = {
   // global sizes
   base: moderateScale(10),
   font: moderateScale(12),
-  border: moderateScale(12),
+  borderRadius: moderateScale(5),
   padding: moderateScale(12),
   margin: moderateScale(12),
 

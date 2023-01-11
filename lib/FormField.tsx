@@ -13,9 +13,9 @@ import IconButton from './IconButton';
 import Form from './form/Form';
 
 const styles = {
-  textField: (meta) => ({
+  textField: ({ meta, sizes }) => ({
     flexDirection: 'row',
-    borderRadius: 5,
+    borderRadius: sizes.borderRadius || 5,
     borderWidth: 1,
     borderColor:
       meta.touched && meta.error ? defaultcolors.error : defaultcolors.gray,
@@ -62,7 +62,10 @@ const FormField = ({
     <Block flex={false} style={styles.inputContainer}>
       <TouchableOpacity
         onPress={() => setVisible(true)}
-        style={styles.textField(meta)}
+        style={styles.textField({
+          meta,
+          sizes,
+        })}
       >
         <Text style={{ color: '#333' }}>
           {labelExtractor(values) || <Text gray>{`${placeholder || ''}`}</Text>}

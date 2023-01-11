@@ -319,7 +319,7 @@ class RemoteSelector extends Component {
             textField: (meta) => ({
               flex: 1,
               flexDirection: 'row',
-              borderRadius: 5,
+              borderRadius: sizes.borderRadius || 5,
               borderWidth: 1,
               borderColor:
                 meta.touched && meta.error ? colors.error : colors.gray,

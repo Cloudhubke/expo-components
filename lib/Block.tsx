@@ -12,6 +12,70 @@ import * as Animatable from 'react-native-animatable';
 import Ripple from '@expocraft/core/lib/bread/Components/Ripple';
 import ThemeContext from '@expocraft/core/lib/theme/ThemeContext';
 
+export type Animation =
+  | 'bounce'
+  | 'flash'
+  | 'jello'
+  | 'pulse'
+  | 'rotate'
+  | 'rubberBand'
+  | 'shake'
+  | 'swing'
+  | 'tada'
+  | 'wobble'
+  | 'bounceIn'
+  | 'bounceInDown'
+  | 'bounceInUp'
+  | 'bounceInLeft'
+  | 'bounceInRight'
+  | 'bounceOut'
+  | 'bounceOutDown'
+  | 'bounceOutUp'
+  | 'bounceOutLeft'
+  | 'bounceOutRight'
+  | 'fadeIn'
+  | 'fadeInDown'
+  | 'fadeInDownBig'
+  | 'fadeInUp'
+  | 'fadeInUpBig'
+  | 'fadeInLeft'
+  | 'fadeInLeftBig'
+  | 'fadeInRight'
+  | 'fadeInRightBig'
+  | 'fadeOut'
+  | 'fadeOutDown'
+  | 'fadeOutDownBig'
+  | 'fadeOutUp'
+  | 'fadeOutUpBig'
+  | 'fadeOutLeft'
+  | 'fadeOutLeftBig'
+  | 'fadeOutRight'
+  | 'fadeOutRightBig'
+  | 'flipInX'
+  | 'flipInY'
+  | 'flipOutX'
+  | 'flipOutY'
+  | 'lightSpeedIn'
+  | 'lightSpeedOut'
+  | 'slideInDown'
+  | 'slideInUp'
+  | 'slideInLeft'
+  | 'slideInRight'
+  | 'slideOutDown'
+  | 'slideOutUp'
+  | 'slideOutLeft'
+  | 'slideOutRight'
+  | 'zoomIn'
+  | 'zoomInDown'
+  | 'zoomInUp'
+  | 'zoomInLeft'
+  | 'zoomInRight'
+  | 'zoomOut'
+  | 'zoomOutDown'
+  | 'zoomOutUp'
+  | 'zoomOutLeft'
+  | 'zoomOutRight';
+
 // platform
 const android = Platform.OS === 'android';
 
@@ -43,6 +107,8 @@ const Block: React.FC<{
   ripple?: boolean;
   children?: any;
   keyboardAvoiding?: boolean;
+  rounded?: boolean;
+  animation: Animation;
 }> = (props): any => {
   const { sizes, colors }: any = React.useContext(ThemeContext);
 
@@ -134,11 +200,11 @@ const Block: React.FC<{
         dribbbleColor: { backgroundColor: colors.twitterColor },
         redditColor: { backgroundColor: colors.twitterColor },
         instagramColor: { backgroundColor: colors.twitterColor },
-        success: { backgroundColor: colors.successColor[0] },
-        info: { backgroundColor: colors.infoColor[0] },
-        rose: { backgroundColor: colors.roseColor[0] },
-        warning: { backgroundColor: colors.warningColor[0] },
-        danger: { backgroundColor: colors.dangerColor[0] },
+        success: { backgroundColor: colors.successColors.main },
+        info: { backgroundColor: colors.infoColors.main },
+        rose: { backgroundColor: colors.rose },
+        warning: { backgroundColor: colors.warningColors.main },
+        danger: { backgroundColor: colors.dangerColors.main },
       }),
     []
   );
@@ -280,6 +346,7 @@ const Block: React.FC<{
     ripple,
     children,
     keyboardAvoiding,
+    rounded,
     ...otherprops
   } = props;
 
@@ -310,6 +377,7 @@ const Block: React.FC<{
     space && { justifyContent: `space-${space}` },
     color && styles[color],
     color && !styles[color] && { backgroundColor: color },
+    rounded && { borderRadius: sizes.borderRadius || 5 },
     style, // rewrite predefined styles
   ];
 

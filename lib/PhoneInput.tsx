@@ -189,7 +189,7 @@ const PhoneInput = React.forwardRef(
             labeledContainer: {
               paddingHorizontal: sizes.padding,
               borderWidth: 0.5,
-              borderRadius: 5,
+              borderRadius: sizes.borderRadius || 5,
             },
           });
 
@@ -204,7 +204,7 @@ const PhoneInput = React.forwardRef(
                   minWidth: '100%',
                   borderWidth: 1,
                   borderColor: error ? colors.error : colors.gray,
-                  borderRadius: 5,
+                  borderRadius: sizes.borderRadius || 5,
                   paddingHorizontal: 2.5,
                 }}
               >

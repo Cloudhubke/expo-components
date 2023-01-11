@@ -7,9 +7,9 @@ import defaultsizes from './theme/Sizes';
 import ThemeContext from './theme/ThemeContext';
 
 const styles = {
-  textField: (meta) => ({
+  textField: ({ meta, sizes }) => ({
     flexDirection: 'row',
-    borderRadius: 5,
+    borderRadius: sizes.borderRadius || 5,
     borderWidth: 1,
     borderColor:
       meta.touched && meta.error ? defaultcolors.error : defaultcolors.gray,
@@ -78,7 +78,15 @@ const DateTimePicker = ({
 
   return (
     <Block flex={false}>
-      <Block row middle flex={false} style={styles.textField(meta)}>
+      <Block
+        row
+        middle
+        flex={false}
+        style={styles.textField({
+          meta,
+          sizes,
+        })}
+      >
         <Block absolute row>
           <Block padding={[0, sizes.padding / 2]}>
             <RNDateTimePicker

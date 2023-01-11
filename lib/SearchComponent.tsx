@@ -15,7 +15,7 @@ const SearchComponent = ({
   icon?: any;
   onChange?: (value: string) => void;
 }) => {
-  const { fonts } = React.useContext(ThemeContext);
+  const { fonts, sizes } = React.useContext(ThemeContext);
   const [text, setText] = React.useState('');
 
   const debouncedtext = useDebounce(text, 400);
@@ -35,7 +35,7 @@ const SearchComponent = ({
         height: 35,
         borderWidth: 0.5,
         borderColor: '#CCC',
-        borderRadius: 10,
+        borderRadius: sizes.borderRadius || 5,
         flexDirection: 'row',
         alignItems: 'center',
       }}

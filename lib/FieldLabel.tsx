@@ -8,7 +8,7 @@ const FieldLabel = ({ children, label, containerStyle, ...props }) => {
   const { sizes } = React.useContext(ThemeContext);
   const inputStyles = {
     height: sizes.inputHeight,
-    borderRadius: 5,
+    borderRadius: sizes.borderRadius || 5,
     borderWidth: 1,
     borderColor: '#ccc',
   };
