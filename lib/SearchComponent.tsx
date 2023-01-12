@@ -32,7 +32,6 @@ const SearchComponent = ({
     <View
       style={{
         flex: 1,
-        height: 35,
         borderWidth: 0.5,
         borderColor: '#CCC',
         borderRadius: sizes.borderRadius || 5,
@@ -46,6 +45,7 @@ const SearchComponent = ({
           flex: 1,
           color: '#333',
           paddingHorizontal: 7,
+          height: sizes.inputHeight || 35,
           ...fonts.body,
         }}
         placeholder={placeholder || 'Search...'}

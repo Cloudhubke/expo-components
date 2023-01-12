@@ -1,517 +1,87 @@
-import React, { Component, CSSProperties } from 'react';
-
-import axios from 'axios';
-
-import {
-  Text,
-  TouchableOpacity,
-  View,
-  FlatList,
-  RefreshControl,
-} from 'react-native';
-
-import { Ionicons, MaterialIcons } from '@expo/vector-icons';
-import * as Animatable from 'react-native-animatable';
-import debounce from 'lodash/debounce';
-import isObject from 'lodash/isObject';
-import isEmpty from 'lodash/isEmpty';
-import isEqual from 'lodash/isEqual';
-import each from 'lodash/each';
-
-import { Header } from '../native-base/basic/Header';
-import { Button } from '../native-base/basic/Button';
-import { Title } from '../native-base/basic/Title';
-import { Body } from '../native-base/basic/Body';
-import { Right } from '../native-base/basic/Right';
-
-import ThemeContext from '../theme/ThemeContext';
-import SearchComponent from '../SearchComponent';
-import IconButton from '../IconButton';
+import React from 'react';
+import isPlainObject from 'lodash/isPlainObject';
 import Block from '../Block';
-import Modal from '../modal/Modal';
+import Text from '../Text';
+import AsyncSelector from './AsyncSelector';
 
-import KeyboardView from '../KeyboardView';
-
-class RemoteSelector extends Component<
-  {
-    params: any;
-    axiosinstance?: any;
-    Graphqlmodel?: any;
-    valueExtractor?: (item: any) => any;
-    labelExtractor?: (item: any) => any;
-    options?: any[];
-    onChange?: (value: any) => any;
-    value?: any;
-
-    onSelectChange?: (value: any) => any;
-    input?: {
-      onChange: (value: any) => any;
-      value: any;
-      onBlur: () => any;
-    };
-    displayField: string;
-    returnkeys: string[];
-    url: string;
-    placeholder: string;
-    inputStyle: CSSProperties;
-    textStyle: CSSProperties;
-    iconStyle: CSSProperties;
-    iconSize: number;
-    showIcon: boolean;
-    meta: any;
-  },
-  any
-> {
-  static defaultProps = {
-    params: {},
-    axiosinstance: () => axios.create({}),
-    valueExtractor: (val: any) => val.id,
-    labelExtractor: (val: any) => val.id || '',
-    options: [],
-    onChange: () => {},
-    value: null,
-    onSelectChange: () => {},
-    input: {
-      onChange: () => {},
-      value: null,
-      onBlur: () => {},
+const MuiRemoteSelector: React.FC<{
+  input?: any;
+  Graphqlmodel?: any;
+  meta?: any;
+  isMulti?: boolean;
+  displayField?: string;
+  returnkeys?: string[];
+  showError?: boolean;
+  onSelectChange?: (item?: any, index?: number) => any;
+  valueExtractor?: (item?: any, index?: number) => any;
+  labelExtractor?: (item?: any, index?: number) => any;
+  keyExtractor?: (item?: any, index?: number) => string;
+}> = React.forwardRef(
+  (
+    {
+      input = {
+        value: null,
+        onChange: () => {},
+        onBlur: () => {},
+      },
+      meta = {},
+      isMulti = false,
+      displayField,
+      returnkeys,
+      showError = true,
+      keyExtractor = (item, index) => item.id || item,
+      ...rest
     },
-    displayField: '',
-    returnkeys: [],
-    url: '',
-    placeholder: 'Select...',
-    inputStyle: {},
-    textStyle: {},
-    iconStyle: {},
-    iconSize: 32,
-    showIcon: true,
-    meta: {},
-  };
+    ref
+  ) => {
+    let labelExtractor: any = rest.labelExtractor || null;
+    let valueExtractor = rest.valueExtractor || null;
 
-  constructor(props) {
-    super(props);
-    this.state = {
-      firstoptions: [],
-      options: [],
-      searchText: '',
-      modalVisible: false,
-      selectedValue: null,
-      searching: false,
-    };
-
-    this.handleInputChange = debounce(this.handleInputChange, 1000);
-  }
-
-  static getDerivedStateFromProps(nextProps, prevState) {
-    const { value, input, labelExtractor, valueExtractor } = nextProps;
-
-    const val = input.value || value;
-
-    if (!isEqual(val, prevState.val)) {
-      if (!val || isEmpty(val)) {
-        return {
-          selectedValue: '',
-          selectedIndex: 0,
-          val,
+    if (returnkeys) {
+      if (Array.isArray(returnkeys)) {
+        valueExtractor = (item) => {
+          const obj = {};
+          returnkeys.forEach((k) => {
+            obj[k] = item[k];
+          });
+          return obj;
         };
       }
-      const opt = {
-        item: val,
-        value: isObject(val) ? valueExtractor(val) : val,
-        label: isObject(val) ? labelExtractor(val) : val,
-      };
-
-      const options = prevState.options || [];
-      const ind = options.findIndex((i) => i.value === opt.value);
-
-      if (ind === -1) {
-        return {
-          options: [opt],
-          selectedValue: opt,
-          selectedIndex: 0,
-          val,
-        };
-      }
-      return {
-        selectedValue: options[ind],
-        selectedIndex: ind,
-        val,
-      };
     }
-    return { ...prevState };
-  }
-
-  componentDidUpdate(prevProps, prevState) {
-    if (!isEqual(prevProps.params, this.props.params)) {
-      this.handleInputChange('', true);
-    }
-  }
-
-  onChange = (value, index) => {
-    this.setState({ modalVisible: false });
-    this.logChange(value, index);
-  };
-
-  setModalVisible(visible) {
-    this.setState({ modalVisible: visible });
-  }
-
-  getData = async ({ searchText = '' }) => {
-    const { axiosinstance, Graphqlmodel, url, params } = this.props;
-
-    this.setState({ isFetching: true, searchText: text });
-
-    let data: any = {};
-
-    if (typeof Graphqlmodel === 'function') {
-      data = await Graphqlmodel()
-        .find({ ...params, filter: searchText, limit: 20 })
-        .toJson();
-    } else {
-      const response = axiosinstance().get(url, {
-        params: { ...params, filter: searchText },
-      });
-
-      if (response.data) {
-        data = response.data;
-      }
-    }
-    if (data && data.items) {
-      this.setState({
-        isFetching: false,
-        ...(this.state.firstoptions.length === 0
-          ? { firstoptions: data.items || data }
-          : {}),
-      });
-      this.loadOptions(data.items || data);
-    }
-  };
-
-  handleInputChange = async (text, reload) => {
-    if (text === '' && this.state.firstoptions.length === 0) {
-      this.getData({
-        searchText: text,
-      });
-    }
-    if (text !== '') {
-      if (this.state.searchText !== text) {
-        this.getData({
-          searchText: text,
-        });
-      }
+    if (displayField) {
+      labelExtractor = (item) =>
+        isPlainObject(item) ? item[displayField] : item;
     }
 
-    if (reload) {
-      this.getData({
-        searchText: '',
-      });
-    }
-
-    if (!text && this.state.firstoptions.length > 0) {
-      this.loadOptions(this.state.firstoptions);
-    }
-  };
-
-  loadOptions = (opts) => {
-    const { labelExtractor, valueExtractor, value, input } = this.props;
-
-    const val = input.value || value;
-
-    if (Array.isArray(opts)) {
-      const options = opts.map((item, index) => {
-        if (!isObject(item)) {
-          return { item, value: item, label: item };
-        }
-        return {
-          item,
-          value: valueExtractor(item),
-          label: labelExtractor(item),
-        };
-      });
-      let selectedValue;
-      let selectedIndex;
-
-      if (val) {
-        if (!isObject(val)) {
-          const ind = options.findIndex((i) => i.value === val);
-          selectedValue = options[ind];
-          selectedIndex = ind;
-        } else {
-          selectedIndex = options.findIndex(
-            (item) => item.value === valueExtractor(val)
-          );
-          selectedValue = options[selectedIndex];
-        }
-      }
-      if (this.state.firstoptions.length === 0) {
-        this.setState({ firstoptions: options });
-      }
-
-      if (this.props.onOptionsChange) {
-        this.props.onOptionsChange(options);
-      }
-
-      this.setState({
-        options,
-        selectedValue,
-        isFetching: false,
-      });
-    }
-  };
-
-  logChange = (val, index) => {
-    const { onChange, onSelectChange, input, returnkeys } = this.props;
-
-    if (val) {
-      if (returnkeys.length >= 1) {
-        const objValue = { ...val.item };
-        const obj = {};
-        returnkeys.forEach((key) => {
-          if (isObject(key)) {
-            each(key, (value, k) => {
-              if (typeof value === 'function') {
-                obj[k] = value(objValue);
-              }
-            });
-          } else {
-            obj[key] = objValue[key];
-          }
-        });
-
-        onChange({ ...obj });
-        input.onChange({ ...obj });
-        onSelectChange(val.item);
-        input.onBlur();
-      } else {
-        onChange(val.value);
-        onSelectChange(val.item);
-        input.onChange(val.value);
-        input.onBlur();
-      }
-    } else {
-      onChange(null);
-      onSelectChange(null);
-      input.onChange(null);
-      input.onBlur();
-    }
-  };
-
-  renderItem = ({ item, index, styles }) => (
-    <TouchableOpacity
-      style={styles.listItem}
-      onPress={() => this.onChange(item, index)}
-    >
-      {this.props.renderItem ? (
-        this.props.renderItem({ item, index })
-      ) : (
-        <Text>{item.label}</Text>
-      )}
-    </TouchableOpacity>
-  );
-
-  render() {
-    const { selectedValue, searching, isFetching, options } = this.state;
-    const {
-      placeholder,
-      meta,
-      inputStyle,
-      iconSize,
-      textStyle,
-      iconStyle,
-      showIcon,
-    } = this.props;
     return (
-      <ThemeContext.Consumer>
-        {({ sizes, colors }) => {
-          const styles = {
-            statusBarUnderlay: {
-              height: 24,
-              // backgroundColor: 'rgba(0,0,0,0.2)'
-            },
-            header: {
-              flexDirection: 'row',
-              justifyContent: 'space-between',
-              alignItems: 'center',
-              backgroundColor: '#FFF6FF',
-              paddingTop: 16,
-            },
-            titleText: {
-              color: '#333C33',
-            },
-            headerTitleContainer: {
-              marginLeft: 15,
-            },
-            leftalignedTitleContainer: {
-              flex: 1,
-              marginLeft: 15,
-              flexDirection: 'row',
-              justifyContent: 'flex-start',
-              alignItems: 'center',
-            },
-            textField: (meta) => ({
-              flex: 1,
-              flexDirection: 'row',
-              borderRadius: sizes.borderRadius || 5,
-              borderWidth: 1,
-              borderColor:
-                meta.touched && meta.error
-                  ? colors.error
-                  : colors.inputBorderColor,
-              minHeight: sizes.inputHeight,
-              backgroundColor: colors.inputBackgroundColor,
-              padding: 7,
-              margin: 1,
-              alignItems: 'center',
-              marginBottom: 7,
-              // ...inputStyle,
-            }),
-            listItem: {
-              minHeight: 55,
-              borderBottomWidth: 0.5,
-              borderBottomColor: '#CCC',
-              paddingVertical: 5,
-              paddingHorizontal: sizes.padding,
-              flexDirection: 'row',
-              alignItems: 'center',
-            },
-            error: {
-              color: '#F44336',
-            },
-          };
-
-          return (
-            <View
-              style={{
-                flex: 0,
-              }}
-            >
-              <TouchableOpacity
-                onPress={() => {
-                  this.setModalVisible(true);
-                  this.handleInputChange(this.state.searchText);
-                }}
-                style={styles.textField(meta)}
-              >
-                {selectedValue ? (
-                  <Block row middle>
-                    <Block row middle>
-                      <Text style={{ flex: 1, color: '#333', ...textStyle }}>
-                        {`${selectedValue.label}`}
-                      </Text>
-                    </Block>
-
-                    <Block flex={false}>
-                      {showIcon && (
-                        <IconButton
-                          size={iconSize}
-                          onPress={() => this.logChange(null)}
-                        >
-                          <MaterialIcons
-                            name="close"
-                            style={{ fontSize: 16, ...iconStyle }}
-                          />
-                        </IconButton>
-                      )}
-                    </Block>
-                  </Block>
-                ) : (
-                  <Text style={{ flex: 1, ...textStyle, color: '#AAA' }}>
-                    {placeholder}
-                  </Text>
-                )}
-              </TouchableOpacity>
-              {meta.touched && meta.error && (
-                <Text style={styles.error}>{meta.error}</Text>
-              )}
-
-              <Modal
-                isVisible={this.state.modalVisible}
-                onClose={() => {
-                  this.setModalVisible(!this.state.modalVisible);
-                }}
-                transparent
-              >
-                <Block color={colors.mistyWhite}>
-                  <Header
-                    style={styles.header}
-                    color={colors.background}
-                    hasHeight
-                  >
-                    <Button
-                      transparent
-                      onPress={() => {
-                        this.setModalVisible(!this.state.modalVisible);
-                      }}
-                    >
-                      <Ionicons style={{ fontSize: 24 }} name="md-arrow-back" />
-                    </Button>
-
-                    {!searching && (
-                      <View
-                        style={{
-                          flexDirection: 'row',
-                          flex: 3,
-                          marginHorizontal: 7,
-                        }}
-                      >
-                        <Body style={{ flex: 3 }}>
-                          <Title style={styles.titleText}>Select</Title>
-                        </Body>
-                        <Right>
-                          <TouchableOpacity
-                            onPress={() =>
-                              this.setState({ searching: !searching })
-                            }
-                          >
-                            <Ionicons
-                              style={{ fontSize: 24 }}
-                              name="ios-search"
-                            />
-                          </TouchableOpacity>
-                        </Right>
-                      </View>
-                    )}
-                    {searching && (
-                      <Animatable.View
-                        animation="slideInRight"
-                        style={{ flex: 3 }}
-                      >
-                        <SearchComponent
-                          onChange={(text) =>
-                            this.handleInputChange(text, true)
-                          }
-                        />
-                      </Animatable.View>
-                    )}
-                  </Header>
-
-                  <Block pointerEvents="box-none">
-                    <KeyboardView style={{ marginTop: 10, flex: 1 }}>
-                      <FlatList
-                        data={options}
-                        keyExtractor={(item, index) => `${item.id}-${index}`}
-                        renderItem={({ item, index }) =>
-                          this.renderItem({ item, index, styles })
-                        }
-                        refreshControl={
-                          <RefreshControl
-                            refreshing={isFetching}
-                            onRefresh={() => this.handleInputChange('', true)}
-                          />
-                        }
-                        keyboardShouldPersistTaps="always"
-                        keyboardDismissMode="on-drag"
-                      />
-                    </KeyboardView>
-                  </Block>
-                </Block>
-              </Modal>
-            </View>
-          );
-        }}
-      </ThemeContext.Consumer>
+      <Block>
+        <Block flex={false}>
+          <AsyncSelector
+            ref={ref}
+            value={input.value}
+            meta={meta}
+            isMulti={isMulti}
+            {...rest}
+            onChange={(val: any) => {
+              console.log('Change', val, input);
+              input.onChange(val);
+              input.onBlur();
+            }}
+            keyExtractor={keyExtractor}
+            labelExtractor={labelExtractor}
+            valueExtractor={valueExtractor}
+          />
+        </Block>
+        {showError && (
+          <Block flex={false}>
+            <Text small error>
+              {meta.touched && meta.error ? meta.error : ''}
+            </Text>
+          </Block>
+        )}
+      </Block>
     );
   }
-}
+);
 
-export default RemoteSelector;
+export default MuiRemoteSelector;

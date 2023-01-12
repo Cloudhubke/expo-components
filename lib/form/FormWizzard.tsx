@@ -1,6 +1,6 @@
 import React from 'react';
 import Form from './Form';
-import { Block } from '@expocraft/core';
+import Block from '../Block';
 import { Wizard } from 'react-native-ui-lib';
 import Button from '../Button';
 import Text from '../Text';
