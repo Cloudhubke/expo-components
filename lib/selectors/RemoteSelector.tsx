@@ -63,7 +63,6 @@ const MuiRemoteSelector: React.FC<{
             isMulti={isMulti}
             {...rest}
             onChange={(val: any) => {
-              console.log('Change', val, input);
               input.onChange(val);
               input.onBlur();
             }}
