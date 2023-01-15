@@ -1,6 +1,6 @@
 import React from 'react';
 import create from 'zustand';
-import shallow from 'zustand/shallow';
+import shallow from '../../zustand/shallow';
 import isEqual from 'lodash/isEqual';
 import uniqueId from 'lodash/uniqueId';
 import appStore from './appStore';

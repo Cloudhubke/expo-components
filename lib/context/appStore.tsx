@@ -1,4 +1,4 @@
-import create from 'zustand/vanilla';
+import create from '../../zustand/vanilla';
 import appReducer, { INITIAL_STATE } from './appReducer';
 
 const appStore = create((set) => ({
