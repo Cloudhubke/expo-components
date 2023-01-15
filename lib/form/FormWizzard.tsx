@@ -73,8 +73,8 @@ const FormWizzard = ({
                 );
               })}
             </Wizard>
-            <Block>
-              <Block margin padding card>
+            <Block card padding>
+              <Block>
                 {renderCurrentStep({
                   onBack: () => setActiveIndex((i) => (i > 0 ? i - 1 : i)),
                   onNext: () =>

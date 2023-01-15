@@ -305,6 +305,14 @@ const AsyncSelector: React.FC<any> = React.forwardRef(
       }
     };
 
+    const openMenu = () => {
+      setState((state) => ({
+        ...state,
+        modalVisible: true,
+      }));
+      handleInputChange(state.searchText);
+    };
+
     React.useEffect(() => {
       if (state.modalVisible) {
         onModalOpen();
@@ -432,19 +440,18 @@ const AsyncSelector: React.FC<any> = React.forwardRef(
         <Block flex={false}>
           <TouchableOpacity
             disabled={disabled}
-            onPress={() => {
-              setState((state) => ({
-                ...state,
-                modalVisible: true,
-              }));
-              handleInputChange(state.searchText);
-            }}
+            onPress={openMenu}
             style={styles.textField(meta)}
           >
             {isMulti ? (
               <SelectedValues
                 selectedValue={selectedValue}
                 onRemove={(item) => logChange(item)}
+                iconSize={iconSize}
+                iconStyle={iconStyle}
+                showIcon={showIcon}
+                placeholder={placeholder}
+                onPress={openMenu}
               />
             ) : (
               <SelectedValue
@@ -455,6 +462,7 @@ const AsyncSelector: React.FC<any> = React.forwardRef(
                 placeholder={placeholder}
                 textStyle={textStyle}
                 onRemove={() => logChange([])}
+                onPress={openMenu}
               />
             )}
           </TouchableOpacity>

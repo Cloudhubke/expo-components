@@ -108,7 +108,7 @@ const Block: React.FC<{
   children?: any;
   keyboardAvoiding?: boolean;
   rounded?: boolean;
-  animation: Animation;
+  animation?: Animation;
 }> = (props): any => {
   const { sizes, colors }: any = React.useContext(ThemeContext);
 

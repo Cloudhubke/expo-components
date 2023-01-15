@@ -1,6 +1,9 @@
+import { MaterialIcons } from '@expo/vector-icons';
 import React from 'react';
 import Block from './Block';
+import IconButton from './IconButton';
 import Text from './Text';
+import hexToRgb from './theme/hextToRgb';
 import ThemeContext from './theme/ThemeContext';
 
 const Alert = ({
@@ -11,6 +14,7 @@ const Alert = ({
   warning,
   color,
   containerStyle = {},
+  onClose = () => {},
 }: {
   message: string;
   info?: boolean;
@@ -19,6 +23,7 @@ const Alert = ({
   warning?: boolean;
   color?: string;
   containerStyle?: any;
+  onClose?: () => void;
 }) => {
   const { colors } = React.useContext(ThemeContext);
 
@@ -52,6 +57,19 @@ const Alert = ({
       margin={[5, 0]}
     >
       <Text white>{message}</Text>
+      <Block
+        flex={false}
+        style={{
+          position: 'absolute',
+          top: 0,
+          right: 0,
+          padding: 5,
+        }}
+      >
+        <IconButton onPress={onClose}>
+          <MaterialIcons name="close" size={20} color={colors.black} />
+        </IconButton>
+      </Block>
     </Block>
   ) : null;
 };

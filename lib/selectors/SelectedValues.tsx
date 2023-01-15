@@ -14,6 +14,7 @@ const SelectedValues = ({
   iconSize = 20,
   iconStyle = {},
   placeholder = 'Select...',
+  onPress = () => null,
 }: {
   selectedValue?: any;
   showIcon?: boolean;
@@ -22,6 +23,7 @@ const SelectedValues = ({
   textStyle?: any;
   iconStyle?: any;
   placeholder?: string;
+  onPress?: () => void;
 }) => {
   const { colors } = React.useContext(ThemeContext);
 
@@ -44,7 +46,7 @@ const SelectedValues = ({
       ))}
       {selectedValue && selectedValue.length === 0 && showIcon && (
         <Block flex={false}>
-          <IconButton size={iconSize}>
+          <IconButton size={iconSize} onPress={onPress}>
             <MaterialIcons
               name="arrow-drop-down"
               color={colors.darkGray}

@@ -1,3 +1,4 @@
+export { default as Alert } from './Alert';
 export { default as Block } from './Block';
 export { default as SafeAreaView } from './SafeAreaView';
 export { default as Button } from './Button';

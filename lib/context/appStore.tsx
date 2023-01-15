@@ -8,7 +8,9 @@ const appStore = create((set) => ({
       set((state) => appReducer(state, args(state)));
     } else {
       console.log(
-        'DEPRECATION WARNING:use Callback function instead of object to update state'
+        `DEPRECATION WARNING:use Callback function instead of object to update state: Check ${JSON.stringify(
+          args
+        )}`
       );
       set((state) => appReducer(state, args));
     }

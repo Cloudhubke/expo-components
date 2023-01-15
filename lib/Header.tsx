@@ -9,9 +9,9 @@ import StatusBar from './StatusBar';
 const Header: React.FC<{
   onBack?: () => any;
   onClose?: () => any;
-  leftComponent?: React.ReactNode;
-  middleComponent?: React.ReactNode;
-  rightComponent?: React.ReactNode;
+  leftComponent?: any;
+  middleComponent?: any;
+  rightComponent?: any;
   titlecenter?: any;
   color?: any;
   style?: any;

@@ -16,6 +16,12 @@ const MuiRemoteSelector: React.FC<{
   valueExtractor?: (item?: any, index?: number) => any;
   labelExtractor?: (item?: any, index?: number) => any;
   keyExtractor?: (item?: any, index?: number) => string;
+  showIcon?: boolean;
+  iconStyle?: any;
+  textStyle?: any;
+  placeholder?: string;
+  iconSize?: number;
+  onRemove?: (val: any) => void;
 }> = React.forwardRef(
   (
     {

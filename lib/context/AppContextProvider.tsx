@@ -4,16 +4,14 @@ import AppContext from './AppContext';
 import { useStore } from './useAppContext';
 import shallow from 'zustand/shallow';
 
-const AppContextProvider = ({ children, INITIAL_STATE = {} }) => {
+const AppContextProvider = ({ children, INITIAL_STATE = {} }: any) => {
   const dispatch = useStore((state) => (state as any).dispatch, shallow);
   const [updated, setUpdated] = React.useState(false);
 
   const resetState = () => {
-    dispatch({
-      payload: {
-        ...(INITIAL_STATE || {}),
-      },
-    });
+    dispatch(() => ({
+      ...(INITIAL_STATE || {}),
+    }));
   };
 
   React.useEffect(() => {

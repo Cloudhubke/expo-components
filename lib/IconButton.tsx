@@ -8,8 +8,14 @@ const IconButton: React.FC<{
   children: any;
   disabled?: boolean;
   onPress?: () => any;
+  transparent?: boolean;
+  color?: string;
 }> = ({ children, onPress, disabled, ...props }) => (
-  <TouchableOpacity disabled={disabled} onPress={onPress}>
+  <TouchableOpacity
+    disabled={disabled}
+    onPress={onPress}
+    // style={{ padding: 0 }}
+  >
     <Badge {...props}>{children}</Badge>
   </TouchableOpacity>
 );
