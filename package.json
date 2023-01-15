@@ -24,7 +24,8 @@
     "android": "expo start --android",
     "ios": "expo start --ios",
     "eject": "expo eject",
-    "test": "exit 0"
+    "test": "exit 0",
+    "prepublishOnly": "npm version patch"
   },
   "jest": {
     "preset": "jest-expo"
