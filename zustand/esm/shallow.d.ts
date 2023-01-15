@@ -1,6 +1,1 @@
-export declare function shallow<T>(objA: T, objB: T): boolean;
-/**
- * @deprecated Use `import { shallow } from 'zustand/shallow'`
- */
-declare const _default: typeof shallow;
-export default _default;
+export default function shallow<T extends any, U extends any>(objA: T, objB: U): boolean;

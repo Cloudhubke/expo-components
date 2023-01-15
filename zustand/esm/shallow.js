@@ -5,26 +5,6 @@ function shallow(objA, objB) {
   if (typeof objA !== "object" || objA === null || typeof objB !== "object" || objB === null) {
     return false;
   }
-  if (objA instanceof Map && objB instanceof Map) {
-    if (objA.size !== objB.size)
-      return false;
-    for (const [key, value] of objA) {
-      if (!Object.is(value, objB.get(key))) {
-        return false;
-      }
-    }
-    return true;
-  }
-  if (objA instanceof Set && objB instanceof Set) {
-    if (objA.size !== objB.size)
-      return false;
-    for (const value of objA) {
-      if (!objB.has(value)) {
-        return false;
-      }
-    }
-    return true;
-  }
   const keysA = Object.keys(objA);
   if (keysA.length !== Object.keys(objB).length) {
     return false;
@@ -36,13 +16,5 @@ function shallow(objA, objB) {
   }
   return true;
 }
-var shallow$1 = (objA, objB) => {
-  if (process.env.NODE_ENV !== "production") {
-    console.warn(
-      "[DEPRECATED] default export is deprecated, instead import { shallow } from'zustand/shallow'"
-    );
-  }
-  return shallow(objA, objB);
-};
 
-export { shallow$1 as default, shallow };
+export default shallow;

@@ -1,39 +1,38 @@
-const createStoreImpl = (createState) => {
+function create(createState) {
   let state;
-  const listeners = /* @__PURE__ */ new Set();
+  const listeners = new Set();
   const setState = (partial, replace) => {
     const nextState = typeof partial === "function" ? partial(state) : partial;
-    if (!Object.is(nextState, state)) {
+    if (nextState !== state) {
       const previousState = state;
-      state = (replace != null ? replace : typeof nextState !== "object") ? nextState : Object.assign({}, state, nextState);
+      state = replace ? nextState : Object.assign({}, state, nextState);
       listeners.forEach((listener) => listener(state, previousState));
     }
   };
   const getState = () => state;
-  const subscribe = (listener) => {
+  const subscribeWithSelector = (listener, selector = getState, equalityFn = Object.is) => {
+    let currentSlice = selector(state);
+    function listenerToAdd() {
+      const nextSlice = selector(state);
+      if (!equalityFn(currentSlice, nextSlice)) {
+        const previousSlice = currentSlice;
+        listener(currentSlice = nextSlice, previousSlice);
+      }
+    }
+    listeners.add(listenerToAdd);
+    return () => listeners.delete(listenerToAdd);
+  };
+  const subscribe = (listener, selector, equalityFn) => {
+    if (selector || equalityFn) {
+      return subscribeWithSelector(listener, selector, equalityFn);
+    }
     listeners.add(listener);
     return () => listeners.delete(listener);
   };
-  const destroy = () => {
-    if (process.env.NODE_ENV !== "production") {
-      console.warn(
-        "[DEPRECATED] The destroy method will be unsupported in the future version. You should use unsubscribe function returned by subscribe. Everything will be garbage collected if store is garbage collected."
-      );
-    }
-    listeners.clear();
-  };
-  const api = { setState, getState, subscribe, destroy };
+  const destroy = () => listeners.clear();
+  const api = {setState, getState, subscribe, destroy};
   state = createState(setState, getState, api);
   return api;
-};
-const createStore = (createState) => createState ? createStoreImpl(createState) : createStoreImpl;
-var vanilla = (createState) => {
-  if (process.env.NODE_ENV !== "production") {
-    console.warn(
-      "[DEPRECATED] default export is deprecated, instead import { createStore } ..."
-    );
-  }
-  return createStore(createState);
-};
+}
 
-export { createStore, vanilla as default };
+export default create;

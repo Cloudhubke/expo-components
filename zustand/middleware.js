@@ -1,604 +1,326 @@
 'use strict';
 
+Object.defineProperty(exports, '__esModule', { value: true });
+
+function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) {
+  try {
+    var info = gen[key](arg);
+    var value = info.value;
+  } catch (error) {
+    reject(error);
+    return;
+  }
+
+  if (info.done) {
+    resolve(value);
+  } else {
+    Promise.resolve(value).then(_next, _throw);
+  }
+}
+
+function _asyncToGenerator(fn) {
+  return function () {
+    var self = this,
+        args = arguments;
+    return new Promise(function (resolve, reject) {
+      var gen = fn.apply(self, args);
+
+      function _next(value) {
+        asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value);
+      }
+
+      function _throw(err) {
+        asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err);
+      }
+
+      _next(undefined);
+    });
+  };
+}
+
 function _extends() {
-  _extends = Object.assign ? Object.assign.bind() : function (target) {
+  _extends = Object.assign || function (target) {
     for (var i = 1; i < arguments.length; i++) {
       var source = arguments[i];
+
       for (var key in source) {
         if (Object.prototype.hasOwnProperty.call(source, key)) {
           target[key] = source[key];
         }
       }
     }
+
     return target;
   };
+
   return _extends.apply(this, arguments);
 }
-function _objectWithoutPropertiesLoose(source, excluded) {
-  if (source == null) return {};
-  var target = {};
-  var sourceKeys = Object.keys(source);
-  var key, i;
-  for (i = 0; i < sourceKeys.length; i++) {
-    key = sourceKeys[i];
-    if (excluded.indexOf(key) >= 0) continue;
-    target[key] = source[key];
-  }
-  return target;
-}
 
-var reduxImpl = function reduxImpl(reducer, initial) {
-  return function (set, _get, api) {
+var redux = function redux(reducer, initial) {
+  return function (set, get, api) {
     api.dispatch = function (action) {
       set(function (state) {
         return reducer(state, action);
-      }, false, action);
+      });
+
+      if (api.devtools) {
+        api.devtools.send(api.devtools.prefix + action.type, get());
+      }
+
       return action;
     };
-    api.dispatchFromDevtools = true;
+
     return _extends({
-      dispatch: function dispatch() {
-        var _ref;
-        return (_ref = api).dispatch.apply(_ref, arguments);
-      }
+      dispatch: api.dispatch
     }, initial);
   };
 };
-var redux = reduxImpl;
-
-var _excluded = ["enabled", "anonymousActionType", "store"],
-  _excluded2 = ["connection"];
-var trackedConnections = new Map();
-var getTrackedConnectionState = function getTrackedConnectionState(name) {
-  var api = trackedConnections.get(name);
-  if (!api) return {};
-  return Object.fromEntries(Object.entries(api.stores).map(function (_ref) {
-    var key = _ref[0],
-      api = _ref[1];
-    return [key, api.getState()];
-  }));
-};
-var extractConnectionInformation = function extractConnectionInformation(store, extensionConnector, options) {
-  if (store === undefined) {
-    return {
-      type: 'untracked',
-      connection: extensionConnector.connect(options)
-    };
-  }
-  var existingConnection = trackedConnections.get(options.name);
-  if (existingConnection) {
-    return _extends({
-      type: 'tracked',
-      store: store
-    }, existingConnection);
-  }
-  var newConnection = {
-    connection: extensionConnector.connect(options),
-    stores: {}
-  };
-  trackedConnections.set(options.name, newConnection);
-  return _extends({
-    type: 'tracked',
-    store: store
-  }, newConnection);
-};
-var devtoolsImpl = function devtoolsImpl(fn, devtoolsOptions) {
-  if (devtoolsOptions === void 0) {
-    devtoolsOptions = {};
-  }
+var devtools = function devtools(fn, prefix) {
   return function (set, get, api) {
-    var _devtoolsOptions = devtoolsOptions,
-      enabled = _devtoolsOptions.enabled,
-      anonymousActionType = _devtoolsOptions.anonymousActionType,
-      store = _devtoolsOptions.store,
-      options = _objectWithoutPropertiesLoose(_devtoolsOptions, _excluded);
-    var extensionConnector;
+    var extension;
+
     try {
-      extensionConnector = (enabled != null ? enabled : process.env.NODE_ENV !== "production") && window.__REDUX_DEVTOOLS_EXTENSION__;
-    } catch (e) {}
-    if (!extensionConnector) {
-      if (process.env.NODE_ENV !== "production" && enabled) {
-        console.warn('[zustand devtools middleware] Please install/enable Redux devtools extension');
+      extension = window.__REDUX_DEVTOOLS_EXTENSION__ || window.top.__REDUX_DEVTOOLS_EXTENSION__;
+    } catch (_unused) {}
+
+    if (!extension) {
+      if (process.env.NODE_ENV === 'development' && typeof window !== 'undefined') {
+        console.warn('Please install/enable Redux devtools extension');
       }
+
+      api.devtools = null;
       return fn(set, get, api);
     }
-    var _extractConnectionInf = extractConnectionInformation(store, extensionConnector, options),
-      connection = _extractConnectionInf.connection,
-      connectionInformation = _objectWithoutPropertiesLoose(_extractConnectionInf, _excluded2);
-    var isRecording = true;
-    api.setState = function (state, replace, nameOrAction) {
-      var _extends2;
-      var r = set(state, replace);
-      if (!isRecording) return r;
-      var action = nameOrAction === undefined ? {
-        type: anonymousActionType || 'anonymous'
-      } : typeof nameOrAction === 'string' ? {
-        type: nameOrAction
-      } : nameOrAction;
-      if (store === undefined) {
-        connection == null ? void 0 : connection.send(action, get());
-        return r;
+
+    var namedSet = function namedSet(state, replace, name) {
+      set(state, replace);
+
+      if (!api.dispatch) {
+        api.devtools.send(api.devtools.prefix + (name || 'action'), get());
       }
-      connection == null ? void 0 : connection.send(_extends({}, action, {
-        type: store + "/" + action.type
-      }), _extends({}, getTrackedConnectionState(options.name), (_extends2 = {}, _extends2[store] = api.getState(), _extends2)));
-      return r;
     };
-    var setStateFromDevtools = function setStateFromDevtools() {
-      var originalIsRecording = isRecording;
-      isRecording = false;
-      set.apply(void 0, arguments);
-      isRecording = originalIsRecording;
-    };
-    var initialState = fn(api.setState, get, api);
-    if (connectionInformation.type === 'untracked') {
-      connection == null ? void 0 : connection.init(initialState);
-    } else {
-      connectionInformation.stores[connectionInformation.store] = api;
-      connection == null ? void 0 : connection.init(Object.fromEntries(Object.entries(connectionInformation.stores).map(function (_ref2) {
-        var key = _ref2[0],
-          store = _ref2[1];
-        return [key, key === connectionInformation.store ? initialState : store.getState()];
-      })));
-    }
-    if (api.dispatchFromDevtools && typeof api.dispatch === 'function') {
-      var didWarnAboutReservedActionType = false;
-      var originalDispatch = api.dispatch;
-      api.dispatch = function () {
-        for (var _len = arguments.length, a = new Array(_len), _key = 0; _key < _len; _key++) {
-          a[_key] = arguments[_key];
-        }
-        if (process.env.NODE_ENV !== "production" && a[0].type === '__setState' && !didWarnAboutReservedActionType) {
-          console.warn('[zustand devtools middleware] "__setState" action type is reserved ' + 'to set state from the devtools. Avoid using it.');
-          didWarnAboutReservedActionType = true;
-        }
-        originalDispatch.apply(void 0, a);
+
+    var initialState = fn(namedSet, get, api);
+
+    if (!api.devtools) {
+      var savedSetState = api.setState;
+
+      api.setState = function (state, replace) {
+        savedSetState(state, replace);
+        api.devtools.send(api.devtools.prefix + 'setState', api.getState());
       };
-    }
-    connection.subscribe(function (message) {
-      switch (message.type) {
-        case 'ACTION':
-          if (typeof message.payload !== 'string') {
-            console.error('[zustand devtools middleware] Unsupported action format');
-            return;
-          }
-          return parseJsonThen(message.payload, function (action) {
-            if (action.type === '__setState') {
-              if (store === undefined) {
-                setStateFromDevtools(action.state);
-                return;
-              }
-              if (Object.keys(action.state).length !== 1) {
-                console.error("\n                    [zustand devtools middleware] Unsupported __setState action format. \n                    When using 'store' option in devtools(), the 'state' should have only one key, which is a value of 'store' that was passed in devtools(),\n                    and value of this only key should be a state object. Example: { \"type\": \"__setState\", \"state\": { \"abc123Store\": { \"foo\": \"bar\" } } }\n                    ");
-              }
-              var stateFromDevtools = action.state[store];
-              if (stateFromDevtools === undefined || stateFromDevtools === null) {
-                return;
-              }
-              if (JSON.stringify(api.getState()) !== JSON.stringify(stateFromDevtools)) {
-                setStateFromDevtools(stateFromDevtools);
-              }
-              return;
-            }
-            if (!api.dispatchFromDevtools) return;
-            if (typeof api.dispatch !== 'function') return;
-            api.dispatch(action);
-          });
-        case 'DISPATCH':
-          switch (message.payload.type) {
-            case 'RESET':
-              setStateFromDevtools(initialState);
-              if (store === undefined) {
-                return connection == null ? void 0 : connection.init(api.getState());
-              }
-              return connection == null ? void 0 : connection.init(getTrackedConnectionState(options.name));
-            case 'COMMIT':
-              if (store === undefined) {
-                connection == null ? void 0 : connection.init(api.getState());
-                return;
-              }
-              return connection == null ? void 0 : connection.init(getTrackedConnectionState(options.name));
-            case 'ROLLBACK':
-              return parseJsonThen(message.state, function (state) {
-                if (store === undefined) {
-                  setStateFromDevtools(state);
-                  connection == null ? void 0 : connection.init(api.getState());
-                  return;
-                }
-                setStateFromDevtools(state[store]);
-                connection == null ? void 0 : connection.init(getTrackedConnectionState(options.name));
-              });
-            case 'JUMP_TO_STATE':
-            case 'JUMP_TO_ACTION':
-              return parseJsonThen(message.state, function (state) {
-                if (store === undefined) {
-                  setStateFromDevtools(state);
-                  return;
-                }
-                if (JSON.stringify(api.getState()) !== JSON.stringify(state[store])) {
-                  setStateFromDevtools(state[store]);
-                }
-              });
-            case 'IMPORT_STATE':
-              {
-                var _nextLiftedState$comp;
-                var nextLiftedState = message.payload.nextLiftedState;
-                var lastComputedState = (_nextLiftedState$comp = nextLiftedState.computedStates.slice(-1)[0]) == null ? void 0 : _nextLiftedState$comp.state;
-                if (!lastComputedState) return;
-                if (store === undefined) {
-                  setStateFromDevtools(lastComputedState);
-                } else {
-                  setStateFromDevtools(lastComputedState[store]);
-                }
-                connection == null ? void 0 : connection.send(null, nextLiftedState);
-                return;
-              }
-            case 'PAUSE_RECORDING':
-              return isRecording = !isRecording;
-          }
-          return;
-      }
-    });
-    return initialState;
-  };
-};
-var devtools = devtoolsImpl;
-var parseJsonThen = function parseJsonThen(stringified, f) {
-  var parsed;
-  try {
-    parsed = JSON.parse(stringified);
-  } catch (e) {
-    console.error('[zustand devtools middleware] Could not parse the received json', e);
-  }
-  if (parsed !== undefined) f(parsed);
-};
 
-var subscribeWithSelectorImpl = function subscribeWithSelectorImpl(fn) {
-  return function (set, get, api) {
-    var origSubscribe = api.subscribe;
-    api.subscribe = function (selector, optListener, options) {
-      var listener = selector;
-      if (optListener) {
-        var equalityFn = (options == null ? void 0 : options.equalityFn) || Object.is;
-        var currentSlice = selector(api.getState());
-        listener = function listener(state) {
-          var nextSlice = selector(state);
-          if (!equalityFn(currentSlice, nextSlice)) {
-            var previousSlice = currentSlice;
-            optListener(currentSlice = nextSlice, previousSlice);
+      api.devtools = extension.connect({
+        name: prefix
+      });
+      api.devtools.prefix = prefix ? prefix + " > " : '';
+      api.devtools.subscribe(function (message) {
+        var _message$payload;
+
+        if (message.type === 'DISPATCH' && message.state) {
+          var ignoreState = message.payload.type === 'JUMP_TO_ACTION' || message.payload.type === 'JUMP_TO_STATE';
+
+          if (!api.dispatch && !ignoreState) {
+            api.setState(JSON.parse(message.state));
+          } else {
+            savedSetState(JSON.parse(message.state));
           }
-        };
-        if (options != null && options.fireImmediately) {
-          optListener(currentSlice, currentSlice);
+        } else if (message.type === 'DISPATCH' && ((_message$payload = message.payload) == null ? void 0 : _message$payload.type) === 'COMMIT') {
+          api.devtools.init(api.getState());
         }
-      }
-      return origSubscribe(listener);
-    };
-    var initialState = fn(set, get, api);
+      });
+      api.devtools.init(initialState);
+    }
+
     return initialState;
   };
 };
-var subscribeWithSelector = subscribeWithSelectorImpl;
-
 var combine = function combine(initialState, create) {
-  return function () {
-    return Object.assign({}, initialState, create.apply(void 0, arguments));
+  return function (set, get, api) {
+    return Object.assign({}, initialState, create(set, get, api));
   };
 };
+var persist = function persist(config, options) {
+  return function (set, get, api) {
+    var _ref = options || {},
+        name = _ref.name,
+        _ref$getStorage = _ref.getStorage,
+        getStorage = _ref$getStorage === void 0 ? function () {
+      return localStorage;
+    } : _ref$getStorage,
+        _ref$serialize = _ref.serialize,
+        serialize = _ref$serialize === void 0 ? JSON.stringify : _ref$serialize,
+        _ref$deserialize = _ref.deserialize,
+        deserialize = _ref$deserialize === void 0 ? JSON.parse : _ref$deserialize,
+        blacklist = _ref.blacklist,
+        whitelist = _ref.whitelist,
+        onRehydrateStorage = _ref.onRehydrateStorage,
+        _ref$version = _ref.version,
+        version = _ref$version === void 0 ? 0 : _ref$version,
+        migrate = _ref.migrate;
 
-function createJSONStorage(getStorage) {
-  var storage;
-  try {
-    storage = getStorage();
-  } catch (e) {
-    return;
-  }
-  var persistStorage = {
-    getItem: function getItem(name) {
-      var _getItem;
-      var parse = function parse(str) {
-        if (str === null) {
-          return null;
-        }
-        return JSON.parse(str);
-      };
-      var str = (_getItem = storage.getItem(name)) != null ? _getItem : null;
-      if (str instanceof Promise) {
-        return str.then(parse);
-      }
-      return parse(str);
-    },
-    setItem: function setItem(name, newValue) {
-      return storage.setItem(name, JSON.stringify(newValue));
-    },
-    removeItem: function removeItem(name) {
-      return storage.removeItem(name);
-    }
-  };
-  return persistStorage;
-}
-var toThenable = function toThenable(fn) {
-  return function (input) {
-    try {
-      var result = fn(input);
-      if (result instanceof Promise) {
-        return result;
-      }
-      return {
-        then: function then(onFulfilled) {
-          return toThenable(onFulfilled)(result);
-        },
-        catch: function _catch(_onRejected) {
-          return this;
-        }
-      };
-    } catch (e) {
-      return {
-        then: function then(_onFulfilled) {
-          return this;
-        },
-        catch: function _catch(onRejected) {
-          return toThenable(onRejected)(e);
-        }
-      };
-    }
-  };
-};
-var oldImpl = function oldImpl(config, baseOptions) {
-  return function (set, get, api) {
-    var options = _extends({
-      getStorage: function getStorage() {
-        return localStorage;
-      },
-      serialize: JSON.stringify,
-      deserialize: JSON.parse,
-      partialize: function partialize(state) {
-        return state;
-      },
-      version: 0,
-      merge: function merge(persistedState, currentState) {
-        return _extends({}, currentState, persistedState);
-      }
-    }, baseOptions);
-    var _hasHydrated = false;
-    var hydrationListeners = new Set();
-    var finishHydrationListeners = new Set();
     var storage;
+
     try {
-      storage = options.getStorage();
+      storage = getStorage();
     } catch (e) {}
+
     if (!storage) {
       return config(function () {
-        console.warn("[zustand persist middleware] Unable to update item '" + options.name + "', the given storage is currently unavailable.");
+        console.warn("Persist middleware: unable to update " + name + ", the given storage is currently unavailable.");
         set.apply(void 0, arguments);
       }, get, api);
     }
-    var thenableSerialize = toThenable(options.serialize);
-    var setItem = function setItem() {
-      var state = options.partialize(_extends({}, get()));
-      var errorInSync;
-      var thenable = thenableSerialize({
-        state: state,
-        version: options.version
-      }).then(function (serializedValue) {
-        return storage.setItem(options.name, serializedValue);
-      }).catch(function (e) {
-        errorInSync = e;
-      });
-      if (errorInSync) {
-        throw errorInSync;
-      }
-      return thenable;
-    };
-    var savedSetState = api.setState;
-    api.setState = function (state, replace) {
-      savedSetState(state, replace);
-      void setItem();
-    };
-    var configResult = config(function () {
-      set.apply(void 0, arguments);
-      void setItem();
-    }, get, api);
-    var stateFromStorage;
-    var hydrate = function hydrate() {
-      if (!storage) return;
-      _hasHydrated = false;
-      hydrationListeners.forEach(function (cb) {
-        return cb(get());
-      });
-      var postRehydrationCallback = (options.onRehydrateStorage == null ? void 0 : options.onRehydrateStorage(get())) || undefined;
-      return toThenable(storage.getItem.bind(storage))(options.name).then(function (storageValue) {
-        if (storageValue) {
-          return options.deserialize(storageValue);
-        }
-      }).then(function (deserializedStorageValue) {
-        if (deserializedStorageValue) {
-          if (typeof deserializedStorageValue.version === 'number' && deserializedStorageValue.version !== options.version) {
-            if (options.migrate) {
-              return options.migrate(deserializedStorageValue.state, deserializedStorageValue.version);
-            }
-            console.error("State loaded from storage couldn't be migrated since no migrate function was provided");
-          } else {
-            return deserializedStorageValue.state;
-          }
-        }
-      }).then(function (migratedState) {
-        var _get;
-        stateFromStorage = options.merge(migratedState, (_get = get()) != null ? _get : configResult);
-        set(stateFromStorage, true);
-        return setItem();
-      }).then(function () {
-        postRehydrationCallback == null ? void 0 : postRehydrationCallback(stateFromStorage, undefined);
-        _hasHydrated = true;
-        finishHydrationListeners.forEach(function (cb) {
-          return cb(stateFromStorage);
-        });
-      }).catch(function (e) {
-        postRehydrationCallback == null ? void 0 : postRehydrationCallback(undefined, e);
-      });
-    };
-    api.persist = {
-      setOptions: function setOptions(newOptions) {
-        options = _extends({}, options, newOptions);
-        if (newOptions.getStorage) {
-          storage = newOptions.getStorage();
-        }
-      },
-      clearStorage: function clearStorage() {
+
+    var setItem = function () {
+      var _ref2 = _asyncToGenerator(regeneratorRuntime.mark(function _callee() {
         var _storage;
-        (_storage = storage) == null ? void 0 : _storage.removeItem(options.name);
-      },
-      getOptions: function getOptions() {
-        return options;
-      },
-      rehydrate: function rehydrate() {
-        return hydrate();
-      },
-      hasHydrated: function hasHydrated() {
-        return _hasHydrated;
-      },
-      onHydrate: function onHydrate(cb) {
-        hydrationListeners.add(cb);
-        return function () {
-          hydrationListeners.delete(cb);
-        };
-      },
-      onFinishHydration: function onFinishHydration(cb) {
-        finishHydrationListeners.add(cb);
-        return function () {
-          finishHydrationListeners.delete(cb);
-        };
-      }
-    };
-    hydrate();
-    return stateFromStorage || configResult;
-  };
-};
-var newImpl = function newImpl(config, baseOptions) {
-  return function (set, get, api) {
-    var options = _extends({
-      storage: createJSONStorage(function () {
-        return localStorage;
-      }),
-      partialize: function partialize(state) {
-        return state;
-      },
-      version: 0,
-      merge: function merge(persistedState, currentState) {
-        return _extends({}, currentState, persistedState);
-      }
-    }, baseOptions);
-    var _hasHydrated2 = false;
-    var hydrationListeners = new Set();
-    var finishHydrationListeners = new Set();
-    var storage = options.storage;
-    if (!storage) {
-      return config(function () {
-        console.warn("[zustand persist middleware] Unable to update item '" + options.name + "', the given storage is currently unavailable.");
-        set.apply(void 0, arguments);
-      }, get, api);
-    }
-    var setItem = function setItem() {
-      var state = options.partialize(_extends({}, get()));
-      return storage.setItem(options.name, {
-        state: state,
-        version: options.version
-      });
-    };
+
+        var state;
+        return regeneratorRuntime.wrap(function _callee$(_context) {
+          while (1) {
+            switch (_context.prev = _context.next) {
+              case 0:
+                state = _extends({}, get());
+
+                if (whitelist) {
+                  Object.keys(state).forEach(function (key) {
+                    !whitelist.includes(key) && delete state[key];
+                  });
+                }
+
+                if (blacklist) {
+                  blacklist.forEach(function (key) {
+                    return delete state[key];
+                  });
+                }
+
+                if (!((_storage = storage) == null)) {
+                  _context.next = 7;
+                  break;
+                }
+
+                _context.t0 = void 0;
+                _context.next = 13;
+                break;
+
+              case 7:
+                _context.t1 = _storage;
+                _context.t2 = name;
+                _context.next = 11;
+                return serialize({
+                  state: state,
+                  version: version
+                });
+
+              case 11:
+                _context.t3 = _context.sent;
+                _context.t0 = _context.t1.setItem.call(_context.t1, _context.t2, _context.t3);
+
+              case 13:
+                return _context.abrupt("return", _context.t0);
+
+              case 14:
+              case "end":
+                return _context.stop();
+            }
+          }
+        }, _callee);
+      }));
+
+      return function setItem() {
+        return _ref2.apply(this, arguments);
+      };
+    }();
+
     var savedSetState = api.setState;
+
     api.setState = function (state, replace) {
       savedSetState(state, replace);
       void setItem();
     };
-    var configResult = config(function () {
+
+    _asyncToGenerator(regeneratorRuntime.mark(function _callee2() {
+      var postRehydrationCallback, storageValue, deserializedStorageValue, migratedState;
+      return regeneratorRuntime.wrap(function _callee2$(_context2) {
+        while (1) {
+          switch (_context2.prev = _context2.next) {
+            case 0:
+              postRehydrationCallback = (onRehydrateStorage == null ? void 0 : onRehydrateStorage(get())) || undefined;
+              _context2.prev = 1;
+              _context2.next = 4;
+              return storage.getItem(name);
+
+            case 4:
+              storageValue = _context2.sent;
+
+              if (!storageValue) {
+                _context2.next = 20;
+                break;
+              }
+
+              _context2.next = 8;
+              return deserialize(storageValue);
+
+            case 8:
+              deserializedStorageValue = _context2.sent;
+
+              if (!(deserializedStorageValue.version !== version)) {
+                _context2.next = 19;
+                break;
+              }
+
+              _context2.next = 12;
+              return migrate == null ? void 0 : migrate(deserializedStorageValue.state, deserializedStorageValue.version);
+
+            case 12:
+              migratedState = _context2.sent;
+
+              if (!migratedState) {
+                _context2.next = 17;
+                break;
+              }
+
+              set(migratedState);
+              _context2.next = 17;
+              return setItem();
+
+            case 17:
+              _context2.next = 20;
+              break;
+
+            case 19:
+              set(deserializedStorageValue.state);
+
+            case 20:
+              _context2.next = 26;
+              break;
+
+            case 22:
+              _context2.prev = 22;
+              _context2.t0 = _context2["catch"](1);
+              postRehydrationCallback == null ? void 0 : postRehydrationCallback(undefined, _context2.t0);
+              return _context2.abrupt("return");
+
+            case 26:
+              postRehydrationCallback == null ? void 0 : postRehydrationCallback(get(), undefined);
+
+            case 27:
+            case "end":
+              return _context2.stop();
+          }
+        }
+      }, _callee2, null, [[1, 22]]);
+    }))();
+
+    return config(function () {
       set.apply(void 0, arguments);
       void setItem();
     }, get, api);
-    var stateFromStorage;
-    var hydrate = function hydrate() {
-      if (!storage) return;
-      _hasHydrated2 = false;
-      hydrationListeners.forEach(function (cb) {
-        return cb(get());
-      });
-      var postRehydrationCallback = (options.onRehydrateStorage == null ? void 0 : options.onRehydrateStorage(get())) || undefined;
-      return toThenable(storage.getItem.bind(storage))(options.name).then(function (deserializedStorageValue) {
-        if (deserializedStorageValue) {
-          if (typeof deserializedStorageValue.version === 'number' && deserializedStorageValue.version !== options.version) {
-            if (options.migrate) {
-              return options.migrate(deserializedStorageValue.state, deserializedStorageValue.version);
-            }
-            console.error("State loaded from storage couldn't be migrated since no migrate function was provided");
-          } else {
-            return deserializedStorageValue.state;
-          }
-        }
-      }).then(function (migratedState) {
-        var _get2;
-        stateFromStorage = options.merge(migratedState, (_get2 = get()) != null ? _get2 : configResult);
-        set(stateFromStorage, true);
-        return setItem();
-      }).then(function () {
-        postRehydrationCallback == null ? void 0 : postRehydrationCallback(stateFromStorage, undefined);
-        _hasHydrated2 = true;
-        finishHydrationListeners.forEach(function (cb) {
-          return cb(stateFromStorage);
-        });
-      }).catch(function (e) {
-        postRehydrationCallback == null ? void 0 : postRehydrationCallback(undefined, e);
-      });
-    };
-    api.persist = {
-      setOptions: function setOptions(newOptions) {
-        options = _extends({}, options, newOptions);
-        if (newOptions.storage) {
-          storage = newOptions.storage;
-        }
-      },
-      clearStorage: function clearStorage() {
-        var _storage2;
-        (_storage2 = storage) == null ? void 0 : _storage2.removeItem(options.name);
-      },
-      getOptions: function getOptions() {
-        return options;
-      },
-      rehydrate: function rehydrate() {
-        return hydrate();
-      },
-      hasHydrated: function hasHydrated() {
-        return _hasHydrated2;
-      },
-      onHydrate: function onHydrate(cb) {
-        hydrationListeners.add(cb);
-        return function () {
-          hydrationListeners.delete(cb);
-        };
-      },
-      onFinishHydration: function onFinishHydration(cb) {
-        finishHydrationListeners.add(cb);
-        return function () {
-          finishHydrationListeners.delete(cb);
-        };
-      }
-    };
-    hydrate();
-    return stateFromStorage || configResult;
   };
 };
-var persistImpl = function persistImpl(config, baseOptions) {
-  if ('getStorage' in baseOptions || 'serialize' in baseOptions || 'deserialize' in baseOptions) {
-    if (process.env.NODE_ENV !== "production") {
-      console.warn('[DEPRECATED] `getStorage`, `serialize` and `deserialize` options are deprecated. Please use `storage` option instead.');
-    }
-    return oldImpl(config, baseOptions);
-  }
-  return newImpl(config, baseOptions);
-};
-var persist = persistImpl;
 
 exports.combine = combine;
-exports.createJSONStorage = createJSONStorage;
 exports.devtools = devtools;
 exports.persist = persist;
 exports.redux = redux;
-exports.subscribeWithSelector = subscribeWithSelector;

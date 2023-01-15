@@ -1,48 +1,179 @@
 'use strict';
 
-var vanilla = require('zustand/vanilla');
-var react$1 = require('react');
-var useSyncExternalStoreExports = require('use-sync-external-store/shim/with-selector');
+Object.defineProperty(exports, '__esModule', { value: true });
 
-var useSyncExternalStoreWithSelector = useSyncExternalStoreExports.useSyncExternalStoreWithSelector;
-function useStore(api, selector, equalityFn) {
-  if (selector === void 0) {
-    selector = api.getState;
-  }
-  var slice = useSyncExternalStoreWithSelector(api.subscribe, api.getState, api.getServerState || api.getState, selector, equalityFn);
-  react$1.useDebugValue(slice);
-  return slice;
-}
-var createImpl = function createImpl(createState) {
-  if (process.env.NODE_ENV !== "production" && typeof createState !== 'function') {
-    console.warn('[DEPRECATED] Passing a vanilla store will be unsupported in the future version. Please use `import { useStore } from "zustand"` to use the vanilla store in React.');
-  }
-  var api = typeof createState === 'function' ? vanilla.createStore(createState) : createState;
-  var useBoundStore = function useBoundStore(selector, equalityFn) {
-    return useStore(api, selector, equalityFn);
+var react = require('react');
+
+function create$1(createState) {
+  var state;
+  var listeners = new Set();
+
+  var setState = function setState(partial, replace) {
+    var nextState = typeof partial === 'function' ? partial(state) : partial;
+
+    if (nextState !== state) {
+      var _previousState = state;
+      state = replace ? nextState : Object.assign({}, state, nextState);
+      listeners.forEach(function (listener) {
+        return listener(state, _previousState);
+      });
+    }
   };
-  Object.assign(useBoundStore, api);
-  return useBoundStore;
-};
-var create = function create(createState) {
-  return createState ? createImpl(createState) : createImpl;
-};
-var react = (function (createState) {
-  if (process.env.NODE_ENV !== "production") {
-    console.warn("[DEPRECATED] default export is deprecated, instead import { create } from'zustand'");
-  }
-  return create(createState);
-});
 
-exports.create = create;
-exports.default = react;
-exports.useStore = useStore;
-Object.keys(vanilla).forEach(function (k) {
-  if (k !== 'default' && !exports.hasOwnProperty(k)) Object.defineProperty(exports, k, {
-    enumerable: true,
-    get: function () { return vanilla[k]; }
+  var getState = function getState() {
+    return state;
+  };
+
+  var subscribeWithSelector = function subscribeWithSelector(listener, selector, equalityFn) {
+    if (selector === void 0) {
+      selector = getState;
+    }
+
+    if (equalityFn === void 0) {
+      equalityFn = Object.is;
+    }
+
+    var currentSlice = selector(state);
+
+    function listenerToAdd() {
+      var nextSlice = selector(state);
+
+      if (!equalityFn(currentSlice, nextSlice)) {
+        var _previousSlice = currentSlice;
+        listener(currentSlice = nextSlice, _previousSlice);
+      }
+    }
+
+    listeners.add(listenerToAdd);
+    return function () {
+      return listeners.delete(listenerToAdd);
+    };
+  };
+
+  var subscribe = function subscribe(listener, selector, equalityFn) {
+    if (selector || equalityFn) {
+      return subscribeWithSelector(listener, selector, equalityFn);
+    }
+
+    listeners.add(listener);
+    return function () {
+      return listeners.delete(listener);
+    };
+  };
+
+  var destroy = function destroy() {
+    return listeners.clear();
+  };
+
+  var api = {
+    setState: setState,
+    getState: getState,
+    subscribe: subscribe,
+    destroy: destroy
+  };
+  state = createState(setState, getState, api);
+  return api;
+}
+
+var isSSR = typeof window === 'undefined' || !window.navigator || /ServerSideRendering|^Deno\//.test(window.navigator.userAgent);
+var useIsomorphicLayoutEffect = isSSR ? react.useEffect : react.useLayoutEffect;
+function create(createState) {
+  var api = typeof createState === 'function' ? create$1(createState) : createState;
+
+  var useStore = function useStore(selector, equalityFn) {
+    if (selector === void 0) {
+      selector = api.getState;
+    }
+
+    if (equalityFn === void 0) {
+      equalityFn = Object.is;
+    }
+
+    var _ref = react.useReducer(function (c) {
+      return c + 1;
+    }, 0),
+        forceUpdate = _ref[1];
+
+    var state = api.getState();
+    var stateRef = react.useRef(state);
+    var selectorRef = react.useRef(selector);
+    var equalityFnRef = react.useRef(equalityFn);
+    var erroredRef = react.useRef(false);
+    var currentSliceRef = react.useRef();
+
+    if (currentSliceRef.current === undefined) {
+      currentSliceRef.current = selector(state);
+    }
+
+    var newStateSlice;
+    var hasNewStateSlice = false;
+
+    if (stateRef.current !== state || selectorRef.current !== selector || equalityFnRef.current !== equalityFn || erroredRef.current) {
+      newStateSlice = selector(state);
+      hasNewStateSlice = !equalityFn(currentSliceRef.current, newStateSlice);
+    }
+
+    useIsomorphicLayoutEffect(function () {
+      if (hasNewStateSlice) {
+        currentSliceRef.current = newStateSlice;
+      }
+
+      stateRef.current = state;
+      selectorRef.current = selector;
+      equalityFnRef.current = equalityFn;
+      erroredRef.current = false;
+    });
+    var stateBeforeSubscriptionRef = react.useRef(state);
+    useIsomorphicLayoutEffect(function () {
+      var listener = function listener() {
+        try {
+          var nextState = api.getState();
+          var nextStateSlice = selectorRef.current(nextState);
+
+          if (!equalityFnRef.current(currentSliceRef.current, nextStateSlice)) {
+            stateRef.current = nextState;
+            currentSliceRef.current = nextStateSlice;
+            forceUpdate();
+          }
+        } catch (error) {
+          erroredRef.current = true;
+          forceUpdate();
+        }
+      };
+
+      var unsubscribe = api.subscribe(listener);
+
+      if (api.getState() !== stateBeforeSubscriptionRef.current) {
+        listener();
+      }
+
+      return unsubscribe;
+    }, []);
+    return hasNewStateSlice ? newStateSlice : currentSliceRef.current;
+  };
+
+  Object.assign(useStore, api);
+  useStore[Symbol.iterator] = regeneratorRuntime.mark(function _callee() {
+    return regeneratorRuntime.wrap(function _callee$(_context) {
+      while (1) {
+        switch (_context.prev = _context.next) {
+          case 0:
+            console.warn('[useStore, api] = create() is deprecated and will be removed in v4');
+            _context.next = 3;
+            return useStore;
+
+          case 3:
+            _context.next = 5;
+            return api;
+
+          case 5:
+          case "end":
+            return _context.stop();
+        }
+      }
+    }, _callee);
   });
-});
+  return useStore;
+}
 
-;(module.exports = (exports && exports.default) || {}),
-  Object.assign(module.exports, exports)
+exports.default = create;
