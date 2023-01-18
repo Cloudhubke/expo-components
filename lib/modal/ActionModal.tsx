@@ -1,6 +1,6 @@
 import React from 'react';
 import { Platform } from 'react-native';
-import BottomSheet from 'reanimated-bottom-sheet';
+import BottomSheet from '@gorhom/bottom-sheet';
 import Block from '../Block';
 import Text from '../Text';
 import sizes from '../theme/Sizes';
@@ -31,17 +31,17 @@ const ActionModal = ({ children, containerStyle = {}, props }) => {
     </Block>
   );
 
-  const sheetRef = React.useRef(null);
+  const bottomSheetRef = React.useRef<BottomSheet>(null);
 
   React.useEffect(() => {
-    if (sheetRef.current) {
-      sheetRef.current.snapTo(2);
+    if (bottomSheetRef.current) {
+      bottomSheetRef.current.snapToIndex(2);
     }
-  }, [sheetRef]);
+  }, [bottomSheetRef]);
 
   return (
     <BottomSheet
-      ref={sheetRef}
+      ref={bottomSheetRef}
       snapPoints={[metrics.height * 0.8, 300, 100, 1]}
       borderRadius={10}
       renderContent={renderContent}

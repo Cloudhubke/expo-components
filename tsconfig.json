@@ -18,7 +18,6 @@
     // "noImplicitAny": false
     "declaration": true,
     "declarationDir": "./generatedTypes",
-    "baseUrl": ".",
     "paths": {
       "react-native-ui-lib": ["index.d.ts"],
       "commons": ["./src/commons"],

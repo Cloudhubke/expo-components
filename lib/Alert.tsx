@@ -15,6 +15,7 @@ const Alert = ({
   color,
   containerStyle = {},
   onClose = () => {},
+  enableClose = true,
 }: {
   message: string;
   info?: boolean;
@@ -24,6 +25,7 @@ const Alert = ({
   color?: string;
   containerStyle?: any;
   onClose?: () => void;
+  enableClose?: boolean;
 }) => {
   const { colors } = React.useContext(ThemeContext);
 
@@ -57,19 +59,21 @@ const Alert = ({
       margin={[5, 0]}
     >
       <Text white>{message}</Text>
-      <Block
-        flex={false}
-        style={{
-          position: 'absolute',
-          top: 0,
-          right: 0,
-          padding: 5,
-        }}
-      >
-        <IconButton onPress={onClose}>
-          <MaterialIcons name="close" size={20} color={colors.black} />
-        </IconButton>
-      </Block>
+      {enableClose && (
+        <Block
+          flex={false}
+          style={{
+            position: 'absolute',
+            top: 0,
+            right: 0,
+            padding: 5,
+          }}
+        >
+          <IconButton onPress={onClose}>
+            <MaterialIcons name="close" size={14} color={colors.black} />
+          </IconButton>
+        </Block>
+      )}
     </Block>
   ) : null;
 };

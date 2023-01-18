@@ -5,12 +5,13 @@ import {
   Platform,
   ScrollView,
   KeyboardAvoidingView,
+  ViewStyle,
 } from 'react-native';
 // import { LinearGradient } from 'expo-linear-gradient';
 import { View, Card } from 'react-native-ui-lib';
 import * as Animatable from 'react-native-animatable';
-import Ripple from '@expocraft/core/lib/bread/Components/Ripple';
-import ThemeContext from '@expocraft/core/lib/theme/ThemeContext';
+import Ripple from './bread/Components/Ripple';
+import ThemeContext from './theme/ThemeContext';
 
 export type Animation =
   | 'bounce'
@@ -99,7 +100,7 @@ const Block: React.FC<{
   elevation?: number;
   color?: any;
   space?: any;
-  style?: any;
+  style?: ViewStyle;
   animated?: boolean;
   animatable?: boolean;
   scrollView?: boolean;
@@ -399,7 +400,13 @@ const Block: React.FC<{
 
   if (card) {
     return (
-      <Card style={blockStyles} {...otherprops}>
+      <Card
+        elevation={10}
+        enableShadow
+        style={blockStyles}
+        {...otherprops}
+        color="cyan"
+      >
         {children}
       </Card>
     );

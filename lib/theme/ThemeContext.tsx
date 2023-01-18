@@ -5,4 +5,5 @@ import sizes from './Sizes';
 export default React.createContext<{
   colors: typeof colors;
   sizes: typeof sizes;
+  CONFIG: any;
 }>({} as any);

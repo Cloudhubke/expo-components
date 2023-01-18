@@ -1,14 +1,16 @@
 import React from 'react';
 
 const FormWizzardStep = ({
+  id: string,
   render,
 }: {
+  id: string;
   render: (props?: {
     onBack?: () => void;
     onNext?: () => void;
     values?: any;
     form?: any;
-    actionButtons?: React.ReactNode;
+    actionButtons?: any;
     [key: string]: any;
   }) => any;
 }) => {

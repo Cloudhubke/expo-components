@@ -175,6 +175,7 @@ class ImageViewer extends Component {
               onClose={this.props.onClose}
               rightComponent={() => <DoneButton />}
               style={{ height: 45 }}
+              hasHeight
               middle
             />
 

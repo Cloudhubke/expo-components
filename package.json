@@ -32,6 +32,7 @@
   },
   "dependencies": {
     "@expo/vector-icons": "^12.0.0",
+    "@gorhom/bottom-sheet": "^4",
     "@mapbox/polyline": "^1.1.0",
     "awesome-phonenumber": "^2.13.0",
     "axios": "^0.21.1",
@@ -79,7 +80,6 @@
     "react-native-modal-dropdown": "^0.6.2",
     "react-native-ratings": "^6.4.0",
     "react-native-size-matters": "^0.2.1",
-    "reanimated-bottom-sheet": "^1.0.0-alpha.22",
     "rn-country-picker-modal": "^1.0.1"
   },
   "devDependencies": {

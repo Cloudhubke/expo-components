@@ -1,16 +1,19 @@
-import React, { Component } from 'react';
+import React from 'react';
 import { StyleSheet } from 'react-native';
 
-import Block from '@expocraft/core/lib/Block';
+import Block from './Block';
 import { Colors } from 'react-native-ui-lib';
 import hexToRgb from './theme/hextToRgb';
+import ThemeContext from './theme/ThemeContext';
 
 const Badge = ({
   children,
   style,
   size,
-  color,
+  color = `rgba(${hexToRgb(Colors.primary)}, 0.2)`,
+  round = true,
   transparent,
+  shadow,
   ...props
 }: {
   [x: string]: any;
@@ -19,9 +22,12 @@ const Badge = ({
   size?: any;
   color?: any;
   transparent?: boolean;
+  shadow?: boolean;
 }) => {
+  const { sizes, colors } = React.useContext(ThemeContext);
   const badgeStyles = StyleSheet.flatten([
-    !size && { padding: 5 },
+    !size && { padding: 2 },
+    round ? { borderRadius: 1000 } : { borderRadius: sizes.borderRadius },
     size && {
       minHeight: size,
       minWidth: size,
@@ -31,23 +37,18 @@ const Badge = ({
     Array.isArray(style) ? [...style] : style,
   ]);
 
+  const badgeProps = {
+    ...(shadow
+      ? { card: true, color, enableShadow: true, shadow, elevation: 10 }
+      : { color: transparent ? undefined : color }),
+    ...props,
+  };
+
   return (
-    <Block
-      flex={false}
-      middle
-      center
-      color={transparent ? undefined : color}
-      style={badgeStyles}
-      {...props}
-    >
+    <Block flex={false} middle center style={badgeStyles} {...badgeProps}>
       {children}
     </Block>
   );
-};
-
-Badge.defaultProps = {
-  size: 32,
-  color: `rgba(${hexToRgb(Colors.grey10)}, 0.2)`,
 };
 
 export default Badge;

@@ -15,12 +15,14 @@ const FormWizzard = ({
 }: {
   onSubmit: (values: any, form?: any) => any;
   steps: Array<{
+    id: string;
     label: string;
   }>;
   initialValues?: any;
   children?: any;
 }) => {
   const [activeIndex, setActiveIndex] = React.useState(0);
+  const [activeStep, setActiveStep] = React.useState(steps[0]);
 
   const completedStepIndex = steps.length - 1;
 
@@ -35,17 +37,24 @@ const FormWizzard = ({
     return state;
   };
 
+  React.useEffect(() => {
+    setActiveStep(steps[activeIndex]);
+  }, [activeIndex]);
+
   const renderCurrentStep = (props: any) => {
     let node = null;
     React.Children.map(children, (child, index) => {
-      if (index === activeIndex) {
-        node = React.cloneElement(child, {
-          ...child.props,
-          render: () =>
-            child.props.render({
-              ...props,
-            }),
-        });
+      if (child) {
+        if (child.props.id === (activeStep || {}).id) {
+          node = React.cloneElement(child, {
+            ...child.props,
+            render: () =>
+              child.props.render({
+                id: child.props.id,
+                ...props,
+              }),
+          });
+        }
       }
     });
 
@@ -62,12 +71,14 @@ const FormWizzard = ({
             <Wizard
               testID={'uilib.wizardAllTypes'}
               activeIndex={activeIndex}
-              onActiveIndexChanged={(index: number) => setActiveIndex(index)}
+              onActiveIndexChanged={(index: number) => {
+                setActiveIndex(index);
+              }}
             >
               {steps.map((step, index) => {
                 return (
                   <Wizard.Step
-                    key={`${index}`}
+                    key={`${step.id}`}
                     label={(steps[index] || {}).label || `${index + 1}`}
                   />
                 );
@@ -82,6 +93,7 @@ const FormWizzard = ({
                   handleSubmit,
                   values,
                   form,
+                  activeStep,
                   ...formProps,
                   actionButtons: () => (
                     <Block flex={false} row>

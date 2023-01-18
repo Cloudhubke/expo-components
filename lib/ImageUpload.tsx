@@ -5,7 +5,23 @@ import Block from './Block';
 import MediaUpload from './media/MediaUpload';
 import ThemeContext from './theme/ThemeContext';
 
-const ImageUpload = ({ placeholder, meta, style, ...props }) => {
+const ImageUpload = ({
+  placeholder,
+  meta,
+  style,
+  ...props
+}: {
+  mediaType?: 'photo' | 'video';
+  endpoint?: string;
+  allowRemove?: boolean;
+  showAddButton?: true;
+  value?: any;
+  onChange?: () => any;
+  limit?: number;
+  placeholderImage?: any;
+  resize?: boolean;
+  [key: string]: any;
+}) => {
   const { CONFIG } = React.useContext(ThemeContext);
   const error = meta.touched && meta.error;
 
