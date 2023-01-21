@@ -1,5 +1,5 @@
 import React, { CSSProperties } from 'react';
-import { TextField, Colors, Spacings } from 'react-native-ui-lib';
+import { TextField, Colors, Spacings } from '@expocraft/rnuilib';
 
 import Text from './Text';
 import Block from './Block';

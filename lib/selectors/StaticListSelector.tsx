@@ -4,7 +4,7 @@ import { StyleSheet, TouchableOpacity, View, FlatList } from 'react-native';
 import { Ionicons, MaterialIcons } from '@expo/vector-icons';
 import Fuse from 'fuse.js';
 import * as Animatable from 'react-native-animatable';
-import { Colors, ListItem, Avatar, AvatarHelper } from 'react-native-ui-lib';
+import { Colors, ListItem, Avatar, AvatarHelper } from '@expocraft/rnuilib';
 import AnimatableManager from '../AnimatableManager';
 import { moderateScale, verticalScale } from 'react-native-size-matters';
 

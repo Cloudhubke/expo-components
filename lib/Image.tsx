@@ -17,7 +17,9 @@ export default ({
 }: {
   size?: number;
   src?: any;
+  source?: any;
   style?: CSSProperties;
+  resizeMode?: 'cover' | 'contain' | 'stretch' | 'center';
 }) => {
   const localStyles = !style ? { height: size, width: size } : {};
   return (

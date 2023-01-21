@@ -1,9 +1,9 @@
 import React from 'react';
 import { StyleSheet } from 'react-native';
-import ThemeContext from '@expocraft/core/lib/theme/ThemeContext';
-import Block from '@expocraft/core/lib/Block';
-import defaultsizes from '@expocraft/core/lib/theme/Sizes';
-import defaultcolors from '@expocraft/core/lib/theme/Colors';
+import ThemeContext from './theme/ThemeContext';
+import Block from './Block';
+import defaultsizes from './theme/Sizes';
+import defaultcolors from './theme/Colors';
 
 // Cards are here
 // Remove NAtive-Base

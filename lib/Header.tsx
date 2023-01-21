@@ -85,7 +85,7 @@ const Header: React.FC<{
       borderBottomColor: colors.gray2,
       borderBottomWidth: 0.5,
     },
-    Array.isArray(style) ? [...style] : style,
+    Array.isArray(style) ? [...style] : { ...(style || {}) },
   ];
 
   return (

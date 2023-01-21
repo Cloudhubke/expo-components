@@ -16,7 +16,7 @@ import {
   Platform,
   Image,
 } from 'react-native';
-import { Colors } from 'react-native-ui-lib';
+import { Colors } from '@expocraft/rnuilib';
 
 import * as IntentLauncherAndroid from 'expo-intent-launcher';
 

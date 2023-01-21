@@ -2,7 +2,7 @@ import React from 'react';
 import { StyleSheet } from 'react-native';
 
 import Block from './Block';
-import { Colors } from 'react-native-ui-lib';
+import { Colors } from '@expocraft/rnuilib';
 import hexToRgb from './theme/hextToRgb';
 import ThemeContext from './theme/ThemeContext';
 

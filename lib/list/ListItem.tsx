@@ -5,7 +5,7 @@ import {
   ListItem as UiLibListItem,
   Avatar,
   AvatarHelper,
-} from 'react-native-ui-lib';
+} from '@expocraft/rnuilib';
 import AnimatableManager from '../AnimatableManager';
 import * as Animatable from 'react-native-animatable';
 import ThemeContext from '../theme/ThemeContext';

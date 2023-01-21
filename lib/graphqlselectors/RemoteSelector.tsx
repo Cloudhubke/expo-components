@@ -16,7 +16,7 @@ import {
   Avatar,
   AvatarHelper,
   Chip,
-} from 'react-native-ui-lib';
+} from '@expocraft/rnuilib';
 import AnimatableManager from '../AnimatableManager';
 
 import isObject from 'lodash/isObject';

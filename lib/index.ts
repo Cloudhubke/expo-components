@@ -23,6 +23,7 @@ export { default as HiddenInput } from './HiddenInput';
 export { default as CheckBox } from './CheckBox';
 export { default as ProgressCircle } from './ProgressCircle';
 export { default as Image } from './Image';
+export { default as SvgImage } from './SvgImage';
 
 export { default as ImageUpload } from './ImageUpload';
 export { default as Dropdown } from './Dropdown';
@@ -66,7 +67,6 @@ export { default as AnimatableManager } from './AnimatableManager';
 // Toastr
 export { default as Toastr } from './Toastr';
 export { default as toastr } from './Toastr';
-import { default as Alert } from './Alert';
 
 // Async Storage
 export { default as AsyncStorage } from './storage/AsyncStorage';

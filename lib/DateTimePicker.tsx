@@ -1,5 +1,5 @@
 import React from 'react';
-import { DateTimePicker as RNDateTimePicker } from 'react-native-ui-lib';
+import { DateTimePicker as RNDateTimePicker } from '@expocraft/rnuilib';
 import Block from './Block';
 import Text from './Text';
 import defaultcolors from './theme/Colors';
@@ -93,7 +93,6 @@ const DateTimePicker = ({
               value={selectedDate}
               mode="date"
               is24Hour
-              display="default"
               dateFormat={format || 'YYYY-MM-DD'}
               onChange={onChange}
               style={{

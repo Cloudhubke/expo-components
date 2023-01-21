@@ -19,7 +19,7 @@ import {
   grey,
   blueGrey,
 } from 'material-ui-colors';
-import { Colors } from 'react-native-ui-lib';
+import { Colors } from '@expocraft/rnuilib';
 
 const colors = {
   primary: '#37b38b', // '#0976b4',

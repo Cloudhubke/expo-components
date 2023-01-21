@@ -1,9 +1,9 @@
 // just copy this code from the driving repo :)
 import React from 'react';
 import { StyleSheet, Platform } from 'react-native';
-import { Text } from 'react-native-ui-lib';
+import { Text } from '@expocraft/rnuilib';
 import { moderateScale } from 'react-native-size-matters';
-import ThemeContext from '@expocraft/core/lib/theme/ThemeContext';
+import ThemeContext from './theme/ThemeContext';
 
 const android = Platform.OS === 'android';
 
@@ -44,12 +44,48 @@ const Typography: React.FC<{
   // ?: boolean;colors
   color?: any;
   accent?: boolean;
+
   primary?: boolean;
+  darkPrimary?: boolean;
+  darkerPrimary?: boolean;
+  lightPrimary?: boolean;
+  lighterPrimary?: boolean;
+
   secondary?: boolean;
+  darkSecondary?: boolean;
+  darkerSecondary?: boolean;
+  lightSecondary?: boolean;
+  lighterSecondary?: boolean;
+
+  success?: boolean;
+  darkSuccess?: boolean;
+  darkerSuccess?: boolean;
+  lightSuccess?: boolean;
+  lighterSuccess?: boolean;
+
+  info?: boolean;
+  darkInfo?: boolean;
+  darkerInfo?: boolean;
+  lightInfo?: boolean;
+  lighterInfo?: boolean;
+
+  warning?: boolean;
+  darkWarning?: boolean;
+  darkerWarning?: boolean;
+  lightWarning?: boolean;
+  lighterWarning?: boolean;
+
+  danger?: boolean;
+  darkDanger?: boolean;
+  darkerDanger?: boolean;
+  lightDanger?: boolean;
+  lighterDanger?: boolean;
+
   tertiary?: boolean;
   black?: boolean;
   white?: boolean;
   gray?: boolean;
+  darkGray?: boolean;
   gray2?: boolean;
   dark?: boolean;
   mistyWhite?: boolean;
@@ -84,11 +120,7 @@ const Typography: React.FC<{
   dribbbleColor?: boolean;
   redditColor?: boolean;
   instagramColor?: boolean;
-  success?: boolean;
-  info?: boolean;
   rose?: boolean;
-  warning?: boolean;
-  danger?: boolean;
   style?: any;
   cropped?: boolean;
   children?: any;
@@ -128,13 +160,49 @@ const Typography: React.FC<{
   // colors
   color,
   accent,
+
   primary,
+  darkPrimary,
+  darkerPrimary,
+  lightPrimary,
+  lighterPrimary,
+
   secondary,
+  darkSecondary,
+  darkerSecondary,
+  lightSecondary,
+  lighterSecondary,
+
+  success,
+  darkSuccess,
+  darkerSuccess,
+  lightSuccess,
+  lighterSuccess,
+
+  info,
+  darkInfo,
+  darkerInfo,
+  lightInfo,
+  lighterInfo,
+
+  warning,
+  darkWarning,
+  darkerWarning,
+  lightWarning,
+  lighterWarning,
+
+  danger,
+  darkDanger,
+  darkerDanger,
+  lightDanger,
+  lighterDanger,
+
   tertiary,
   black,
   white,
   gray,
   gray2,
+  darkGray,
   dark,
   mistyWhite,
   milkyWhite,
@@ -168,19 +236,15 @@ const Typography: React.FC<{
   dribbbleColor,
   redditColor,
   instagramColor,
-  success,
-  info,
   rose,
-  warning,
-  danger,
   style,
   cropped,
   children,
   ...props
 }) => {
-  const { colors, fonts }: any = React.useContext(ThemeContext);
+  const { colors, fonts } = React.useContext(ThemeContext);
 
-  const styles = StyleSheet.create({
+  const styles = {
     // default style
     text: {
       ...fonts.default,
@@ -207,12 +271,48 @@ const Typography: React.FC<{
     right: { textAlign: 'right' },
     // colors
     accent: { color: colors.accent },
-    primary: { color: colors.primary },
-    secondary: { color: colors.secondary },
+
+    primary: { color: colors.primaryColors.main },
+    darkPrimary: { color: colors.primaryColors.dark },
+    darkerPrimary: { color: colors.primaryColors.darker },
+    lightPrimary: { color: colors.primaryColors.light },
+    lighterPrimary: { color: colors.primaryColors.lighter },
+
+    secondary: { color: colors.secondaryColors.main },
+    darkSecondary: { color: colors.secondaryColors.dark },
+    darkerSecondary: { color: colors.secondaryColors.darker },
+    lightSecondary: { color: colors.secondaryColors.light },
+    lighterSecondary: { color: colors.secondaryColors.lighter },
+
+    success: { color: colors.successColors.main },
+    darkSuccess: { color: colors.successColors.dark },
+    darkerSuccess: { color: colors.successColors.darker },
+    lightSuccess: { color: colors.successColors.light },
+    lighterSuccess: { color: colors.successColors.lighter },
+
+    info: { color: colors.infoColors.main },
+    darkInfo: { color: colors.infoColors.dark },
+    darkerInfo: { color: colors.infoColors.darker },
+    lightInfo: { color: colors.infoColors.light },
+    lighterInfo: { color: colors.infoColors.lighter },
+
+    warning: { color: colors.warningColors.main },
+    darkWarning: { color: colors.warningColors.dark },
+    darkerWarning: { color: colors.warningColors.darker },
+    lightWarning: { color: colors.warningColors.light },
+    lighterWarning: { color: colors.warningColors.lighter },
+
+    danger: { color: colors.dangerColors.main },
+    darkDanger: { color: colors.dangerColors.dark },
+    darkerDanger: { color: colors.dangerColors.darker },
+    lightDanger: { color: colors.dangerColors.light },
+    lighterDanger: { color: colors.dangerColors.lighter },
+
     tertiary: { color: colors.tertiary },
     black: { color: colors.black },
     white: { color: colors.white },
     gray: { color: colors.gray },
+    darkGray: { color: colors.darkGray },
     gray2: { color: colors.gray2 },
     dark: { color: colors.dark },
     mistyWhite: { color: colors.mistyWhite },
@@ -247,11 +347,7 @@ const Typography: React.FC<{
     dribbbleColor: { color: colors.dribbbleColor },
     redditColor: { color: colors.redditColor },
     instagramColor: { color: colors.instagramColor },
-    success: { color: colors.success },
-    info: { color: colors.info },
     rose: { color: colors.rose },
-    warning: { color: colors.warning },
-    danger: { color: colors.danger },
     // fonts
     h1: fonts.h1,
     h2: fonts.h2,
@@ -269,7 +365,7 @@ const Typography: React.FC<{
     caption: fonts.caption,
     small: fonts.small,
     button: fonts.button,
-  });
+  };
 
   const textStyles = [
     styles.text,
@@ -313,12 +409,42 @@ const Typography: React.FC<{
     color && !styles[color] && { color },
     // color shortcuts
     accent && styles.accent,
+
     primary && styles.primary,
+    darkPrimary && styles.darkPrimary,
+    darkerPrimary && styles.darkerPrimary,
+    lightPrimary && styles.lightPrimary,
+    lighterPrimary && styles.lighterPrimary,
+
     secondary && styles.secondary,
+    darkSecondary && styles.darkSecondary,
+    darkerSecondary && styles.darkerSecondary,
+    lightSecondary && styles.lightSecondary,
+    lighterSecondary && styles.lighterSecondary,
+
+    success && styles.success,
+    darkSuccess && styles.darkSuccess,
+    darkerSuccess && styles.darkerSuccess,
+    lightSuccess && styles.lightSuccess,
+    lighterSuccess && styles.lighterSuccess,
+
+    warning && styles.warning,
+    darkWarning && styles.darkWarning,
+    darkerWarning && styles.darkerWarning,
+    lightWarning && styles.lightWarning,
+    lighterWarning && styles.lighterWarning,
+
+    danger && styles.danger,
+    darkDanger && styles.darkDanger,
+    darkerDanger && styles.darkerDanger,
+    lightDanger && styles.lightDanger,
+    lighterDanger && styles.lighterDanger,
+
     tertiary && styles.tertiary,
     black && styles.black,
     white && styles.white,
     gray && styles.gray,
+    darkGray && styles.darkGray,
     gray2 && styles.gray2,
     dark && styles.dark,
     error && styles.error,
@@ -354,11 +480,7 @@ const Typography: React.FC<{
     dribbbleColor && styles.dribbbleColor,
     redditColor && styles.redditColor,
     instagramColor && styles.instagramColor,
-    success && styles.success,
-    info && styles.info,
     rose && styles.rose,
-    warning && styles.warning,
-    danger && styles.danger,
     style, // rewrite predefined styles
   ].filter((t) => !!t);
 

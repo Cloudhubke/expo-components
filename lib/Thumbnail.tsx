@@ -1,3 +1,3 @@
-import { Avatar } from 'react-native-ui-lib';
+import { Avatar } from '@expocraft/rnuilib';
 
 export default Avatar;

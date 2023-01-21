@@ -23,7 +23,7 @@ import {
   Platform,
   StyleSheet,
 } from 'react-native';
-import { TextField, Spacings } from 'react-native-ui-lib';
+import { TextField, Spacings } from '@expocraft/rnuilib';
 
 import Colors from '../constants/colors';
 import {

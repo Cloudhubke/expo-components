@@ -22,7 +22,7 @@ import {
   Avatar,
   AvatarHelper,
   Badge,
-} from 'react-native-ui-lib';
+} from '@expocraft/rnuilib';
 import * as Animatable from 'react-native-animatable';
 
 import AnimatableManager from '../AnimatableManager';

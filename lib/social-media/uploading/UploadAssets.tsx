@@ -1,7 +1,7 @@
 /* eslint-disable no-restricted-syntax */
 import React from 'react';
 import { Image, Dimensions, View } from 'react-native';
-import { ProgressBar, Colors, Spacings } from 'react-native-ui-lib';
+import { ProgressBar, Colors, Spacings } from '@expocraft/rnuilib';
 import axios from 'axios';
 import { Video } from 'expo-av';
 import { MaterialIcons } from '@expo/vector-icons';

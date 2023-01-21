@@ -4,11 +4,14 @@ import Text from './Text';
 import Block from './Block';
 import MediaUpload from './media/MediaUpload';
 import ThemeContext from './theme/ThemeContext';
+import Metrics from './theme/Metrics';
 
 const ImageUpload = ({
   placeholder,
   meta,
   style,
+  width = Metrics.width,
+  height = Metrics.width,
   ...props
 }: {
   mediaType?: 'photo' | 'video';
@@ -20,6 +23,8 @@ const ImageUpload = ({
   limit?: number;
   placeholderImage?: any;
   resize?: boolean;
+  width?: number;
+  height?: number;
   [key: string]: any;
 }) => {
   const { CONFIG } = React.useContext(ThemeContext);
@@ -31,6 +36,8 @@ const ImageUpload = ({
         <MediaUpload
           mediaType={['photo']}
           endpoint={`${CONFIG.API_ENDPOINT}/fileapi/media/upload/image`}
+          width={width}
+          height={height}
           {...props}
         />
       </Block>

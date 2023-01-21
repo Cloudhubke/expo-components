@@ -2,17 +2,17 @@ import React, { PureComponent } from 'react';
 import {
   ActivityIndicator,
   Clipboard,
-  Image,
   Share,
   StyleSheet,
   Text,
-  View
+  View,
 } from 'react-native';
 import NoImage from './assets/no_available_image.png';
+import Image from '../Image';
 
 class UploadingTile extends PureComponent {
   static defaultProps = {
-    asset: {}
+    asset: {},
   };
 
   constructor(props) {
@@ -29,9 +29,17 @@ class UploadingTile extends PureComponent {
 
     if (asset.Location) {
       return (
-        <View style={{ position: 'relative' }}>
+        <View
+          style={{
+            position: 'relative',
+            height: '100%',
+            width: '100%',
+            alignSelf: 'stretch',
+          }}
+        >
           <Image
             source={{ uri: asset.Location }}
+            resizeMode="cover"
             style={styles.maybeRenderImage}
           />
         </View>
@@ -41,7 +49,11 @@ class UploadingTile extends PureComponent {
     if (asset.uri) {
       return (
         <View style={{ position: 'relative' }}>
-          <Image source={{ uri: asset.uri }} style={styles.maybeRenderImage} />
+          <Image
+            source={{ uri: asset.uri }}
+            resizeMode="contain"
+            style={styles.maybeRenderImage}
+          />
           <View style={styles.loadingIndicator}>
             <ActivityIndicator size="large" color="#0000ff" />
             <Text style={{ color: '#FFF' }}>Uploading...</Text>
@@ -63,7 +75,7 @@ class UploadingTile extends PureComponent {
     Share.share({
       message: this.props.asste.uri,
       title: 'Check out this photo',
-      url: this.props.asste.uri
+      url: this.props.asste.uri,
     });
   };
 
@@ -80,14 +92,16 @@ class UploadingTile extends PureComponent {
 const styles = StyleSheet.create({
   maybeRenderImage: {
     height: '100%',
-    width: 'auto'
+    width: 'auto',
+    margin: 2,
+    borderRadius: 8,
   },
   maybeRenderNoImage: {
     height: '100%',
     width: 'auto',
     backgroundColor: '#CCC',
     alignItems: 'center',
-    justifyContent: 'center'
+    justifyContent: 'center',
   },
   loadingIndicator: {
     position: 'absolute',
@@ -97,8 +111,8 @@ const styles = StyleSheet.create({
     left: 0,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: 'rgba(250, 250, 250, 0.4)'
-  }
+    backgroundColor: 'rgba(250, 250, 250, 0.4)',
+  },
 });
 
 export default UploadingTile;

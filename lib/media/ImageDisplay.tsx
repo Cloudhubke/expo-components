@@ -4,6 +4,7 @@ import isEqual from 'lodash/isEqual';
 import debounce from 'lodash/debounce';
 import UploadingTile from './UploadingTile';
 import uploadAssetAsync from './Uploader';
+import Block from '../Block';
 
 class ImageDisplay extends Component {
   static defaultProps = {
@@ -11,13 +12,13 @@ class ImageDisplay extends Component {
     endpoint: '/fileapi/upload/image',
     onUpload: () => {},
     onProgress: () => {},
-    resize: true
+    resize: true,
   };
 
   constructor(props) {
     super(props);
     this.state = {
-      assets: []
+      assets: [],
     };
 
     this.onProgress = debounce(this.onProgress, 500);
@@ -34,9 +35,9 @@ class ImageDisplay extends Component {
     this.uploadFiles();
   }
 
-  onProgress = item => {
+  onProgress = (item) => {
     const { assets } = this.state;
-    const newassets = assets.map(asset => {
+    const newassets = assets.map((asset) => {
       if (asset.id === item.id) {
         return item;
       }
@@ -53,22 +54,22 @@ class ImageDisplay extends Component {
     const { resize } = this.props;
 
     const uploadedAssets = assets
-      .filter(f => Boolean(f.uri))
+      .filter((f) => Boolean(f.uri))
       .map(
-        asset =>
-          new Promise(async resolve => {
+        (asset) =>
+          new Promise(async (resolve) => {
             const newasset = await uploadAssetAsync({
               asset,
               endpoint: this.props.endpoint,
               resize,
-              onProgress: this.onProgress
+              onProgress: this.onProgress,
             });
             resolve(newasset[0] || {});
           })
       );
 
     if (uploadedAssets.length > 0) {
-      Promise.all(uploadedAssets).then(uploadedassets => {
+      Promise.all(uploadedAssets).then((uploadedassets) => {
         this.setState({ assets: [...uploadedassets] });
         this.props.onUpload(uploadedassets);
       });
@@ -78,9 +79,13 @@ class ImageDisplay extends Component {
   renderOne = () => {
     const asset = this.state.assets[0] || {};
     return (
-      <View style={styles.single}>
+      <Block
+        style={{
+          alignSelf: 'stretch',
+        }}
+      >
         <UploadingTile asset={asset} />
-      </View>
+      </Block>
     );
   };
 
@@ -88,14 +93,17 @@ class ImageDisplay extends Component {
     const first = this.state.assets[0] || {};
     const second = this.state.assets[1] || {};
     return (
-      <View style={styles.dual}>
-        <View style={{ flex: 1, marginBottom: 2 }}>
-          <UploadingTile asset={first} />
-        </View>
-        <View style={{ flex: 1 }}>
-          <UploadingTile asset={second} />
-        </View>
-      </View>
+      <Block style={{ width: '100%' }}>
+        <Block row margin={[5, 0, 0, 0]}>
+          <Block style={{ flex: 1, marginBottom: 2 }}>
+            <UploadingTile asset={first} />
+          </Block>
+          <Block style={{ flex: 1 }}>
+            <UploadingTile asset={second} />
+          </Block>
+        </Block>
+        <Block></Block>
+      </Block>
     );
   };
 
@@ -104,19 +112,19 @@ class ImageDisplay extends Component {
     const second = this.state.assets[1] || {};
     const third = this.state.assets[2] || {};
     return (
-      <View style={styles.tripple}>
-        <View style={{ flex: 1, marginRight: 2 }}>
+      <Block style={{ width: '100%' }}>
+        <Block>
           <UploadingTile asset={first} />
-        </View>
-        <View style={styles.dual}>
-          <View style={{ flex: 1, marginBottom: 2 }}>
+        </Block>
+        <Block row margin={[5, 0, 0, 0]}>
+          <Block style={{ flex: 1, marginBottom: 2 }}>
             <UploadingTile asset={second} />
-          </View>
-          <View style={{ flex: 1 }}>
+          </Block>
+          <Block style={{ flex: 1 }}>
             <UploadingTile asset={third} />
-          </View>
-        </View>
-      </View>
+          </Block>
+        </Block>
+      </Block>
     );
   };
 
@@ -137,14 +145,16 @@ class ImageDisplay extends Component {
 
 const styles = {
   single: {
-    flex: 1
+    flex: 1,
+    backgroundColor: 'red',
   },
   dual: {
-    flex: 1
+    flex: 1,
   },
   tripple: {
     flex: 1,
-    flexDirection: 'row'
-  }
+    flexDirection: 'row',
+    backgroundColor: 'red',
+  },
 };
 export default ImageDisplay;

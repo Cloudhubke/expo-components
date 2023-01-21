@@ -4,7 +4,7 @@ import Text from '../Text';
 import IconButton from '../IconButton';
 import { MaterialIcons } from '@expo/vector-icons';
 import ThemeContext from '../theme/ThemeContext';
-import { Chip, Colors } from 'react-native-ui-lib';
+import { Chip, Colors } from '@expocraft/rnuilib';
 
 const SelectedValues = ({
   selectedValue,

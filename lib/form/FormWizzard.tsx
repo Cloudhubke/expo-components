@@ -1,7 +1,7 @@
 import React from 'react';
 import Form from './Form';
 import Block from '../Block';
-import { Wizard } from 'react-native-ui-lib';
+import { Wizard } from '@expocraft/rnuilib';
 import Button from '../Button';
 import Text from '../Text';
 import SafeAreaView from '../SafeAreaView';

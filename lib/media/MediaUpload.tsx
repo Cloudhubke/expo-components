@@ -14,7 +14,6 @@ import {
 import { MaterialIcons } from '@expo/vector-icons';
 import isEmpty from 'lodash/isEmpty';
 import isEqual from 'lodash/isEqual';
-import Toastr from '../Toastr';
 import ImageViewer from './ImageViewer';
 import MediaSelector from './MediaSelector';
 import ImageDisplay from './ImageDisplay';
@@ -23,8 +22,7 @@ import VideoScreen from './video/VideoScreen';
 
 import StatusBar from '../StatusBar';
 import colors from '../theme/Colors';
-
-const { width } = Dimensions.get('window');
+import Metrics from '../theme/Metrics';
 
 class MediaUpload extends Component {
   static defaultProps = {
@@ -134,7 +132,14 @@ class MediaUpload extends Component {
 
   render() {
     const { selectedButton, selectedAssets, showimageviewer } = this.state;
-    const { showAddButton, allowRemove, placeholderImage, resize } = this.props;
+    const {
+      showAddButton,
+      allowRemove,
+      placeholderImage,
+      width,
+      height,
+      resize,
+    } = this.props;
 
     const currentCount = selectedAssets.length;
 
@@ -145,11 +150,40 @@ class MediaUpload extends Component {
     }
 
     return (
-      <View style={styles.root}>
+      <View
+        style={{
+          flex: 1,
+          maxWidth: '100%',
+          width,
+          height,
+          justifyContent: 'center',
+          alignItems: 'center',
+          borderWidth: 0.3,
+          borderRadius: 5,
+          padding: 1,
+        }}
+      >
         {selectedAssets.length === 0 && (
-          <View style={styles.noImage}>
+          <View
+            style={{
+              position: 'relative',
+              flex: 1,
+              width: '100%',
+              alignItems: 'center',
+              justifyContent: 'center',
+            }}
+          >
             {placeholderImage && (
-              <View style={styles.placeholderImage}>
+              <View
+                style={{
+                  position: 'absolute',
+                  top: 0,
+                  right: 0,
+                  bottom: 0,
+                  left: 0,
+                  overflow: 'hidden',
+                }}
+              >
                 <Image
                   source={placeholderImage}
                   style={{ width: '100%', height: '100%' }}
@@ -169,7 +203,13 @@ class MediaUpload extends Component {
         )}
         {selectedAssets.length > 0 && !showimageviewer && (
           <TouchableHighlight
-            style={styles.profilePic}
+            style={{
+              position: 'relative',
+              flex: 1,
+              width: '100%',
+              alignItems: 'center',
+              justifyContent: 'center',
+            }}
             onPress={() => this.onPressImageDisplay(selectedAssets, uploading)}
           >
             <ImageDisplay
@@ -315,7 +355,6 @@ class MediaUpload extends Component {
 }
 
 const styles = StyleSheet.create({
-  root: { flex: 1, justifyContent: 'center', alignItems: 'center' },
   addButton: {
     padding: 5,
     borderWidth: 0.5,
@@ -355,8 +394,7 @@ const styles = StyleSheet.create({
     color: '#555',
   },
   profilePic: {
-    width: '100%',
-    height: width,
+    flex: 1,
     position: 'relative',
     backgroundColor: 'rgba(52,52,52,0)',
     borderColor: '#CCC',
@@ -366,7 +404,6 @@ const styles = StyleSheet.create({
   },
   noImage: {
     width: '100%',
-    height: width,
     position: 'relative',
     borderWidth: 0.3,
     borderRadius: 5,

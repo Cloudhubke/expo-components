@@ -39,6 +39,10 @@ const BlockModal = ({
   middle?: boolean;
   roundedTop?: boolean;
   roundedBottom?: boolean;
+  swipeDirection?: 'up' | 'down';
+  swipeActive?: boolean;
+  propagateSwipe?: boolean;
+  backdropOpacity?: number;
   fill?: boolean;
   showHandle?: boolean;
   onClose?: () => void;

@@ -11,7 +11,7 @@ import {
   ListItem,
   Avatar,
   AvatarHelper,
-} from 'react-native-ui-lib';
+} from '@expocraft/rnuilib';
 import AnimatableManager from './AnimatableManager';
 
 import Fuse from 'fuse.js';

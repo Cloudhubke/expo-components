@@ -8,10 +8,11 @@ import {
   ViewStyle,
 } from 'react-native';
 // import { LinearGradient } from 'expo-linear-gradient';
-import { View, Card } from 'react-native-ui-lib';
+import { View, Card } from '@expocraft/rnuilib';
 import * as Animatable from 'react-native-animatable';
 import Ripple from './bread/Components/Ripple';
 import ThemeContext from './theme/ThemeContext';
+import { isNumber } from 'lodash';
 
 export type Animation =
   | 'bounce'
@@ -91,15 +92,25 @@ const Block: React.FC<{
   right?: boolean;
   top?: boolean;
   bottom?: boolean;
-  margin?: number | number[];
+  margin?: number | number[] | boolean;
+  marginTop?: number | boolean;
+  marginRight?: number | boolean;
+  marginBottom?: number | boolean;
+  marginLeft?: number | boolean;
+
   padding?: number | number[] | boolean;
+  paddingTop?: number | boolean;
+  paddingRight?: number | boolean;
+  paddingBottom?: number | boolean;
+  paddingLeft?: number | boolean;
+
   absolute?: boolean;
   card?: boolean;
   shadow?: boolean;
   shadowTop?: boolean;
   elevation?: number;
   color?: any;
-  space?: any;
+  space?: 'between' | 'around' | 'evenly';
   style?: ViewStyle;
   animated?: boolean;
   animatable?: boolean;
@@ -211,7 +222,36 @@ const Block: React.FC<{
   );
 
   function handleMargins() {
-    const { margin } = props;
+    const { marginTop, marginBottom, marginRight, marginLeft } = props;
+
+    const margin = props.margin;
+
+    if (!margin) {
+      const marginStyle = {
+        marginTop: isNumber(marginTop)
+          ? marginTop
+          : Boolean(marginTop)
+          ? sizes.margin
+          : 0,
+        marginRight: isNumber(marginRight)
+          ? marginRight
+          : Boolean(marginRight)
+          ? sizes.margin
+          : 0,
+        marginBottom: isNumber(marginBottom)
+          ? marginBottom
+          : Boolean(marginBottom)
+          ? sizes.margin
+          : 0,
+        marginLeft: isNumber(marginLeft)
+          ? marginLeft
+          : Boolean(marginLeft)
+          ? sizes.margin
+          : 0,
+      };
+      return marginStyle;
+    }
+
     if (typeof margin === 'boolean') {
       return {
         marginTop: sizes.margin,
@@ -265,7 +305,58 @@ const Block: React.FC<{
   }
 
   function handlePaddings() {
-    const { padding } = props;
+    const { paddingTop, paddingBottom, paddingRight, paddingLeft } = props;
+
+    const padding = props.padding;
+
+    if (!padding) {
+      const paddingStyle = {
+        paddingTop: isNumber(paddingTop)
+          ? paddingTop
+          : Boolean(paddingTop)
+          ? sizes.padding
+          : 0,
+        paddingRight: isNumber(paddingRight)
+          ? paddingRight
+          : Boolean(paddingRight)
+          ? sizes.padding
+          : 0,
+        paddingBottom: isNumber(paddingBottom)
+          ? paddingBottom
+          : Boolean(paddingBottom)
+          ? sizes.padding
+          : 0,
+        paddingLeft: isNumber(paddingLeft)
+          ? paddingLeft
+          : Boolean(paddingLeft)
+          ? sizes.padding
+          : 0,
+      };
+      return paddingStyle;
+    }
+
+    const paddingStyle = {
+      paddingTop: Boolean(paddingTop)
+        ? isNumber(paddingTop)
+          ? paddingTop
+          : sizes.padding
+        : 0,
+      paddingBottom: Boolean(paddingBottom)
+        ? isNumber(paddingBottom)
+          ? paddingBottom
+          : sizes.padding
+        : 0,
+      paddingRight: Boolean(paddingRight)
+        ? isNumber(paddingRight)
+          ? paddingRight
+          : sizes.padding
+        : 0,
+      paddingLeft: Boolean(paddingLeft)
+        ? isNumber(paddingLeft)
+          ? paddingLeft
+          : sizes.padding
+        : 0,
+    };
 
     if (typeof padding === 'boolean') {
       return {
@@ -318,6 +409,8 @@ const Block: React.FC<{
           };
       }
     }
+
+    return paddingStyle;
   }
 
   const {
@@ -332,6 +425,10 @@ const Block: React.FC<{
     bottom,
     margin,
     padding,
+    paddingTop,
+    paddingRight,
+    paddingBottom,
+    paddingLeft,
     absolute,
     card,
     shadow,
@@ -368,8 +465,8 @@ const Block: React.FC<{
       (row ? { alignItems: 'flex-start' } : { justifyContent: 'flex-start' }),
     bottom &&
       (row ? { alignItems: 'flex-end' } : { justifyContent: 'flex-end' }),
-    margin && { ...handleMargins() },
-    padding && { ...handlePaddings() },
+    { ...handleMargins() },
+    { ...handlePaddings() },
     absolute && styles.absolute,
     card && styles.card,
     shadow && styles.shadow,

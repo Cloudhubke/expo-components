@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Checkbox } from 'react-native-ui-lib';
+import { Checkbox } from '@expocraft/rnuilib';
 import ThemeContext from './theme/ThemeContext';
 import Block from './Block';
 import Text from './Text';
