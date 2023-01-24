@@ -225,7 +225,7 @@ const PhoneInput = React.forwardRef(
                   editable={!disabled}
                   allowFontScaling={allowFontScaling}
                   style={{
-                    paddingTop: Platform.OS === 'android' ? 0 : '1%',
+                    padding: Platform.OS === 'android' ? 0 : 5,
                     flex: 1,
                     ...inputStyle,
                   }}

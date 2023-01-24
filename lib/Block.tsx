@@ -93,11 +93,6 @@ const Block: React.FC<{
   top?: boolean;
   bottom?: boolean;
   margin?: number | number[] | boolean;
-  marginTop?: number | boolean;
-  marginRight?: number | boolean;
-  marginBottom?: number | boolean;
-  marginLeft?: number | boolean;
-
   padding?: number | number[] | boolean;
   paddingTop?: number | boolean;
   paddingRight?: number | boolean;
@@ -225,8 +220,9 @@ const Block: React.FC<{
     const { marginTop, marginBottom, marginRight, marginLeft } = props;
 
     const margin = props.margin;
+    const style = props.style || {};
 
-    if (!margin) {
+    if (!margin && !style.marginVertical && !style.marginHorizontal) {
       const marginStyle = {
         marginTop: isNumber(marginTop)
           ? marginTop
@@ -308,8 +304,9 @@ const Block: React.FC<{
     const { paddingTop, paddingBottom, paddingRight, paddingLeft } = props;
 
     const padding = props.padding;
+    const style = props.style || {};
 
-    if (!padding) {
+    if (!padding && !style.paddingVertical && !style.paddingHorizontal) {
       const paddingStyle = {
         paddingTop: isNumber(paddingTop)
           ? paddingTop

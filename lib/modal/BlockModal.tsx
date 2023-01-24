@@ -8,6 +8,7 @@ import ThemeContext from '../theme/ThemeContext';
 import Block from '../Block';
 import Text from '../Text';
 import defaultcolors from '../theme/Colors';
+import { isNumber } from 'lodash';
 
 const BlockModal = ({
   children,
@@ -26,7 +27,8 @@ const BlockModal = ({
   color = defaultcolors.milkyWhite,
   onClose = () => {},
   showHandle = false,
-  avoidKeyboard = true,
+  avoidKeyboard = false,
+  keyboardAvoiding = true,
   center = false,
   SafeAreaViewProps = {},
   ...props
@@ -35,7 +37,7 @@ const BlockModal = ({
   margin?: number;
   color?: string;
   top?: boolean;
-  bottom?: boolean;
+  bottom?: boolean | number;
   middle?: boolean;
   roundedTop?: boolean;
   roundedBottom?: boolean;
@@ -50,6 +52,7 @@ const BlockModal = ({
   isVisible?: boolean;
   minHeight?: number;
   avoidKeyboard?: boolean;
+  keyboardAvoiding?: boolean;
   containerStyle?: ViewStyle;
   SafeAreaViewProps?: any;
   center?: boolean;
@@ -71,13 +74,15 @@ const BlockModal = ({
   };
 
   const blockstyles: ViewStyle = {
-    ...(!fill &&
-      !center && {
-        position: 'absolute',
-        right: 0,
-        left: 0,
-      }),
-    ...(bottom && { bottom: verticalScale(-25) }),
+    // ...(!fill &&
+    //   !center && {
+    //     position: 'absolute',
+    //     right: 0,
+    //     left: 0,
+    //   }),
+    ...(bottom && {
+      bottom: isNumber(bottom) ? verticalScale(bottom) : verticalScale(0),
+    }),
     ...(top && { top: 0 }),
     ...(roundedTop && {
       borderTopLeftRadius: verticalScale(10),
@@ -109,10 +114,11 @@ const BlockModal = ({
       onSwipeComplete={onCloseModal}
       onModalHide={onCloseModal}
       onModalShow={() => setModalVisible(true)}
+      avoidKeyboard={avoidKeyboard || keyboardAvoiding}
       {...props}
     >
-      <SafeAreaView top {...SafeAreaViewProps}>
-        <Block middle center>
+      <SafeAreaView bottom top {...SafeAreaViewProps}>
+        <Block style={{ position: 'relative' }}>
           <Block flex={!center} shadow style={blockstyles} color={color}>
             {!top && showHandle && (
               <Block flex={false} center>
@@ -123,10 +129,6 @@ const BlockModal = ({
               </Block>
             )}
             {modalVisible && <>{children}</>}
-
-            {bottom && (
-              <Block flex={false} style={{ height: verticalScale(40) }} />
-            )}
 
             {top && showHandle && (
               <Block flex={false} center color={color}>

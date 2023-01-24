@@ -8,6 +8,7 @@ const FormWizzardStep = ({
   render: (props?: {
     onBack?: () => void;
     onNext?: () => void;
+    jumpToStep?: (params: { id: string }) => void;
     values?: any;
     form?: any;
     actionButtons?: any;

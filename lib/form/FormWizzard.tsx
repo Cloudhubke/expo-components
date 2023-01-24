@@ -61,6 +61,14 @@ const FormWizzard = ({
     return node;
   };
 
+  const jumpToStep = ({ id }: { id: string }) => {
+    const index = steps.findIndex((step) => step.id === id);
+    if (index > -1) {
+      setActiveIndex(index);
+      setActiveStep(steps[index]);
+    }
+  };
+
   return (
     <Form
       onSubmit={onSubmit}
@@ -90,9 +98,10 @@ const FormWizzard = ({
                   onBack: () => setActiveIndex((i) => (i > 0 ? i - 1 : i)),
                   onNext: () =>
                     setActiveIndex((i) => (i < steps.length - 1 ? i + 1 : i)),
-                  handleSubmit,
+                  jumpToStep: jumpToStep,
                   values,
                   form,
+                  handleSubmit,
                   activeStep,
                   ...formProps,
                   actionButtons: () => (

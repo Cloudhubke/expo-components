@@ -54,7 +54,7 @@ const Alert = ({
       duration={2000}
       padding
       color={alertColor}
-      rounded
+      rounded={5}
       {...containerStyle}
       margin={[5, 0]}
     >
@@ -64,12 +64,15 @@ const Alert = ({
           flex={false}
           style={{
             position: 'absolute',
-            top: 0,
-            right: 0,
+            top: 2.5,
+            right: 2.5,
             padding: 5,
           }}
         >
-          <IconButton onPress={onClose}>
+          <IconButton
+            onPress={onClose}
+            color={`rgba(${hexToRgb(colors.mistyWhite)}, 0.3)`}
+          >
             <MaterialIcons name="close" size={14} color={colors.black} />
           </IconButton>
         </Block>
