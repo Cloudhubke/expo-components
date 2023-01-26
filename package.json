@@ -1,6 +1,6 @@
 {
   "name": "@expocraft/core",
-  "version": "45.0.0",
+  "version": "45.0.1",
   "description": "Components for use with react-native projects and expo",
   "main": "lib/index.ts",
   "module": "lib/index.ts",
