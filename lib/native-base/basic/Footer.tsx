@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { View, ViewPropTypes, SafeAreaView } from 'react-native';
+import { View, SafeAreaView } from 'react-native';
+import { ViewPropTypes } from 'deprecated-react-native-prop-types';
 import { connectStyle } from 'native-base-shoutem-theme';
 
 import mapPropsToStyleNames from '../utils/mapPropsToStyleNames';
@@ -8,7 +9,7 @@ import getStyle from '../utils/getStyle';
 
 class Footer extends Component {
   static contextTypes = {
-    theme: PropTypes.object
+    theme: PropTypes.object,
   };
 
   render() {
@@ -17,10 +18,10 @@ class Footer extends Component {
     return (
       <SafeAreaView
         style={{
-          backgroundColor: getStyle(style).backgroundColor
+          backgroundColor: getStyle(style).backgroundColor,
         }}
       >
-        <View ref={c => (this._root = c)} {...this.props} />
+        <View ref={(c) => (this._root = c)} {...this.props} />
       </SafeAreaView>
     );
   }
@@ -31,8 +32,8 @@ Footer.propTypes = {
   style: PropTypes.oneOfType([
     PropTypes.object,
     PropTypes.number,
-    PropTypes.array
-  ])
+    PropTypes.array,
+  ]),
 };
 
 const StyledFooter = connectStyle(

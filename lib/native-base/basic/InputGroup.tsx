@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { View, ViewPropTypes } from 'react-native';
+import { View } from 'react-native';
+import { ViewPropTypes } from 'deprecated-react-native-prop-types';
 import { connectStyle } from 'native-base-shoutem-theme';
 
 import variables from '../theme/variables/platform';
@@ -14,21 +15,21 @@ class InputGroup extends Component {
         borderWidth: this.props.rounded ? 1 : undefined,
         borderRadius: this.props.rounded
           ? variables.inputGroupRoundedBorderRadius
-          : undefined
-      }
+          : undefined,
+      },
     };
   }
 
   prepareRootProps() {
     const defaultProps = {
-      style: this.getInitialStyle().roundedInputGroup
+      style: this.getInitialStyle().roundedInputGroup,
     };
 
     return computeProps(this.props, defaultProps);
   }
   render() {
     return (
-      <View ref={c => (this._root = c)} {...this.prepareRootProps()}>
+      <View ref={(c) => (this._root = c)} {...this.prepareRootProps()}>
         {this.props.children}
       </View>
     );
@@ -42,7 +43,7 @@ InputGroup.propTypes = {
   rounded: PropTypes.bool,
   success: PropTypes.bool,
   error: PropTypes.bool,
-  disabled: PropTypes.bool
+  disabled: PropTypes.bool,
 };
 
 const StyledInputGroup = connectStyle(

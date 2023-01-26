@@ -4,7 +4,8 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import createReactClass from 'create-react-class';
-import { FlatList, Modal, Picker, View, ViewPropTypes } from 'react-native';
+import { FlatList, Modal, Picker, View } from 'react-native';
+import { ViewPropTypes } from 'deprecated-react-native-prop-types';
 import { connectStyle } from 'native-base-shoutem-theme';
 import { find, get } from 'lodash';
 
@@ -29,7 +30,7 @@ class PickerNB extends Component {
     this.state = {
       modalVisible: false,
       currentLabel: this.getLabel(props),
-      dataSource: this.getChildren(props.children)
+      dataSource: this.getChildren(props.children),
     };
   }
 
@@ -38,7 +39,7 @@ class PickerNB extends Component {
       picker: {
         // alignItems: 'flex-end'
       },
-      pickerItem: {}
+      pickerItem: {},
     };
   };
 
@@ -46,7 +47,7 @@ class PickerNB extends Component {
     const children = this.getChildren(props.children);
     const item = find(
       children,
-      child => child.props.value === props.selectedValue
+      (child) => child.props.value === props.selectedValue
     );
     return get(item, 'props.label');
   }
@@ -54,11 +55,11 @@ class PickerNB extends Component {
   getSelectedItem() {
     return find(
       this.props.children,
-      child => child.props.value === this.props.selectedValue
+      (child) => child.props.value === this.props.selectedValue
     );
   }
 
-  getChildren = children => {
+  getChildren = (children) => {
     if (children && !Array.isArray(children)) {
       return [].concat(children);
     }
@@ -70,7 +71,7 @@ class PickerNB extends Component {
   prepareRootProps() {
     const defaultProps = {
       style: this.getInitialStyle().picker,
-      itemStyle: this.getInitialStyle().pickerItem
+      itemStyle: this.getInitialStyle().pickerItem,
     };
 
     return computeProps(this.props, defaultProps);
@@ -85,10 +86,10 @@ class PickerNB extends Component {
       style: [
         {
           fontSize: 22,
-          lineHeight: 26
+          lineHeight: 26,
         },
-        { ...this.props.iosIcon.props.style }
-      ]
+        { ...this.props.iosIcon.props.style },
+      ],
     });
   }
 
@@ -105,7 +106,7 @@ class PickerNB extends Component {
         onPress,
         text,
         picker: this,
-        selectedItem: this.getSelectedItem()
+        selectedItem: this.getSelectedItem(),
       });
     }
     return (
@@ -153,7 +154,7 @@ class PickerNB extends Component {
               shadowRadius: null,
               shadowOpacity: null,
               marginLeft: 3,
-              ...this.props.headerBackButtonStyle
+              ...this.props.headerBackButtonStyle,
             }}
             transparent
             onPress={() => {
@@ -184,19 +185,19 @@ class PickerNB extends Component {
 
     if (currentLabel !== nextLabel) {
       this.setState({
-        currentLabel: nextLabel
+        currentLabel: nextLabel,
       });
     }
     if (currentDS !== nextDS) {
       this.setState({
-        dataSource: nextDS
+        dataSource: nextDS,
       });
     }
   }
 
   render() {
     return (
-      <View ref={c => (this._root = c)}>
+      <View ref={(c) => (this._root = c)}>
         {this.renderButton()}
         <Modal
           // supportedOrientations={this.props.supportedOrientations || null}
@@ -253,12 +254,12 @@ class PickerNB extends Component {
 PickerNB.Item = createReactClass({
   render() {
     return <Picker.Item {...this.props()} />;
-  }
+  },
 });
 
 PickerNB.propTypes = {
   ...ViewPropTypes,
-  renderButton: PropTypes.func
+  renderButton: PropTypes.func,
 };
 
 const StyledPickerNB = connectStyle(

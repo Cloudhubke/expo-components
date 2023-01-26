@@ -1,13 +1,14 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { View, ViewPropTypes } from 'react-native';
+import { View } from 'react-native';
+import { ViewPropTypes } from 'deprecated-react-native-prop-types';
 import { connectStyle } from 'native-base-shoutem-theme';
 
 import mapPropsToStyleNames from '../utils/mapPropsToStyleNames';
 
 class Right extends Component {
   render() {
-    return <View ref={c => (this._root = c)} {...this.props} />;
+    return <View ref={(c) => (this._root = c)} {...this.props} />;
   }
 }
 
@@ -16,12 +17,14 @@ Right.propTypes = {
   style: PropTypes.oneOfType([
     PropTypes.object,
     PropTypes.number,
-    PropTypes.array
-  ])
+    PropTypes.array,
+  ]),
 };
 
-const StyledRight = connectStyle('NativeBase.Right', {}, mapPropsToStyleNames)(
-  Right
-);
+const StyledRight = connectStyle(
+  'NativeBase.Right',
+  {},
+  mapPropsToStyleNames
+)(Right);
 
 export { StyledRight as Right };

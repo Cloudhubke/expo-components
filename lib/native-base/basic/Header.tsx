@@ -3,7 +3,8 @@
 import { connectStyle } from 'native-base-shoutem-theme';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
-import { View, StatusBar, ViewPropTypes, SafeAreaView } from 'react-native';
+import { View, StatusBar, SafeAreaView } from 'react-native';
+import { ViewPropTypes } from 'deprecated-react-native-prop-types';
 
 import mapPropsToStyleNames from '../utils/mapPropsToStyleNames';
 import getStyle from '../utils/getStyle';
@@ -11,7 +12,7 @@ import variable from '../theme/variables/platform';
 
 class Header extends Component {
   static contextTypes = {
-    theme: PropTypes.object
+    theme: PropTypes.object,
   };
 
   render() {
@@ -20,7 +21,7 @@ class Header extends Component {
       iosBarStyle,
       style,
       transparent,
-      translucent
+      translucent,
     } = this.props;
 
     const variables = this.context.theme
@@ -48,10 +49,10 @@ class Header extends Component {
         />
         <SafeAreaView
           style={{
-            backgroundColor: getStyle(style).backgroundColor
+            backgroundColor: getStyle(style).backgroundColor,
           }}
         >
-          <View ref={c => (this._root = c)} {...this.props} />
+          <View ref={(c) => (this._root = c)} {...this.props} />
         </SafeAreaView>
       </View>
     );
@@ -63,10 +64,10 @@ Header.propTypes = {
   style: PropTypes.oneOfType([
     PropTypes.object,
     PropTypes.number,
-    PropTypes.array
+    PropTypes.array,
   ]),
   searchBar: PropTypes.bool,
-  rounded: PropTypes.bool
+  rounded: PropTypes.bool,
 };
 
 const StyledHeader = connectStyle(

@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { FlatList, View, ViewPropTypes } from 'react-native';
+import { FlatList, View } from 'react-native';
+import { ViewPropTypes } from 'deprecated-react-native-prop-types';
 import { connectStyle } from 'native-base-shoutem-theme';
 
 import mapPropsToStyleNames from '../utils/mapPropsToStyleNames';
@@ -18,7 +19,7 @@ class Card extends Component {
       );
     }
     return (
-      <View ref={c => (this._root = c)} {...this.props}>
+      <View ref={(c) => (this._root = c)} {...this.props}>
         {this.props.children}
       </View>
     );
@@ -30,15 +31,17 @@ Card.propTypes = {
   style: PropTypes.oneOfType([
     PropTypes.object,
     PropTypes.number,
-    PropTypes.array
+    PropTypes.array,
   ]),
   // eslint-disable-next-line react/forbid-prop-types
   dataArray: PropTypes.array,
-  renderRow: PropTypes.func
+  renderRow: PropTypes.func,
 };
 
-const StyledCard = connectStyle('NativeBase.Card', {}, mapPropsToStyleNames)(
-  Card
-);
+const StyledCard = connectStyle(
+  'NativeBase.Card',
+  {},
+  mapPropsToStyleNames
+)(Card);
 
 export { StyledCard as Card };
