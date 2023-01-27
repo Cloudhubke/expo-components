@@ -332,29 +332,6 @@ const Block: React.FC<{
       return paddingStyle;
     }
 
-    const paddingStyle = {
-      paddingTop: Boolean(paddingTop)
-        ? isNumber(paddingTop)
-          ? paddingTop
-          : sizes.padding
-        : 0,
-      paddingBottom: Boolean(paddingBottom)
-        ? isNumber(paddingBottom)
-          ? paddingBottom
-          : sizes.padding
-        : 0,
-      paddingRight: Boolean(paddingRight)
-        ? isNumber(paddingRight)
-          ? paddingRight
-          : sizes.padding
-        : 0,
-      paddingLeft: Boolean(paddingLeft)
-        ? isNumber(paddingLeft)
-          ? paddingLeft
-          : sizes.padding
-        : 0,
-    };
-
     if (typeof padding === 'boolean') {
       return {
         paddingTop: sizes.padding,
@@ -406,8 +383,6 @@ const Block: React.FC<{
           };
       }
     }
-
-    return paddingStyle;
   }
 
   const {
