@@ -112,7 +112,7 @@ const FormWizzard = ({
                             small
                             rounded
                             dark
-                            onPress={() => setActiveIndex((i) => i + 1)}
+                            onPress={() => setActiveIndex((i) => i - 1)}
                           >
                             <MaterialIcons
                               name="arrow-back"

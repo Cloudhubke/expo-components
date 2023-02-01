@@ -119,6 +119,47 @@ const Block: React.FC<{
 }> = (props): any => {
   const { sizes, colors }: any = React.useContext(ThemeContext);
 
+  const {
+    flex,
+    row,
+    wrap,
+    center,
+    middle,
+    left,
+    right,
+    top,
+    bottom,
+    margin,
+    marginTop,
+    marginRight,
+    marginBottom,
+    marginLeft,
+
+    padding,
+    paddingTop,
+    paddingRight,
+    paddingBottom,
+    paddingLeft,
+
+    absolute,
+    card,
+    shadow,
+    shadowTop,
+    elevation,
+    color,
+    space,
+    style,
+    animated,
+    animatable,
+    scrollView,
+    linearGradient,
+    ripple,
+    children,
+    keyboardAvoiding,
+    rounded,
+    ...otherprops
+  } = props;
+
   const styles = React.useMemo(
     () =>
       StyleSheet.create({
@@ -217,35 +258,39 @@ const Block: React.FC<{
   );
 
   function handleMargins() {
-    const { marginTop, marginBottom, marginRight, marginLeft } = props;
-
     const margin = props.margin;
     const style = props.style || {};
 
-    if (!margin && !style.marginVertical && !style.marginHorizontal) {
-      const marginStyle = {
-        marginTop: isNumber(marginTop)
-          ? marginTop
-          : Boolean(marginTop)
-          ? sizes.margin
-          : 0,
-        marginRight: isNumber(marginRight)
-          ? marginRight
-          : Boolean(marginRight)
-          ? sizes.margin
-          : 0,
-        marginBottom: isNumber(marginBottom)
-          ? marginBottom
-          : Boolean(marginBottom)
-          ? sizes.margin
-          : 0,
-        marginLeft: isNumber(marginLeft)
-          ? marginLeft
-          : Boolean(marginLeft)
-          ? sizes.margin
-          : 0,
-      };
-      return marginStyle;
+    if (marginTop && !margin && !style.marginVertical) {
+      style.marginTop = Boolean(marginTop)
+        ? sizes.margin
+        : isNumber(marginTop)
+        ? marginTop
+        : 0;
+    }
+
+    if (marginBottom && !margin && !style.marginVertical) {
+      style.marginBottom = Boolean(marginBottom)
+        ? sizes.margin
+        : isNumber(marginBottom)
+        ? marginBottom
+        : 0;
+    }
+
+    if (marginRight && !margin && !style.marginHorizontal) {
+      style.marginRight = Boolean(marginRight)
+        ? sizes.margin
+        : isNumber(marginRight)
+        ? marginRight
+        : 0;
+    }
+
+    if (marginLeft && !margin && !style.marginHorizontal) {
+      style.marginLeft = Boolean(marginLeft)
+        ? sizes.margin
+        : isNumber(marginLeft)
+        ? marginLeft
+        : 0;
     }
 
     if (typeof margin === 'boolean') {
@@ -270,66 +315,70 @@ const Block: React.FC<{
       switch (marginSize) {
         case 1:
           return {
-            marginTop: margin[0],
-            marginRight: margin[0],
-            marginBottom: margin[0],
-            marginLeft: margin[0],
+            marginTop: margin[0] || 0,
+            marginRight: margin[0] || 0,
+            marginBottom: margin[0] || 0,
+            marginLeft: margin[0] || 0,
           };
         case 2:
           return {
-            marginTop: margin[0],
-            marginRight: margin[1],
-            marginBottom: margin[0],
-            marginLeft: margin[1],
+            marginTop: margin[0] || 0,
+            marginRight: margin[1] || 0,
+            marginBottom: margin[0] || 0,
+            marginLeft: margin[1] || 0,
           };
         case 3:
           return {
-            marginTop: margin[0],
-            marginRight: margin[1],
-            marginBottom: margin[2],
-            marginLeft: margin[1],
+            marginTop: margin[0] || 0,
+            marginRight: margin[1] || 0,
+            marginBottom: margin[2] || 0,
+            marginLeft: margin[1] || 0,
           };
         default:
           return {
-            marginTop: margin[0],
-            marginRight: margin[1],
-            marginBottom: margin[2],
-            marginLeft: margin[3],
+            marginTop: margin[0] || 0,
+            marginRight: margin[1] || 0,
+            marginBottom: margin[2] || 0,
+            marginLeft: margin[3] || 0,
           };
       }
     }
   }
 
   function handlePaddings() {
-    const { paddingTop, paddingBottom, paddingRight, paddingLeft } = props;
-
     const padding = props.padding;
     const style = props.style || {};
 
-    if (!padding && !style.paddingVertical && !style.paddingHorizontal) {
-      const paddingStyle = {
-        paddingTop: isNumber(paddingTop)
-          ? paddingTop
-          : Boolean(paddingTop)
-          ? sizes.padding
-          : 0,
-        paddingRight: isNumber(paddingRight)
-          ? paddingRight
-          : Boolean(paddingRight)
-          ? sizes.padding
-          : 0,
-        paddingBottom: isNumber(paddingBottom)
-          ? paddingBottom
-          : Boolean(paddingBottom)
-          ? sizes.padding
-          : 0,
-        paddingLeft: isNumber(paddingLeft)
-          ? paddingLeft
-          : Boolean(paddingLeft)
-          ? sizes.padding
-          : 0,
-      };
-      return paddingStyle;
+    if (paddingTop && !padding && !style.paddingVertical) {
+      style.paddingTop = Boolean(paddingTop)
+        ? sizes.padding
+        : isNumber(paddingTop)
+        ? paddingTop
+        : 0;
+    }
+
+    if (paddingBottom && !padding && !style.paddingVertical) {
+      style.paddingBottom = Boolean(paddingBottom)
+        ? sizes.padding
+        : isNumber(paddingBottom)
+        ? paddingBottom
+        : 0;
+    }
+
+    if (paddingRight && !padding && !style.paddingHorizontal) {
+      style.paddingRight = Boolean(paddingRight)
+        ? sizes.padding
+        : isNumber(paddingRight)
+        ? paddingRight
+        : 0;
+    }
+
+    if (paddingLeft && !padding && !style.paddingHorizontal) {
+      style.paddingLeft = Boolean(paddingLeft)
+        ? sizes.padding
+        : isNumber(paddingLeft)
+        ? paddingLeft
+        : 0;
     }
 
     if (typeof padding === 'boolean') {
@@ -384,41 +433,6 @@ const Block: React.FC<{
       }
     }
   }
-
-  const {
-    flex,
-    row,
-    wrap,
-    center,
-    middle,
-    left,
-    right,
-    top,
-    bottom,
-    margin,
-    padding,
-    paddingTop,
-    paddingRight,
-    paddingBottom,
-    paddingLeft,
-    absolute,
-    card,
-    shadow,
-    shadowTop,
-    elevation,
-    color,
-    space,
-    style,
-    animated,
-    animatable,
-    scrollView,
-    linearGradient,
-    ripple,
-    children,
-    keyboardAvoiding,
-    rounded,
-    ...otherprops
-  } = props;
 
   const blockStyles = [
     styles.block,
