@@ -164,7 +164,7 @@ const Field = ({
   if (required && label) {
     requiredlabel = (
       <>
-        {label}
+        {typeof label === 'string' ? <Text>{label}</Text> : label}
         <Text>*</Text>
       </>
     );
