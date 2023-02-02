@@ -27,7 +27,7 @@ const ImageUpload = ({
   height?: number;
   [key: string]: any;
 }) => {
-  const { CONFIG } = React.useContext(ThemeContext);
+  const CONFIG = React.useContext(ThemeContext).CONFIG || {};
   const error = meta.touched && meta.error;
 
   return (

@@ -16,31 +16,32 @@ export const useStore = create(appStore);
 //     ...state,
 //   };
 // }
+export default function <S>() {
+  return function <SelectorOutput>(selector: (store: S) => SelectorOutput) {
+    const [state, setState] = React.useState<SelectorOutput>({
+      ...selector((appStore as any).getState()),
+    });
 
-export default function <S>(selector: (store: S) => Partial<S>) {
-  const [state, setState] = React.useState<Partial<S>>({
-    ...selector((appStore as any).getState()),
-  });
+    React.useEffect(
+      () =>
+        (appStore as any).subscribe((storeState: S) => {
+          setState({
+            ...selector(storeState),
+          });
+        }),
+      []
+    );
 
-  React.useEffect(
-    () =>
-      (appStore as any).subscribe((storeState: S) => {
-        setState({
-          ...selector(storeState),
-        });
-      }),
-    []
-  );
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // FOR rect 18 and above
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // const state = useSyncExternalStore(appStore.subscribe, () =>
+    //   selector((appStore as any).getState())
+    // );
 
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // FOR rect 18 and above
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // const state = useSyncExternalStore(appStore.subscribe, () =>
-  //   selector((appStore as any).getState())
-  // );
-
-  return {
-    ...state,
-    getState: (appStore as any).getState,
+    return {
+      ...state,
+      getState: (appStore as any).getState,
+    };
   };
 }

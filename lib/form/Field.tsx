@@ -3,6 +3,7 @@ import React from 'react';
 import { Field as FinalFormField } from 'react-final-form';
 import isEmpty from 'lodash/isEmpty';
 import FieldBlock from '../FieldBlock';
+import Text from '../Text';
 
 const notEmptyField = (value) => (!isEmpty(value) ? undefined : 'Required');
 const requiredField = (value) => {
@@ -161,7 +162,12 @@ const Field = ({
   let requiredlabel = label || '';
 
   if (required && label) {
-    requiredlabel = `${label}*`;
+    requiredlabel = (
+      <>
+        {label}
+        <Text>*</Text>
+      </>
+    );
   }
 
   const parseFn = (value) => {
@@ -193,7 +199,7 @@ const Field = ({
     <FieldBlock
       row={row}
       style={containerStyle}
-      label={`${showLabel ? requiredlabel : ''}`}
+      label={showLabel ? requiredlabel : ''}
       flex={flex}
     >
       <FinalFormField
