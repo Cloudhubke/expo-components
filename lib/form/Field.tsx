@@ -4,6 +4,7 @@ import { Field as FinalFormField } from 'react-final-form';
 import isEmpty from 'lodash/isEmpty';
 import FieldBlock from '../FieldBlock';
 import Text from '../Text';
+import Block from '../Block';
 
 const notEmptyField = (value) => (!isEmpty(value) ? undefined : 'Required');
 const requiredField = (value) => {
@@ -163,10 +164,10 @@ const Field = ({
 
   if (required && label) {
     requiredlabel = (
-      <>
+      <Block flex={false} row middle padding={[2.5, 0]}>
         {typeof label === 'string' ? <Text>{label}</Text> : label}
         <Text>*</Text>
-      </>
+      </Block>
     );
   }
 

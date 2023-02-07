@@ -101,7 +101,7 @@ const FormWizzard = ({
                 })}
               </Wizard>
             )}
-            <Block card padding {...cardProps}>
+            <Block keyboardAvoiding padding {...cardProps}>
               {renderCurrentStep({
                 onBack: () => setActiveIndex((i) => (i > 0 ? i - 1 : i)),
                 onNext: () =>

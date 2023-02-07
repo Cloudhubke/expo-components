@@ -516,11 +516,13 @@ const Block: React.FC<{
       </Animatable.View>
     );
   }
+  const keyboardVerticalOffset = Platform.OS === 'ios' ? 40 : 0;
 
   if (keyboardAvoiding) {
     return (
       <KeyboardAvoidingView
-        behavior={Platform.OS == 'ios' ? 'padding' : 'height'}
+        // behavior={Platform.OS == 'ios' ? 'padding' : 'padding'}
+        keyboardVerticalOffset={keyboardVerticalOffset}
         style={blockStyles}
         {...otherprops}
       >

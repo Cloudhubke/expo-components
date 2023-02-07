@@ -7,7 +7,11 @@ try {
   if (Image) {
     FastImage = Image;
   }
-} catch (e) {}
+} catch (e) {
+  console.log('====================================');
+  console.log('FastImage error ', e);
+  console.log('====================================');
+}
 
 export default ({
   size = 48,
