@@ -6,6 +6,7 @@ import Button from '../Button';
 import Text from '../Text';
 import SafeAreaView from '../SafeAreaView';
 import { MaterialIcons } from '@expo/vector-icons';
+import { Platform } from 'react-native';
 
 interface IStep {
   id: string;
@@ -18,12 +19,14 @@ const FormWizzard = ({
   children,
   showSteps = true,
   cardProps = {},
+  keyboardAvoiding = Platform.OS === 'android',
 }: {
   onSubmit: (values: any, form?: any) => any;
   initialValues?: any;
   children?: any;
   showSteps?: boolean;
   cardProps?: any;
+  keyboardAvoiding?: boolean;
 }) => {
   const [activeIndex, setActiveIndex] = React.useState(0);
   const [activeStep, setActiveStep] = React.useState<IStep>({} as any);
@@ -101,7 +104,8 @@ const FormWizzard = ({
                 })}
               </Wizard>
             )}
-            <Block keyboardAvoiding padding {...cardProps}>
+
+            <Block keyboardAvoiding={keyboardAvoiding} padding {...cardProps}>
               {renderCurrentStep({
                 onBack: () => setActiveIndex((i) => (i > 0 ? i - 1 : i)),
                 onNext: () =>

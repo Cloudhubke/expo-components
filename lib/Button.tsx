@@ -401,6 +401,7 @@ const Button: React.FC<{
     redditColor && { backgroundColor: colors.redditColor },
     instagramColor && { backgroundColor: colors.instagramColor },
     rose && { backgroundColor: colors.rose },
+    color && { backgroundColor: color },
 
     style,
   ];
