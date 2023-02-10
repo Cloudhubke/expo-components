@@ -45,6 +45,7 @@ const Input = ({
         return 'default';
     }
   };
+
   const keyboard = getKeyboardType();
 
   const { borderWidth, height } = style;

@@ -2,9 +2,6 @@ import React from 'react';
 import { Platform, ViewStyle } from 'react-native';
 import BottomSheet from '@gorhom/bottom-sheet';
 import Block from '../Block';
-import Text from '../Text';
-import sizes from '../theme/Sizes';
-import metrics from '../theme/Metrics';
 
 const android = Platform.OS === 'android';
 
@@ -21,7 +18,7 @@ const ActionModal = ({
 }) => {
   const bottomSheetRef = React.useRef<BottomSheet>(null);
 
-  const snapPoints = React.useMemo(() => [metrics.height * 0.8, 300, 150], []);
+  const snapPoints = React.useMemo(() => ['25%', '50%'], []);
 
   return (
     <BottomSheet
@@ -30,7 +27,7 @@ const ActionModal = ({
       snapPoints={snapPoints}
       {...props}
     >
-      <Block>{children}</Block>
+      <Block color="cyan">{children}</Block>
     </BottomSheet>
   );
 };
