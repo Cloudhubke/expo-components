@@ -74,12 +74,12 @@ const BlockModal = ({
   };
 
   const blockstyles: ViewStyle = {
-    // ...(!fill &&
-    //   !center && {
-    //     position: 'absolute',
-    //     right: 0,
-    //     left: 0,
-    //   }),
+    ...(!fill &&
+      !center && {
+        position: 'absolute',
+        right: 0,
+        left: 0,
+      }),
     ...(bottom && {
       bottom: isNumber(bottom) ? verticalScale(bottom) : verticalScale(0),
     }),
@@ -117,7 +117,7 @@ const BlockModal = ({
       avoidKeyboard={avoidKeyboard || keyboardAvoiding}
       {...props}
     >
-      <SafeAreaView bottom top {...SafeAreaViewProps}>
+      <SafeAreaView top {...SafeAreaViewProps}>
         <Block style={{ position: 'relative' }}>
           <Block flex={!center} shadow style={blockstyles} color={color}>
             {!top && showHandle && (
