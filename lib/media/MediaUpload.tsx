@@ -5,7 +5,6 @@ import {
   Text,
   TouchableOpacity,
   Modal,
-  Dimensions,
   StyleSheet,
   TouchableHighlight,
   Image,
@@ -22,7 +21,6 @@ import VideoScreen from './video/VideoScreen';
 
 import StatusBar from '../StatusBar';
 import colors from '../theme/Colors';
-import Metrics from '../theme/Metrics';
 
 class MediaUpload extends Component {
   static defaultProps = {
@@ -38,6 +36,7 @@ class MediaUpload extends Component {
     onChange: () => {},
     limit: 1,
     placeholderImage: null,
+    headers: {},
     resize: true,
   };
 
@@ -216,6 +215,7 @@ class MediaUpload extends Component {
               assets={selectedAssets}
               onUpload={this.onUpload}
               endpoint={this.props.endpoint}
+              headers={this.props.headers}
               allowRemove={allowRemove}
               onProgress={this.onUploadProgress}
               resize

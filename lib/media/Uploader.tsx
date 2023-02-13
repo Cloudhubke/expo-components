@@ -7,6 +7,7 @@ export const uploadAssetAsync = async ({
   resize,
   manipulate = true,
   onProgress,
+  headers = {},
 }) => {
   // manipulate the image through expo's image manipulator
   let manipulatedImage = {};
@@ -71,6 +72,7 @@ export const uploadAssetAsync = async ({
     headers: {
       Accept: 'application/json',
       'Content-Type': 'multipart/form-data',
+      ...headers,
     },
     onUploadProgress(progressEvent) {
       const percentCompleted = Math.round(

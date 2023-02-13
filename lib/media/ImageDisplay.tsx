@@ -12,6 +12,7 @@ class ImageDisplay extends Component {
     endpoint: '/fileapi/upload/image',
     onUpload: () => {},
     onProgress: () => {},
+    headers: {},
     resize: true,
   };
 
@@ -61,6 +62,7 @@ class ImageDisplay extends Component {
             const newasset = await uploadAssetAsync({
               asset,
               endpoint: this.props.endpoint,
+              headers: this.props.headers || {},
               resize,
               onProgress: this.onProgress,
             });

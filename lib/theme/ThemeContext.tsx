@@ -9,7 +9,8 @@ export default React.createContext<{
   colors: typeof colors;
   sizes: typeof sizes;
   fonts: typeof fonts;
-  Images: typeof Images;
-  Sounds: typeof Sounds;
-  CONFIG: any;
+  Images?: typeof Images;
+  Sounds?: typeof Sounds;
+  CONFIG?: any;
+  getConfig?: () => any;
 }>({} as any);

@@ -27,9 +27,10 @@ const ThemeProvider = ({
   sizes?: any;
   Images?: any;
   Sounds?: any;
-  CONFIG: {
+  CONFIG?: {
     API_ENDPOINT: string;
   };
+  getConfig?: () => any;
 }) => {
   const newfonts = { ...localfonts, ...fonts };
   const newcolors = { ...localcolors, ...colors };

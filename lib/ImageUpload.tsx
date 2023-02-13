@@ -27,7 +27,14 @@ const ImageUpload = ({
   height?: number;
   [key: string]: any;
 }) => {
-  const CONFIG = React.useContext(ThemeContext).CONFIG || {};
+  let CONFIG = React.useContext(ThemeContext).CONFIG || {};
+
+  const getConfig = React.useContext(ThemeContext).getConfig;
+
+  if (typeof getConfig === 'function') {
+    CONFIG = getConfig();
+  }
+
   const error = meta.touched && meta.error;
 
   return (
@@ -36,6 +43,10 @@ const ImageUpload = ({
         <MediaUpload
           mediaType={['photo']}
           endpoint={`${CONFIG.API_ENDPOINT}/fileapi/media/upload/image`}
+          headers={{
+            merchantcode:
+              CONFIG.MerchantCode || CONFIG.merchantCode || CONFIG.merchantcode,
+          }}
           width={width}
           height={height}
           {...props}

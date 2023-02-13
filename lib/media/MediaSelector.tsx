@@ -319,7 +319,7 @@ class MediaSelector extends PureComponent {
             color={defaultcolors.danger}
             onPress={this.onCancel}
           >
-            <Text color={defaultcolors.danger} button>
+            <Text color={defaultcolors.white} button>
               Cancel
             </Text>
           </Button>
