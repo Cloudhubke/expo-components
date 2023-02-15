@@ -58,6 +58,7 @@ const FormWizzard = ({
         if (child.props.id === (activeStep || {}).id) {
           node = React.cloneElement(child, {
             ...child.props,
+            activeStep,
             render: () =>
               child.props.render({
                 id: child.props.id,
@@ -83,7 +84,7 @@ const FormWizzard = ({
     <Form
       onSubmit={onSubmit}
       initialValues={initialValues}
-      render={({ handleSubmit, values, form, ...formProps }) => {
+      render={({ handleSubmit, values, valid, form, ...formProps }) => {
         return (
           <SafeAreaView bottom>
             {showSteps && (
@@ -116,7 +117,15 @@ const FormWizzard = ({
                 handleSubmit,
                 activeStep,
                 ...formProps,
-                actionButtons: () => (
+                actionButtons: ({
+                  onClickNext,
+                  onClickBack,
+                  onClickSubmit,
+                }: {
+                  onClickNext?: () => void;
+                  onClickBack?: () => void;
+                  onClickSubmit?: () => void;
+                }) => (
                   <Block flex={false} row>
                     <Block left>
                       {activeIndex > 0 && (
@@ -124,7 +133,13 @@ const FormWizzard = ({
                           small
                           rounded
                           dark
-                          onPress={() => setActiveIndex((i) => i - 1)}
+                          onPress={() => {
+                            if (typeof onClickBack === 'function') {
+                              onClickBack();
+                            } else {
+                              setActiveIndex((i) => (i > 0 ? i - 1 : i));
+                            }
+                          }}
                         >
                           <MaterialIcons
                             name="arrow-back"
@@ -141,7 +156,16 @@ const FormWizzard = ({
                           small
                           rounded
                           dark
-                          onPress={() => setActiveIndex((i) => i + 1)}
+                          onPress={() => {
+                            if (typeof onClickNext === 'function') {
+                              onClickNext();
+                            } else {
+                              setActiveIndex((i) =>
+                                i < steps.length - 1 ? i + 1 : i
+                              );
+                            }
+                          }}
+                          disabled={!valid}
                         >
                           <Text white>Next</Text>
                           <MaterialIcons
@@ -152,7 +176,19 @@ const FormWizzard = ({
                         </Button>
                       )}
                       {activeIndex === steps.length - 1 && (
-                        <Button small rounded success onPress={handleSubmit}>
+                        <Button
+                          small
+                          rounded
+                          success
+                          onPress={() => {
+                            if (typeof onClickSubmit === 'function') {
+                              onClickSubmit();
+                            } else {
+                              handleSubmit();
+                            }
+                          }}
+                          disabled={!valid}
+                        >
                           <Text white>Submit</Text>
                           <MaterialIcons
                             name="chevron-right"

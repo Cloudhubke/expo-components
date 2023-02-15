@@ -8,6 +8,8 @@ let height = 48;
 const Button: React.FC<{
   [x: string]: any;
   children?: any;
+  onPress?: any;
+  onClick?: any;
   flat?: boolean;
   outlined?: boolean;
   contained?: boolean;
@@ -101,6 +103,9 @@ const Button: React.FC<{
   rose?: boolean;
 }> = ({
   children,
+  onPress,
+  onClick,
+
   flat,
   outlined,
   contained,
@@ -410,6 +415,7 @@ const Button: React.FC<{
     <NBButton
       style={buttonStyles}
       bordered={outlined || props.bordered}
+      onPress={onPress || onclick || (() => {})}
       {...props}
     >
       {children}

@@ -9,11 +9,15 @@ const SearchComponent = ({
   disabled,
   icon: Icon,
   onChange = (value: string) => {},
+  inputStyle = {},
+  style = {},
 }: {
   placeholder?: string;
   disabled?: boolean;
   icon?: any;
   onChange?: (value: string) => void;
+  inputStyle?: any;
+  style?: any;
 }) => {
   const { fonts, sizes } = React.useContext(ThemeContext);
   const [text, setText] = React.useState('');
@@ -37,6 +41,7 @@ const SearchComponent = ({
         borderRadius: sizes.borderRadius || 5,
         flexDirection: 'row',
         alignItems: 'center',
+        ...style,
       }}
     >
       <TextInput
@@ -47,6 +52,7 @@ const SearchComponent = ({
           paddingHorizontal: 7,
           height: sizes.inputHeight || 35,
           ...fonts.body,
+          ...inputStyle,
         }}
         placeholder={placeholder || 'Search...'}
         underlineColorAndroid="transparent"

@@ -16,6 +16,7 @@ export const useStore = create(appStore);
 //     ...state,
 //   };
 // }
+
 export default function <S>() {
   return function <SelectorOutput>(selector: (store: S) => SelectorOutput) {
     const [state, setState] = React.useState<SelectorOutput>({

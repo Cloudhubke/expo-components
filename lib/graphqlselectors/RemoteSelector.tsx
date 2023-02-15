@@ -243,7 +243,10 @@ const RemoteSelector = ({
     const initials = AvatarHelper.getInitials(label);
     const animationProps = AnimatableManager.getEntranceByIndex(index);
 
-    const isSelected = selectedValue.map((v) => v.key).includes(item.key);
+    const isSelected = selectedValue
+      .filter(Boolean)
+      .map((v) => v.key)
+      .includes(item.key);
 
     return (
       <Animatable.View {...animationProps}>
