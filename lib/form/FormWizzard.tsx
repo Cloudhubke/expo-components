@@ -113,6 +113,7 @@ const FormWizzard = ({
                   setActiveIndex((i) => (i < steps.length - 1 ? i + 1 : i)),
                 jumpToStep: jumpToStep,
                 values,
+                valid,
                 form,
                 handleSubmit,
                 activeStep,

@@ -29,10 +29,10 @@ const RemoteDataFlatList = ({
   const getData = async (reset = false) => {
     const data = await Graphqlmodel()
       .find({
-        sort: { Timestamp: -1 },
+        sort: { createdAt: -1 },
         limit: 10,
-        ...(reset ? {} : { id: { $nin: listData.map((t) => t.id) } }),
         ...params,
+        ...(reset ? {} : { id: { $nin: listData.map((t) => t.id) } }),
       })
       .toJson();
 
