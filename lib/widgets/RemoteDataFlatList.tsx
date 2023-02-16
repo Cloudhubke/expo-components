@@ -124,19 +124,22 @@ const RemoteDataFlatList = React.forwardRef(
             />
           </Block>
         )}
-        <Block
-          flex={false}
-          padding
-          style={{ height: 65 }}
-          color={Colors.grey50}
-        >
-          <SearchComponent
-            style={{
-              backgroundColor: Colors.white,
-            }}
-            onChange={(text) => setSearchTerm(text)}
-          />
-        </Block>
+        {showSearch && (
+          <Block
+            flex={false}
+            padding
+            style={{ height: 65 }}
+            color={Colors.grey50}
+          >
+            <SearchComponent
+              style={{
+                backgroundColor: Colors.white,
+              }}
+              autoFocus={false}
+              onChange={(text) => setSearchTerm(text)}
+            />
+          </Block>
+        )}
         <Alert
           error
           message={errors[`${Graphqlmodel().globalId}Error`]}
