@@ -1,13 +1,5 @@
-import React, { Component, CSSProperties } from 'react';
-
-import {
-  TouchableOpacity,
-  FlatList,
-  RefreshControl,
-  StyleSheet,
-} from 'react-native';
-
-import useDebounce from '../customhooks/useDebounce';
+import React from 'react';
+import { TouchableOpacity, FlatList, StyleSheet } from 'react-native';
 import uniqBy from 'lodash/uniqBy';
 import isEmpty from 'lodash/isEmpty';
 import isPlainObject from 'lodash/isPlainObject';
@@ -20,13 +12,14 @@ import {
   Badge,
 } from '@expocraft/rnuilib';
 import * as Animatable from 'react-native-animatable';
+import Fuse from 'fuse.js';
 
 import AnimatableManager from '../AnimatableManager';
 
 import ThemeContext from '../theme/ThemeContext';
 import SearchComponent from '../SearchComponent';
-import Text from '../Text';
 import Block from '../Block';
+import Text from '../Text';
 import Header from '../Header';
 import Modal from '../modal/Modal';
 
@@ -34,6 +27,7 @@ import KeyboardView from '../KeyboardView';
 import SelectedValue from './SelectedValue';
 import SelectedValues from './SelectedValues';
 import { MaterialIcons } from '@expo/vector-icons';
+import BlockModal from '../modal/BlockModal';
 
 const randomColor = () => {
   const BACKGROUND_COLORS = [
@@ -53,27 +47,21 @@ const randomColor = () => {
   return BACKGROUND_COLORS[int];
 };
 
-const AsyncSelector: React.FC<any> = React.forwardRef(
+const Selector: React.FC<any> = React.forwardRef(
   (
     {
       value,
       onChange,
       onSelectChange = () => {},
-      axiosinstance,
-      Graphqlmodel,
       labelExtractor,
       keyExtractor,
       valueExtractor,
-      filterKey = 'filter',
       iconSize = 24,
       iconStyle = {},
       disabled = false,
       placeholder = 'Select...',
-      url = '/api',
-      params = {},
+
       isMulti = false,
-      debounceTime = 1000,
-      otheroptions = [],
       showIcon = true,
       meta = {},
       textStyle = {},
@@ -85,165 +73,82 @@ const AsyncSelector: React.FC<any> = React.forwardRef(
     const { sizes, colors } = React.useContext(ThemeContext);
 
     const [state, setState] = React.useState<{
-      loading: boolean;
-      loaded: boolean;
-      options: any[];
       searchText: string;
-      firstoptions: any[];
       selectedValue: any[];
       modalVisible: boolean;
+      filtered: any[];
     }>({
-      loading: false,
-      loaded: false,
-      options: [],
       searchText: '',
-      firstoptions: [],
       selectedValue: [],
       modalVisible: false,
+      filtered: [],
     });
 
     const selectRef = React.useRef<any>();
 
-    const debouncedSearchText = useDebounce(state.searchText, debounceTime);
+    const options = React.useMemo(() => {
+      const options: any[] = uniqBy(
+        [...(props.options || [])].map((item, index) => ({
+          value: keyExtractor(item, index),
+          label: labelExtractor(item, index),
+          item,
+        })),
+        'value'
+      );
 
-    const getOptions = React.useMemo(
-      () => async (searchText: string) => {
-        try {
-          if (!state.loaded) {
-            setState((state) => ({
-              ...state,
-              loaded: true,
-              loading: true,
-            }));
-          }
-
-          let data;
-          if (Graphqlmodel) {
-            try {
-              data = await Graphqlmodel()
-                .find({
-                  ...params,
-                  filter: `${searchText || ''}`.trim(),
-                })
-                .toJson();
-            } catch (error: any) {
-              console.log(error.toString());
-            }
-          } else {
-            const { data: axiosdata } = await axiosinstance().get(url, {
-              params: { ...params, [filterKey]: `${searchText || ''}`.trim() },
-            });
-
-            data = axiosdata;
-          }
-
-          const array = data ? data.items || data : [];
-          let valoptions: any[] = [];
-          if (!isEmpty(value)) {
-            valoptions = Array.isArray(value) ? value : [value];
-          }
-
-          const options: any[] = uniqBy(
-            [...array, ...valoptions, ...otheroptions].map((item, index) => ({
-              value: keyExtractor(item, index),
-              label: labelExtractor(item, index),
-              item,
-            })),
-            'value'
-          );
-
-          if (state.firstoptions.length === 0) {
-            setState((state) => ({
-              ...state,
-              firstoptions: options,
-              options,
-              loading: false,
-            }));
-          } else {
-            setState((state) => ({
-              ...state,
-              options,
-              loading: false,
-            }));
-          }
-        } catch (error) {
-          console.log('====================================');
-          console.log('error', error);
-          console.log('====================================');
-          setState((state) => ({
-            ...state,
-            loading: false,
-          }));
-
-          // do nothing
-        }
-      },
-      [
-        JSON.stringify(params),
-        state.loaded,
-        axiosinstance,
-        url,
-        state.firstoptions.length,
-      ]
-    );
-
-    React.useEffect(() => {
-      if (!state.loaded) {
-        return;
-      }
-
-      if (!debouncedSearchText) {
-        if (state.firstoptions.length > 0) {
-          setState((state) => ({
-            ...state,
-            firstoptions: [],
-          }));
-        }
-      } else {
-        getOptions(debouncedSearchText);
-      }
-    }, [debouncedSearchText, state.firstoptions.length]);
-
-    React.useEffect(() => {
-      if (!value || isEmpty(value)) {
-        setState((state) => ({
-          ...state,
-          selectedValue: [],
-        }));
-        return;
-      }
+      let valoptions: any[] = [];
 
       if (Array.isArray(value)) {
-        const valoptions: any[] = [...value].map((item, index) => ({
+        valoptions = [...value].map((item, index) => ({
           value: keyExtractor(item, index),
           label: labelExtractor(item, index),
           item,
-        }));
-
-        setState((state) => ({
-          ...state,
-          selectedValue: valoptions,
-          options: uniqBy([...valoptions, ...state.options], 'value'),
         }));
       } else {
-        const valoptions = [value].map((item, index) => ({
-          value: keyExtractor(item, index),
-          label: labelExtractor(item, index),
-          item,
-        }));
-
-        setState((state) => ({
-          ...state,
-          selectedValue: valoptions,
-          options: uniqBy([...valoptions, ...state.options], 'value'),
-        }));
+        if (value) {
+          valoptions = [value].map((item, index) => ({
+            value: keyExtractor(item, index),
+            label: labelExtractor(item, index),
+            item,
+          }));
+        }
       }
-    }, [JSON.stringify(value), isMulti]);
 
-    const handleInputChange = (text: string) => {
+      const unnfiltered = uniqBy([...valoptions, ...options], 'value');
+
       setState((state) => ({
         ...state,
-        searchText: text,
+        selectedValue: valoptions,
+        filtered: unnfiltered,
+      }));
+
+      return unnfiltered;
+    }, [JSON.stringify(props.options), JSON.stringify(value)]);
+
+    const thisfuse = React.useMemo(() => {
+      const fuseOptions = {
+        // includeScore: true,
+        useExtendedSearch: true,
+        keys: ['label'],
+      };
+
+      return new Fuse(options, fuseOptions);
+    }, [options]);
+
+    const handleFilterChange = (value) => {
+      const str = `${value}`
+        .split(' ')
+        .filter((i) => Boolean(i))
+        .map((str) => `'${str}`)
+        .join(' ');
+      // const filtered = thisfuse.search(str || '');
+      const filtered = !value ? options : thisfuse.search(str || '');
+
+      setState((state) => ({
+        ...state,
+        filtered: filtered.map((i) =>
+          typeof i.refIndex === 'number' ? i.item : i
+        ),
       }));
     };
 
@@ -297,30 +202,15 @@ const AsyncSelector: React.FC<any> = React.forwardRef(
       }
     };
 
-    const onModalOpen = () => {
-      if (state.modalVisible) {
-        getOptions(debouncedSearchText || '');
-      }
-    };
-
     const openMenu = () => {
       setState((state) => ({
         ...state,
         modalVisible: true,
       }));
-      handleInputChange(state.searchText);
+      handleFilterChange(state.searchText);
     };
 
-    React.useEffect(() => {
-      if (state.modalVisible) {
-        onModalOpen();
-      }
-    }, [state.modalVisible]);
-
     React.useImperativeHandle(ref, () => ({
-      reload: () => {
-        getOptions(state.searchText);
-      },
       focus: () => {
         if (selectRef && selectRef.current) {
           if (typeof selectRef.current.focus === 'function') {
@@ -483,7 +373,7 @@ const AsyncSelector: React.FC<any> = React.forwardRef(
           )}
         </Block>
 
-        <Modal
+        <BlockModal
           isVisible={state.modalVisible}
           onClose={() => {
             setState((state) => ({
@@ -491,47 +381,47 @@ const AsyncSelector: React.FC<any> = React.forwardRef(
               modalVisible: false,
             }));
           }}
-          transparent
+          // fill={options.length > 10}
+          // modal={options.length >= 10}
+          showHandle
+          bottom
+          roundedTop
         >
           <Block color={colors.mistyWhite}>
-            <Header
-              style={styles.header}
-              hasHeight
-              onBack={() => {
-                setState((state) => ({
-                  ...state,
-                  modalVisible: false,
-                }));
-              }}
-            >
-              <SearchComponent
-                autoFocus={false}
-                onChange={(text) => handleInputChange(text)}
-              />
-            </Header>
+            {options.length >= 10 && (
+              <Header
+                style={styles.header}
+                hasHeight
+                onBack={() => {
+                  setState((state) => ({
+                    ...state,
+                    modalVisible: false,
+                  }));
+                }}
+              >
+                <SearchComponent
+                  autoFocus={false}
+                  onChange={(text) => handleFilterChange(text)}
+                />
+              </Header>
+            )}
 
-            <Block>
+            <Block pointerEvents="box-none">
               <KeyboardView style={{ marginTop: 10, flex: 1 }}>
                 <FlatList
-                  data={state.options}
+                  data={state.filtered}
                   keyExtractor={(item, index) => `${item.id}-${index}`}
                   renderItem={({ item, index }) => renderItem({ item, index })}
-                  refreshControl={
-                    <RefreshControl
-                      refreshing={state.loading}
-                      onRefresh={() => handleInputChange('')}
-                    />
-                  }
                   keyboardShouldPersistTaps="always"
                   keyboardDismissMode="on-drag"
                 />
               </KeyboardView>
             </Block>
           </Block>
-        </Modal>
+        </BlockModal>
       </>
     );
   }
 );
 
-export default AsyncSelector;
+export default Selector;

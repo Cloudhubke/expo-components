@@ -28,7 +28,7 @@ const SelectedValue = ({
 
   return (
     <Block row middle>
-      {selectedValue ? (
+      {Boolean(selectedValue) ? (
         <>
           <Block row middle>
             <Text style={{ flex: 1, color: '#333', ...textStyle }}>

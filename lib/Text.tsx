@@ -428,6 +428,12 @@ const Typography: React.FC<{
     lightSuccess && styles.lightSuccess,
     lighterSuccess && styles.lighterSuccess,
 
+    info && styles.info,
+    darkInfo && styles.darkInfo,
+    darkerInfo && styles.darkerInfo,
+    lightInfo && styles.lightInfo,
+    lighterInfo && styles.lighterInfo,
+
     warning && styles.warning,
     darkWarning && styles.darkWarning,
     darkerWarning && styles.darkerWarning,

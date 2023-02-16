@@ -11,6 +11,7 @@ const SearchComponent = ({
   onChange = (value: string) => {},
   inputStyle = {},
   style = {},
+  autoFocus = true,
 }: {
   placeholder?: string;
   disabled?: boolean;
@@ -18,6 +19,7 @@ const SearchComponent = ({
   onChange?: (value: string) => void;
   inputStyle?: any;
   style?: any;
+  autoFocus?: boolean;
 }) => {
   const { fonts, sizes } = React.useContext(ThemeContext);
   const [text, setText] = React.useState('');
@@ -56,7 +58,7 @@ const SearchComponent = ({
         }}
         placeholder={placeholder || 'Search...'}
         underlineColorAndroid="transparent"
-        autoFocus
+        autoFocus={autoFocus}
         disabled={disabled}
       />
 

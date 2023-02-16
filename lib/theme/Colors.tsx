@@ -140,6 +140,7 @@ const colors = {
   dribbbleColor: '#ea4c89',
   redditColor: '#ff4500',
   instagramColor: '#125688',
+  pesapurseColor: '#F3D548',
 
   twitter: '#55acee',
   linkedin: '#0976b4',

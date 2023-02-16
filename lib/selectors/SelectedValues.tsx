@@ -29,22 +29,24 @@ const SelectedValues = ({
 
   return (
     <Block row middle>
-      {selectedValue && selectedValue.length === 0 && (
+      {Boolean(selectedValue) && selectedValue.length === 0 && (
         <Text style={{ flex: 1, ...textStyle, color: '#AAA' }}>
           {placeholder}
         </Text>
       )}
-      {(selectedValue || []).map((item, index) => (
-        <Chip
-          key={item.value}
-          label={item.label}
-          iconProps={{ tintColor: Colors.$iconDefault }}
-          onDismiss={() => onRemove(item)}
-          dismissIconStyle={{ width: 10, height: 10 }}
-          containerStyle={{ margin: 1 }}
-        />
-      ))}
-      {selectedValue && selectedValue.length === 0 && showIcon && (
+      {(selectedValue || []).map((item: any, index: any) => {
+        return (
+          <Chip
+            key={`${item.value || index}`}
+            label={`${item.label}`}
+            iconProps={{ tintColor: Colors.$iconDefault }}
+            onDismiss={() => onRemove(item)}
+            dismissIconStyle={{ width: 10, height: 10 }}
+            containerStyle={{ margin: 1 }}
+          />
+        );
+      })}
+      {Boolean(selectedValue) && selectedValue.length === 0 && showIcon && (
         <Block flex={false}>
           <IconButton size={iconSize} onPress={onPress}>
             <MaterialIcons

@@ -7,13 +7,13 @@ import SafeAreaView from '../SafeAreaView';
 import ThemeContext from '../theme/ThemeContext';
 import Block from '../Block';
 import Text from '../Text';
+import Modal from './Modal';
 import defaultcolors from '../theme/Colors';
 import { isNumber } from 'lodash';
 
 const BlockModal = ({
   children,
   margin = 0,
-
   top,
   bottom,
   middle,
@@ -31,6 +31,7 @@ const BlockModal = ({
   keyboardAvoiding = true,
   center = false,
   SafeAreaViewProps = {},
+  modal = false,
   ...props
 }: {
   children: any;
@@ -55,6 +56,7 @@ const BlockModal = ({
   keyboardAvoiding?: boolean;
   containerStyle?: ViewStyle;
   SafeAreaViewProps?: any;
+  modal?: boolean;
   center?: boolean;
 }) => {
   const { colors } = React.useContext(ThemeContext);
@@ -102,46 +104,58 @@ const BlockModal = ({
     onClose();
   };
 
-  return (
-    <RNModal
-      isVisible={visible}
-      style={modalstyles}
-      animationIn={top ? 'slideInDown' : 'slideInUp'}
-      animationOut={top ? 'slideOutUp' : 'slideOutDown'}
-      swipeDirection={top ? 'up' : 'down'} // 'none'
-      onBackButtonPress={onCloseModal}
-      onBackdropPress={onCloseModal}
-      onSwipeComplete={onCloseModal}
-      onModalHide={onCloseModal}
-      onModalShow={() => setModalVisible(true)}
-      avoidKeyboard={avoidKeyboard || keyboardAvoiding}
-      {...props}
-    >
-      <SafeAreaView top {...SafeAreaViewProps}>
-        <Block style={{ position: 'relative' }}>
-          <Block flex={!center} shadow style={blockstyles} color={color}>
-            {!top && showHandle && (
-              <Block flex={false} center>
-                <MaterialIcons
-                  name="drag-handle"
-                  style={{ fontSize: scale(32), color: colors.darkGray }}
-                />
-              </Block>
-            )}
-            {modalVisible && <>{children}</>}
+  if (modal) {
+    return (
+      <Modal
+        visible={visible}
+        onClose={onCloseModal}
+        onShow={() => setModalVisible(true)}
+      >
+        {Boolean(modalVisible) && <>{children}</>}
+      </Modal>
+    );
+  } else {
+    return (
+      <RNModal
+        isVisible={visible}
+        style={modalstyles}
+        animationIn={top ? 'slideInDown' : 'slideInUp'}
+        animationOut={top ? 'slideOutUp' : 'slideOutDown'}
+        swipeDirection={top ? 'up' : 'down'} // 'none'
+        onBackButtonPress={onCloseModal}
+        onBackdropPress={onCloseModal}
+        onSwipeComplete={onCloseModal}
+        onModalHide={onCloseModal}
+        onModalShow={() => setModalVisible(true)}
+        avoidKeyboard={avoidKeyboard || keyboardAvoiding}
+        {...props}
+      >
+        <SafeAreaView top bottom {...SafeAreaViewProps}>
+          <Block style={{ position: 'relative' }}>
+            <Block flex={!center} shadow style={blockstyles} color={color}>
+              {!top && showHandle && (
+                <Block flex={false} center>
+                  <MaterialIcons
+                    name="drag-handle"
+                    style={{ fontSize: scale(32), color: colors.darkGray }}
+                  />
+                </Block>
+              )}
 
-            {top && showHandle && (
-              <Block flex={false} center color={color}>
-                <MaterialIcons
-                  name="drag-handle"
-                  style={{ fontSize: scale(32), color: colors.darkGray }}
-                />
-              </Block>
-            )}
+              {modalVisible && <>{children}</>}
+              {top && showHandle && (
+                <Block flex={false} center color={color}>
+                  <MaterialIcons
+                    name="drag-handle"
+                    style={{ fontSize: scale(32), color: colors.darkGray }}
+                  />
+                </Block>
+              )}
+            </Block>
           </Block>
-        </Block>
-      </SafeAreaView>
-    </RNModal>
-  );
+        </SafeAreaView>
+      </RNModal>
+    );
+  }
 };
 export default BlockModal;

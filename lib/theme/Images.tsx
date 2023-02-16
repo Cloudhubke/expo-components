@@ -7,6 +7,8 @@ import DocumentPlaceholder from '../assets/images/examples/document.png';
 import ImagePlaceholder from '../assets/images/examples/Placeholder.png';
 import DefaultUser from '../assets/images/examples/default-user.png';
 
+import icons from '../assets/icons';
+
 const images = {
   // App images
   selfieWithId,
@@ -14,6 +16,8 @@ const images = {
   DocumentPlaceholder,
   ImagePlaceholder,
   DefaultUser,
+
+  ...icons,
 };
 
 export default images;
