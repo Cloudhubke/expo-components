@@ -14,7 +14,7 @@ const Alert = ({
   warning,
   color,
   containerStyle = {},
-  onClose = () => {},
+  onClose,
   enableClose = true,
 }: {
   message: string;
@@ -46,6 +46,8 @@ const Alert = ({
     alertColor = colors.warning;
   }
 
+  const showCloseButton = enableClose && typeof onClose === 'function';
+
   return Boolean(message) ? (
     <Block
       animatable
@@ -58,8 +60,8 @@ const Alert = ({
       {...containerStyle}
       margin={[5, 0]}
     >
-      <Text white>{message}</Text>
-      {enableClose && (
+      {typeof message === 'string' ? <Text white>{message}</Text> : message}
+      {showCloseButton && (
         <Block
           flex={false}
           style={{

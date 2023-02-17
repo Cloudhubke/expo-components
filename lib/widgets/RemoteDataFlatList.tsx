@@ -33,11 +33,11 @@ const RemoteDataFlatList = React.forwardRef(
       loadingModels: any;
       setErrors: any;
       title: string;
-      onBack: () => void;
+      onBack?: () => void;
       renderItem: (params: { item: any; index: number }) => any;
-      actionButton: any;
-      showHeader: boolean;
-      showSearch: boolean;
+      actionButton?: any;
+      showHeader?: boolean;
+      showSearch?: boolean;
     },
     ref
   ) => {
