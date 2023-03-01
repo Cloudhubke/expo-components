@@ -8,7 +8,7 @@ import Sounds from './Sounds';
 export default React.createContext<{
   colors: typeof colors;
   sizes: typeof sizes;
-  fonts: typeof fonts;
+  fonts: ReturnType<typeof fonts>;
   Images?: typeof Images;
   Sounds?: typeof Sounds;
   CONFIG?: any;

@@ -9,12 +9,13 @@ import localcolors from './Colors';
 import localfonts from './Fonts';
 import localimages from './Images';
 import localsounds from './Sounds';
+import Fonts from './Fonts';
 
 setDefaultThemeStyle();
 
 const ThemeProvider = ({
   children,
-  fonts,
+  fonts = localfonts,
   colors,
   sizes,
   Images,
@@ -22,7 +23,10 @@ const ThemeProvider = ({
   ...props
 }: {
   children: React.ReactNode;
-  fonts?: any;
+  fonts?: (params: {
+    sizes: typeof localsizes;
+    colors: typeof localcolors;
+  }) => ReturnType<typeof Fonts>;
   colors?: any;
   sizes?: any;
   Images?: any;
@@ -32,9 +36,11 @@ const ThemeProvider = ({
   };
   getConfig?: () => any;
 }) => {
-  const newfonts = { ...localfonts, ...fonts };
   const newcolors = { ...localcolors, ...colors };
   const newsizes = { ...localsizes, ...sizes };
+
+  const newfonts = fonts({ sizes: newsizes, colors: newcolors });
+
   const newimages = { ...localimages, ...Images };
   const mewsounds = { ...localsounds, ...Sounds };
 

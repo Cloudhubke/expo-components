@@ -1,130 +1,132 @@
 // just copy this code from the driving repo :)
 import React from 'react';
 import { StyleSheet, Platform } from 'react-native';
-import { Text } from '@expocraft/rnuilib';
-import { moderateScale } from 'react-native-size-matters';
+import { Text, TextProps } from '@expocraft/rnuilib';
+import { moderateScale, verticalScale } from 'react-native-size-matters';
 import ThemeContext from './theme/ThemeContext';
 
 const android = Platform.OS === 'android';
 
-const Typography: React.FC<{
-  [x: string]: any;
-  h1?: boolean;
-  h2?: boolean;
-  h3?: boolean;
-  h4?: boolean;
-  h5?: boolean;
-  h6?: boolean;
-  title?: boolean;
-  subTitle?: boolean;
-  header?: boolean;
-  subHeader?: boolean;
-  body?: boolean;
-  caption?: boolean;
-  small?: boolean;
-  size?: number;
-  transform?: boolean;
-  button?: boolean;
-  lines?: number;
-  allowFontScaling?: boolean;
-  // ?: boolean;styling
-  regular?: boolean;
-  bold?: boolean;
-  normal?: boolean;
-  semibold?: boolean;
-  medium?: boolean;
-  weight?: any;
-  light?: boolean;
-  center?: boolean;
-  right?: boolean;
-  spacing?: string; // letter-spacing
-  lineHeight?: number; // line-height
-  noWrap?: boolean;
-  fullWidth?: boolean;
-  // ?: boolean;colors
-  color?: any;
-  accent?: boolean;
+const Typography: React.FC<
+  TextProps & {
+    h1?: boolean;
+    h2?: boolean;
+    h3?: boolean;
+    h4?: boolean;
+    h5?: boolean;
+    h6?: boolean;
+    title?: boolean;
+    subTitle?: boolean;
+    header?: boolean;
+    subHeader?: boolean;
+    body?: boolean;
+    caption?: boolean;
+    small?: boolean;
+    size?: number;
+    transform?: boolean;
+    button?: boolean;
+    lines?: number;
+    allowFontScaling?: boolean;
+    // ?: boolean;styling
+    regular?: boolean;
+    bold?: boolean;
+    normal?: boolean;
+    semibold?: boolean;
+    medium?: boolean;
+    weight?: any;
+    light?: boolean;
+    center?: boolean;
+    right?: boolean;
+    spacing?: string; // letter-spacing
+    lineHeight?: number; // line-height
+    noWrap?: boolean;
+    fullWidth?: boolean;
+    // ?: boolean;colors
+    color?: any;
+    accent?: boolean;
 
-  primary?: boolean;
-  darkPrimary?: boolean;
-  darkerPrimary?: boolean;
-  lightPrimary?: boolean;
-  lighterPrimary?: boolean;
+    primary?: boolean;
+    darkPrimary?: boolean;
+    darkerPrimary?: boolean;
+    lightPrimary?: boolean;
+    lighterPrimary?: boolean;
 
-  secondary?: boolean;
-  darkSecondary?: boolean;
-  darkerSecondary?: boolean;
-  lightSecondary?: boolean;
-  lighterSecondary?: boolean;
+    secondary?: boolean;
+    darkSecondary?: boolean;
+    darkerSecondary?: boolean;
+    lightSecondary?: boolean;
+    lighterSecondary?: boolean;
 
-  success?: boolean;
-  darkSuccess?: boolean;
-  darkerSuccess?: boolean;
-  lightSuccess?: boolean;
-  lighterSuccess?: boolean;
+    success?: boolean;
+    darkSuccess?: boolean;
+    darkerSuccess?: boolean;
+    lightSuccess?: boolean;
+    lighterSuccess?: boolean;
 
-  info?: boolean;
-  darkInfo?: boolean;
-  darkerInfo?: boolean;
-  lightInfo?: boolean;
-  lighterInfo?: boolean;
+    info?: boolean;
+    darkInfo?: boolean;
+    darkerInfo?: boolean;
+    lightInfo?: boolean;
+    lighterInfo?: boolean;
 
-  warning?: boolean;
-  darkWarning?: boolean;
-  darkerWarning?: boolean;
-  lightWarning?: boolean;
-  lighterWarning?: boolean;
+    warning?: boolean;
+    darkWarning?: boolean;
+    darkerWarning?: boolean;
+    lightWarning?: boolean;
+    lighterWarning?: boolean;
 
-  danger?: boolean;
-  darkDanger?: boolean;
-  darkerDanger?: boolean;
-  lightDanger?: boolean;
-  lighterDanger?: boolean;
+    danger?: boolean;
+    darkDanger?: boolean;
+    darkerDanger?: boolean;
+    lightDanger?: boolean;
+    lighterDanger?: boolean;
 
-  tertiary?: boolean;
-  black?: boolean;
-  white?: boolean;
-  gray?: boolean;
-  darkGray?: boolean;
-  gray2?: boolean;
-  dark?: boolean;
-  mistyWhite?: boolean;
-  milkyWhite?: boolean;
-  error?: boolean;
-  clear?: boolean;
-  facebook?: boolean;
-  transparent?: boolean;
-  silver?: boolean;
-  steel?: boolean;
-  ricePaper?: boolean;
-  frost?: boolean;
-  cloud?: boolean;
-  windowTint?: boolean;
-  panther?: boolean;
-  charcoal?: boolean;
-  coal?: boolean;
-  bloodOrange?: boolean;
-  snow?: boolean;
-  ember?: boolean;
-  fire?: boolean;
-  drawer?: boolean;
-  eggplant?: boolean;
-  twitterColor?: boolean;
-  facebookColor?: boolean;
-  googleColor?: boolean;
-  linkedinColor?: boolean;
-  pinterestColor?: boolean;
-  youtubeColor?: boolean;
-  tumblrColor?: boolean;
-  behanceColor?: boolean;
-  dribbbleColor?: boolean;
-  redditColor?: boolean;
-  instagramColor?: boolean;
-  rose?: boolean;
-  style?: any;
-  cropped?: boolean;
-  children?: any;
-}> = ({
+    tertiary?: boolean;
+    black?: boolean;
+    white?: boolean;
+    gray?: boolean;
+    darkGray?: boolean;
+    gray2?: boolean;
+    dark?: boolean;
+    mistyWhite?: boolean;
+    milkyWhite?: boolean;
+    error?: boolean;
+    clear?: boolean;
+    facebook?: boolean;
+    transparent?: boolean;
+    silver?: boolean;
+    steel?: boolean;
+    ricePaper?: boolean;
+    frost?: boolean;
+    cloud?: boolean;
+    windowTint?: boolean;
+    panther?: boolean;
+    charcoal?: boolean;
+    coal?: boolean;
+    bloodOrange?: boolean;
+    snow?: boolean;
+    ember?: boolean;
+    fire?: boolean;
+    drawer?: boolean;
+    eggplant?: boolean;
+    twitterColor?: boolean;
+    facebookColor?: boolean;
+    googleColor?: boolean;
+    linkedinColor?: boolean;
+    pinterestColor?: boolean;
+    youtubeColor?: boolean;
+    tumblrColor?: boolean;
+    behanceColor?: boolean;
+    dribbbleColor?: boolean;
+    redditColor?: boolean;
+    instagramColor?: boolean;
+    rose?: boolean;
+    style?: any;
+    cropped?: boolean;
+    children?: any;
+    [x: string]: any;
+  }
+> = ({
   h1,
   h2,
   h3,
@@ -242,7 +244,7 @@ const Typography: React.FC<{
   children,
   ...props
 }) => {
-  const { colors, fonts } = React.useContext(ThemeContext);
+  const { colors, fonts, sizes } = React.useContext(ThemeContext);
 
   const styles = {
     // default style
@@ -251,20 +253,25 @@ const Typography: React.FC<{
     },
     // other variations
     regular: {
-      fontWeight: 'normal',
+      ...fonts.normal,
     },
-    bold: fonts.bold,
-
+    bold: {
+      ...fonts.bold,
+    },
     semibold: {
       ...fonts.semibold,
     },
     medium: {
-      fontWeight: '500',
+      ...fonts.normal,
     },
-    light: fonts.light,
-    normal: fonts.normal,
+    light: {
+      ...fonts.light,
+    },
+    normal: {
+      ...fonts.normal,
+    },
     thin: {
-      fontWeight: '100',
+      ...fonts.thin,
     },
     // position
     center: { textAlign: 'center' },
@@ -355,6 +362,7 @@ const Typography: React.FC<{
     h4: fonts.h4,
     h5: fonts.h5,
     h6: fonts.h6,
+
     title: fonts.title,
     subTitle: fonts.subTitle,
 
@@ -367,128 +375,134 @@ const Typography: React.FC<{
     button: fonts.button,
   };
 
-  const textStyles = [
-    styles.text,
-    h1 && styles.h1,
-    h2 && styles.h2,
-    h3 && styles.h3,
-    h4 && styles.h4,
-    h5 && styles.h5,
-    h6 && styles.h6,
-    title && styles.title,
-    subTitle && styles.subTitle,
-    header && styles.header,
-    subHeader && styles.subHeader,
-    body && styles.body,
-    caption && styles.caption,
-    small && styles.small,
-    size && {
-      fontSize: moderateScale(size),
-      lineHeight: moderateScale(size) * 1.5,
-    },
-    button && styles.button,
-    transform && { textTransform: transform },
-    lineHeight && { lineHeight },
-    noWrap && {
+  const textStyles = {
+    ...styles.text,
+    ...((h1 && styles.h1) || {}),
+    ...((h2 && styles.h2) || {}),
+    ...((h3 && styles.h3) || {}),
+    ...((h4 && styles.h4) || {}),
+    ...((h5 && styles.h5) || {}),
+    ...((h6 && styles.h6) || {}),
+    ...((title && styles.title) || {}),
+    ...((subTitle && styles.subTitle) || {}),
+    ...((header && styles.header) || {}),
+    ...((subHeader && styles.subHeader) || {}),
+    ...((body && styles.body) || {}),
+    ...((caption && styles.caption) || {}),
+    ...((small && styles.small) || {}),
+    ...(size && {
+      size: size,
+      lineHeight: size * 1.5,
+    }),
+    ...((button && styles.button) || {}),
+    ...((transform && { textTransform: transform }) || {}),
+    ...((lineHeight && { lineHeight }) || {}),
+    ...(noWrap && {
       whiteSpace: 'nowrap',
       overflow: 'hidden',
       textOverflow: 'ellipsis',
-    },
-    fullWidth && { width: '100%' },
-    spacing && { letterSpacing: spacing },
-    weight && { fontWeight: weight },
-    regular && styles.regular,
-    bold && styles.bold,
-    semibold && styles.semibold,
-    medium && styles.medium,
-    light && styles.light,
-    normal && styles.normal,
-    center && styles.center,
-    right && styles.right,
-    color && styles[color],
-    color && !styles[color] && { color },
+    }),
+    ...((fullWidth && { width: '100%' }) || {}),
+    ...((spacing && { letterSpacing: spacing }) || {}),
+    ...((weight && { fontWeight: weight }) || {}),
+    ...((regular && styles.regular) || {}),
+    ...((bold && styles.bold) || {}),
+    ...((semibold && styles.semibold) || {}),
+    ...((medium && styles.medium) || {}),
+    ...((light && styles.light) || {}),
+    ...((normal && styles.normal) || {}),
+    ...((center && styles.center) || {}),
+    ...((right && styles.right) || {}),
+    ...((color && styles[color]) || { color }),
     // color shortcuts
-    accent && styles.accent,
+    ...((accent && styles.accent) || {}),
 
-    primary && styles.primary,
-    darkPrimary && styles.darkPrimary,
-    darkerPrimary && styles.darkerPrimary,
-    lightPrimary && styles.lightPrimary,
-    lighterPrimary && styles.lighterPrimary,
+    ...((primary && styles.primary) || {}),
+    ...((darkPrimary && styles.darkPrimary) || {}),
+    ...((darkerPrimary && styles.darkerPrimary) || {}),
+    ...((lightPrimary && styles.lightPrimary) || {}),
+    ...((lighterPrimary && styles.lighterPrimary) || {}),
 
-    secondary && styles.secondary,
-    darkSecondary && styles.darkSecondary,
-    darkerSecondary && styles.darkerSecondary,
-    lightSecondary && styles.lightSecondary,
-    lighterSecondary && styles.lighterSecondary,
+    ...((secondary && styles.secondary) || {}),
+    ...((darkSecondary && styles.darkSecondary) || {}),
+    ...((darkerSecondary && styles.darkerSecondary) || {}),
+    ...((lightSecondary && styles.lightSecondary) || {}),
+    ...((lighterSecondary && styles.lighterSecondary) || {}),
 
-    success && styles.success,
-    darkSuccess && styles.darkSuccess,
-    darkerSuccess && styles.darkerSuccess,
-    lightSuccess && styles.lightSuccess,
-    lighterSuccess && styles.lighterSuccess,
+    ...((success && styles.success) || {}),
+    ...((darkSuccess && styles.darkSuccess) || {}),
+    ...((darkerSuccess && styles.darkerSuccess) || {}),
+    ...((lightSuccess && styles.lightSuccess) || {}),
+    ...((lighterSuccess && styles.lighterSuccess) || {}),
 
-    info && styles.info,
-    darkInfo && styles.darkInfo,
-    darkerInfo && styles.darkerInfo,
-    lightInfo && styles.lightInfo,
-    lighterInfo && styles.lighterInfo,
+    ...((info && styles.info) || {}),
+    ...((darkInfo && styles.darkInfo) || {}),
+    ...((darkerInfo && styles.darkerInfo) || {}),
+    ...((lightInfo && styles.lightInfo) || {}),
+    ...((lighterInfo && styles.lighterInfo) || {}),
 
-    warning && styles.warning,
-    darkWarning && styles.darkWarning,
-    darkerWarning && styles.darkerWarning,
-    lightWarning && styles.lightWarning,
-    lighterWarning && styles.lighterWarning,
+    ...((warning && styles.warning) || {}),
+    ...((darkWarning && styles.darkWarning) || {}),
+    ...((darkerWarning && styles.darkerWarning) || {}),
+    ...((lightWarning && styles.lightWarning) || {}),
+    ...((lighterWarning && styles.lighterWarning) || {}),
 
-    danger && styles.danger,
-    darkDanger && styles.darkDanger,
-    darkerDanger && styles.darkerDanger,
-    lightDanger && styles.lightDanger,
-    lighterDanger && styles.lighterDanger,
+    ...((danger && styles.danger) || {}),
+    ...((darkDanger && styles.darkDanger) || {}),
+    ...((darkerDanger && styles.darkerDanger) || {}),
+    ...((lightDanger && styles.lightDanger) || {}),
+    ...((lighterDanger && styles.lighterDanger) || {}),
 
-    tertiary && styles.tertiary,
-    black && styles.black,
-    white && styles.white,
-    gray && styles.gray,
-    darkGray && styles.darkGray,
-    gray2 && styles.gray2,
-    dark && styles.dark,
-    error && styles.error,
-    mistyWhite && styles.mistyWhite,
-    milkyWhite && styles.milkyWhite,
-    clear && styles.clear,
-    facebook && styles.facebook,
-    transparent && styles.transparent,
-    silver && styles.silver,
-    steel && styles.steel,
-    error && styles.error,
-    ricePaper && styles.ricePaper,
-    frost && styles.frost,
-    cloud && styles.cloud,
-    windowTint && styles.windowTint,
-    panther && styles.panther,
-    charcoal && styles.charcoal,
-    coal && styles.coal,
-    bloodOrange && styles.bloodOrange,
-    snow && styles.snow,
-    ember && styles.ember,
-    fire && styles.fire,
-    drawer && styles.drawer,
-    eggplant && styles.eggplant,
-    twitterColor && styles.twitterColor,
-    facebookColor && styles.facebookColor,
-    googleColor && styles.googleColor,
-    linkedinColor && styles.linkedinColor,
-    pinterestColor && styles.pinterestColor,
-    youtubeColor && styles.youtubeColor,
-    tumblrColor && styles.tumblrColor,
-    behanceColor && styles.behanceColor,
-    dribbbleColor && styles.dribbbleColor,
-    redditColor && styles.redditColor,
-    instagramColor && styles.instagramColor,
-    rose && styles.rose,
-    style, // rewrite predefined styles
-  ].filter((t) => !!t);
+    ...((tertiary && styles.tertiary) || {}),
+    ...((black && styles.black) || {}),
+    ...((white && styles.white) || {}),
+    ...((gray && styles.gray) || {}),
+    ...((darkGray && styles.darkGray) || {}),
+    ...((gray2 && styles.gray2) || {}),
+    ...((dark && styles.dark) || {}),
+    ...((error && styles.error) || {}),
+    ...((mistyWhite && styles.mistyWhite) || {}),
+    ...((milkyWhite && styles.milkyWhite) || {}),
+    ...((clear && styles.clear) || {}),
+    ...((facebook && styles.facebook) || {}),
+    ...((transparent && styles.transparent) || {}),
+    ...((silver && styles.silver) || {}),
+    ...((steel && styles.steel) || {}),
+    ...((error && styles.error) || {}),
+    ...((ricePaper && styles.ricePaper) || {}),
+    ...((frost && styles.frost) || {}),
+    ...((cloud && styles.cloud) || {}),
+    ...((windowTint && styles.windowTint) || {}),
+    ...((panther && styles.panther) || {}),
+    ...((charcoal && styles.charcoal) || {}),
+    ...((coal && styles.coal) || {}),
+    ...((bloodOrange && styles.bloodOrange) || {}),
+    ...((snow && styles.snow) || {}),
+    ...((ember && styles.ember) || {}),
+    ...((fire && styles.fire) || {}),
+    ...((drawer && styles.drawer) || {}),
+    ...((eggplant && styles.eggplant) || {}),
+    ...((twitterColor && styles.twitterColor) || {}),
+    ...((facebookColor && styles.facebookColor) || {}),
+    ...((googleColor && styles.googleColor) || {}),
+    ...((linkedinColor && styles.linkedinColor) || {}),
+    ...((pinterestColor && styles.pinterestColor) || {}),
+    ...((youtubeColor && styles.youtubeColor) || {}),
+    ...((tumblrColor && styles.tumblrColor) || {}),
+    ...((behanceColor && styles.behanceColor) || {}),
+    ...((dribbbleColor && styles.dribbbleColor) || {}),
+    ...((redditColor && styles.redditColor) || {}),
+    ...((instagramColor && styles.instagramColor) || {}),
+    ...((rose && styles.rose) || {}),
+    ...style, // rewrite predefined styles
+  };
+
+  if (textStyles.fontSize) {
+    textStyles.fontSize = textStyles.fontSize = moderateScale(
+      textStyles.fontSize
+    );
+    textStyles.lineHeight = verticalScale(textStyles.fontSize * 1.2);
+  }
 
   if (cropped || button) {
     return (
@@ -506,7 +520,7 @@ const Typography: React.FC<{
   return (
     <Text
       allowFontScaling={allowFontScaling}
-      style={textStyles}
+      // style={textStyles}
       numberOfLines={lines}
       {...props}
     >

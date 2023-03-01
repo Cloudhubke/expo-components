@@ -8,9 +8,7 @@ try {
     FastImage = Image;
   }
 } catch (e) {
-  console.log('====================================');
-  console.log('FastImage error ', e);
-  console.log('====================================');
+  console.info('fast-image is not installed');
 }
 
 export default ({

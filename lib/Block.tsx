@@ -8,7 +8,7 @@ import {
   ViewStyle,
 } from 'react-native';
 // import { LinearGradient } from 'expo-linear-gradient';
-import { View, Card } from '@expocraft/rnuilib';
+import { View, Card, ViewProps } from '@expocraft/rnuilib';
 import * as Animatable from 'react-native-animatable';
 import Ripple from './bread/Components/Ripple';
 import ThemeContext from './theme/ThemeContext';
@@ -81,42 +81,44 @@ export type Animation =
 // platform
 const android = Platform.OS === 'android';
 
-const Block: React.FC<{
-  [key: string]: any;
-  flex?: boolean;
-  row?: boolean;
-  wrap?: boolean;
-  center?: boolean;
-  middle?: boolean;
-  left?: boolean;
-  right?: boolean;
-  top?: boolean;
-  bottom?: boolean;
-  margin?: number | number[] | boolean;
-  padding?: number | number[] | boolean;
-  paddingTop?: number | boolean;
-  paddingRight?: number | boolean;
-  paddingBottom?: number | boolean;
-  paddingLeft?: number | boolean;
+const Block: React.FC<
+  ViewProps & {
+    [key: string]: any;
+    flex?: boolean;
+    row?: boolean;
+    wrap?: boolean;
+    center?: boolean;
+    middle?: boolean;
+    left?: boolean;
+    right?: boolean;
+    top?: boolean;
+    bottom?: boolean;
+    margin?: number | number[] | boolean;
+    padding?: number | number[] | boolean;
+    paddingTop?: number | boolean;
+    paddingRight?: number | boolean;
+    paddingBottom?: number | boolean;
+    paddingLeft?: number | boolean;
 
-  absolute?: boolean;
-  card?: boolean;
-  shadow?: boolean;
-  shadowTop?: boolean;
-  elevation?: number;
-  color?: any;
-  space?: 'between' | 'around' | 'evenly';
-  style?: ViewStyle;
-  animated?: boolean;
-  animatable?: boolean;
-  scrollView?: boolean;
-  linearGradient?: boolean;
-  ripple?: boolean;
-  children?: any;
-  keyboardAvoiding?: boolean;
-  rounded?: boolean;
-  animation?: Animation;
-}> = (props): any => {
+    absolute?: boolean;
+    card?: boolean;
+    shadow?: boolean;
+    shadowTop?: boolean;
+    elevation?: number;
+    color?: any;
+    space?: 'between' | 'around' | 'evenly';
+    style?: ViewStyle;
+    animated?: boolean;
+    animatable?: boolean;
+    scrollView?: boolean;
+    linearGradient?: boolean;
+    ripple?: boolean;
+    children?: any;
+    keyboardAvoiding?: boolean;
+    rounded?: boolean;
+    animation?: Animation;
+  }
+> = (props): any => {
   const { sizes, colors }: any = React.useContext(ThemeContext);
 
   const {

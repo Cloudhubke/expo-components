@@ -1,7 +1,12 @@
-import colors from './Colors';
-import sizes from './Sizes';
-
-const Fonts = {
+const Fonts = ({
+  fontFamily = 'clanpro',
+  sizes,
+  colors,
+}: {
+  fontFamily: string;
+  sizes: typeof import('./Sizes').default;
+  colors: typeof import('./Colors').default;
+}) => ({
   h1: {
     fontSize: sizes.h1,
     lineHeight: sizes.h1 * 1.5,
@@ -59,27 +64,30 @@ const Fonts = {
   },
 
   semibold: {
-    fontWeight: '100',
+    fontFamily: `${fontFamily}-bold`,
   },
 
   bold: {
-    fontWeight: 'bold',
+    fontFamily: `${fontFamily}-black`,
   },
 
   light: {
-    fontWeight: '300',
+    fontFamily: `${fontFamily}-thin`,
   },
 
-  normal: {},
+  thin: {
+    fontFamily: `${fontFamily}-thin`,
+  },
+  normal: {
+    fontFamily: `${fontFamily}-normal`,
+  },
 
   default: {
     fontSize: sizes.body,
     lineHeight: sizes.body * 1.5,
-
     color: colors.dark,
     fontWeight: '400',
   },
-
   body: {
     // lineHeig,
   },
@@ -91,13 +99,12 @@ const Fonts = {
   small: {
     fontSize: sizes.small,
     lineHeight: sizes.small * 1.5,
-
     color: colors.darkGray,
   },
   button: {
     fontSize: sizes.button,
     color: colors.white,
   },
-};
+});
 
 export default Fonts;
